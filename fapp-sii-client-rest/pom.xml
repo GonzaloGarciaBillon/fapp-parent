@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cl.fapp</groupId>
+		<artifactId>fapp-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>fapp-sii-client-rest</artifactId>
+	<name>fapp-sii-client-rest</name>
+	<description>Project for Spring Boot that provides WS REST for SII</description>
+
+	<dependencies>
+		<!-- otros modulos -->
+		<dependency>
+			<groupId>cl.fapp</groupId>
+			<artifactId>fapp-sii-client-common-auth</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- dependencias -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${springboot.starter.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>${springboot.starter.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>${springboot.starter.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- parser jaxb -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb-api.version}</version>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.stax-utils</groupId>
+			<artifactId>stax-utils</artifactId>
+			<version>20040917</version>
+		</dependency>
+		-->
+		<!-- parser jaxb -->
+		<!--
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.0</version>
+		</dependency>
+		-->
+		<!-- gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+		<finalName>ws-client</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<!-- xjc -->
+
+
+		</plugins>
+
+	</build>
+</project>

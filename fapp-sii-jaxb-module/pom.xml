@@ -1,0 +1,217 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cl.fapp</groupId>
+		<artifactId>fapp-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>fapp-sii-jaxb-module</artifactId>
+	<name>fapp-sii-jaxb-module</name>
+	<description>Clases jaxb de esquemas sii</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+	    <!-- otros modulos -->
+	    <dependency>
+	    <groupId>cl.fapp</groupId>
+	    <artifactId>fapp-sii-signer</artifactId>
+	    <version>${project.version}</version>
+	    </dependency>
+
+		<!-- utils -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jeasy</groupId>
+			<artifactId>easy-random-core</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${jakarta.xml.bind-api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+			<version>${jaxb-xjc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-jxc</artifactId>
+			<version>${jaxb-jxc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>${jaxb-impl.version}</version>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		-->
+		<!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>${jakarta.annotation-api.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-databind.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>${jackson-dataformat-xml.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.fares.bind.xjc.plugins/jackson-xjc-plugin -->
+		<dependency>
+			<groupId>io.fares.bind.xjc.plugins</groupId>
+			<artifactId>jackson-xjc-plugin</artifactId>
+			<version>0.0.2</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>fapp-sii-jaxb-module</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>${lifecycle-mapping-plugin.version}</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>jaxb2-maven-plugin</artifactId>
+										<versionRange>[${jaxb2-maven-plugin.version},)</versionRange>
+										<goals>
+											<goal>schemagen</goal>
+											<goal>xjc</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<!-- xjc -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>${jaxb2-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<xjbSources>
+						<xjbSource>src/main/resources/sii/global.xjb</xjbSource>
+					</xjbSources>
+					<sources>
+						<source>src/main/resources/sii/xsd</source>
+					</sources>
+
+					<encoding>UTF-8</encoding>
+					<outputDirectory>${basedir}/src/main/java</outputDirectory>
+					<clearOutputDir>false</clearOutputDir>
+					<noGeneratedHeaderComments>true</noGeneratedHeaderComments>
+					<extension>true</extension>
+					<generateEpisode>false</generateEpisode>
+					<packageName>cl.fapp.sii.jaxb</packageName>
+					<addGeneratedAnnotation>true</addGeneratedAnnotation>
+					<locale>es,cl</locale>
+
+					<!--
+					<xjcSourceExcludeFilters>
+						<filter implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
+							<patterns>
+								<pattern>.pdf</pattern>
+								<pattern>.zip</pattern>
+							</patterns>
+						</filter>
+					</xjcSourceExcludeFilters>
+                    -->
+
+					<!--
+					<xjbExcludeFilters>
+						<filter implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
+							<patterns>
+								<pattern>src/main/resources/sii/xsd/xmldsignature_v10.xsd</pattern>
+							</patterns>
+						</filter>
+					</xjbExcludeFilters>
+					-->
+				</configuration>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>io.gravitee.maven.plugins</groupId>
+				<artifactId>json-schema-generator-maven-plugin</artifactId>
+				<version>1.3.0</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>generate-json-schemas</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<includes>
+						<include>cl/fapp/sii/jaxb/**</include>
+					</includes>
+				</configuration>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+
+</project>

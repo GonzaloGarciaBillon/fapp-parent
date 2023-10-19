@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings version="3.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	jaxb:extensionBindingPrefixes="xjc">
+
+	<jaxb:globalBindings>
+		<xjc:simple />
+		<xjc:serializable uid="-1" />
+		<xjc:javaType name="java.util.Date" xmlType="xs:dateTime" adapter="cl.fapp.sii.factory.adapters.DateTimeAdapter" />
+		<xjc:javaType name="java.util.Date" xmlType="xs:date" adapter="cl.fapp.sii.factory.adapters.DateAdapter" />
+		<xjc:javaType name="java.util.Date" xmlType="xs:gYearMonth" adapter="cl.fapp.sii.factory.adapters.GYearMonthAdapter" />
+		<xjc:javaType name="byte[]" xmlType="xs:base64Binary" adapter="cl.fapp.sii.factory.adapters.Base64Adapter" />
+	</jaxb:globalBindings>
+</jaxb:bindings>

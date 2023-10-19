@@ -1,0 +1,37 @@
+{"properties": [
+  {
+    "name": "boleta.semilla.action",
+    "type": "java.lang.String",
+    "description": "A description for 'boleta.semilla.action'"
+  },
+  {
+    "name": "boleta.api.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'boleta.api.timeout'"
+  },
+  {
+    "name": "boleta.envio.action",
+    "type": "java.lang.String",
+    "description": "A description for 'boleta.envio.action'"
+  },
+  {
+    "name": "boleta.token.action",
+    "type": "java.lang.String",
+    "description": "A description for 'boleta.token.action'"
+  },
+{
+    "name": "boleta.semilla.action",
+    "type": "java.lang.String",
+    "description": "A description for 'boleta.semilla.action'"
+  },
+{
+    "name": "boleta.api.scheme",
+    "type": "java.lang.String",
+    "description": "A description for 'boleta.api.scheme'"
+  },
+{
+    "name": "boleta.api",
+    "type": "java.lang.String",
+    "description": "A description for 'boleta.api'"
+  }
+]}

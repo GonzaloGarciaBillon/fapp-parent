@@ -1,0 +1,241 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cl.fapp</groupId>
+		<artifactId>fapp-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>fapp-sii-client-soap</artifactId>
+	<name>fapp-sii-client-soap</name>
+	<description>Cliente AXIS2 para servicios SOAP del SII</description>
+
+	<dependencies>
+		<!-- otros modulos -->
+		<dependency>
+			<groupId>cl.fapp</groupId>
+			<artifactId>fapp-sii-client-common-auth</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>cl.fapp</groupId>
+			<artifactId>fapp-sii-api-mapper</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- springboot starter -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${springboot.starter.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<version>${springboot.starter.version}</version>
+		</dependency>
+
+		<!-- dependencias -->
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-kernel</artifactId>
+			<version>${org.apache.axis2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-adb</artifactId>
+			<version>${org.apache.axis2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-local</artifactId>
+			<version>${org.apache.axis2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-http</artifactId>
+			<version>${org.apache.axis2.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-jaxws</artifactId>
+			<version>${org.apache.axis2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${org.apache.httpclient.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${org.apache.httpclient.version}</version>
+        </dependency>
+
+   		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>${springboot.starter.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+				<version>${axis2.wsdl2code.maven.plugin.version}</version>
+				<executions>
+
+					<execution>
+						<id>crSeed</id>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>src/main/resources/wsdl/CrSeed.wsdl</wsdlFile>
+							<databindingName>adb</databindingName>
+							<packageName>cl.fapp.siiclient.axis.crseed</packageName>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<flattenFiles>true</flattenFiles>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>getTokenFromSeed</id>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>src/main/resources/wsdl/GetTokenFromSeed.wsdl</wsdlFile>
+							<databindingName>adb</databindingName>
+							<packageName>cl.fapp.siiclient.axis.gettoken</packageName>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<flattenFiles>true</flattenFiles>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>queryEstDte</id>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>src/main/resources/wsdl/QueryEstDte.wsdl</wsdlFile>
+							<databindingName>adb</databindingName>
+							<packageName>cl.fapp.siiclient.axis.query.estdte</packageName>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<flattenFiles>true</flattenFiles>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>queryEstDteAv</id>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>src/main/resources/wsdl/QueryEstDteAv.wsdl</wsdlFile>
+							<databindingName>adb</databindingName>
+							<packageName>cl.fapp.siiclient.axis.query.estdteav</packageName>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<flattenFiles>true</flattenFiles>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>queryEstUp</id>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>src/main/resources/wsdl/QueryEstUp.wsdl</wsdlFile>
+							<databindingName>adb</databindingName>
+							<packageName>cl.fapp.siiclient.axis.query.estup</packageName>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<flattenFiles>true</flattenFiles>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>registroReclamoDteService</id>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>src/main/resources/wsdl/registroreclamodteservice.wsdl</wsdlFile>
+							<databindingName>adb</databindingName>
+							<packageName>cl.fapp.siiclient.axis.registroreclamodte</packageName>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<flattenFiles>true</flattenFiles>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>wsDTECorreo</id>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>src/main/resources/wsdl/wsDTECorreo.wsdl</wsdlFile>
+							<databindingName>adb</databindingName>
+							<packageName>cl.fapp.siiclient.axis.wsdtecorreo</packageName>
+							<outputDirectory>src/main/java/</outputDirectory>
+							<flattenFiles>true</flattenFiles>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${springboot.starter.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+</project>

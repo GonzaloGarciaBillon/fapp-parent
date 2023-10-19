@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>DOCUMENTOS EN PDF SII</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+</head>
+<style>
+select {
+  width: 200px;
+  height: 30px;
+  line-height: 50px;
+  -webkit-appearance: menulist-button;  
+  -moz-appearance:none;
+}
+input {
+  width: 200px;
+  height: 30px;
+  line-height: 50px;
+  -webkit-appearance: menulist-button;  
+  -moz-appearance:none;
+}
+</style>
+<body>
+	<div class="container-fluid">
+		<div class="col" id="main">
+			<h1>PDF BOLETA SII</h1>
+			<div>
+				<p>
+					Generación de documentos (PDF) con <a
+						href="https://en.wikipedia.org/wiki/Code_39">PDF 417 </a> barcode
+					standard
+				</p>
+				<ul class="list-group">
+					<li class="list-group-item">Ingrese el identificador del
+						documento</li>
+					<li class="list-group-item">
+						<form method="GET" enctype="multipart/form-data" action="/getpdf">
+							<table>
+								<tr>
+									<td><label>Rut emisor </label></td>
+									<td><input min="0" name="rut" style="width:200px;"/></td>
+								</tr>
+								<tr>
+									<td><label>Folio</label></td>
+									<td><input type="number" min="0" name="folio" style="width:200px;"/></td>
+								</tr>
+								<tr>
+									<td><label>Monto</label></td>
+									<td><input type="number" min="0" name="monto" style="width:200px;"/></td>
+								</tr>
+								<tr>
+									<td><label>Tipo documento &nbsp;&nbsp;</label></td>
+									<td><select name="tipo" id="tipo" style="width:200px; height:50px">
+											<option value="39">Boleta</option>
+											<option value="61">Nota de crédito</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><font size="1">Boleta:39 - Nota de crédito:61</font></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><input type="submit" value="Obtención PDF" /></td>
+								</tr>
+							</table>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
