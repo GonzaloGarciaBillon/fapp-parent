@@ -30,7 +30,7 @@ public class SiiDocumentFactoryApplication {
 
 	public static void main(String[] args) {
 		try {
-			//-->List<RegistroCompraVentaBean> csvList = simpleSyncPositionBeanExample();
+			// List<RegistroCompraVentaBean> csvList = simpleSyncPositionBeanExample();
 			SpringApplication.run(SiiDocumentFactoryApplication.class, args);
 
 		} catch (Exception ex) {

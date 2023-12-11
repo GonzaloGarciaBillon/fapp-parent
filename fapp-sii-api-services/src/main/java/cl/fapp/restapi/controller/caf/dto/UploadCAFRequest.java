@@ -20,9 +20,9 @@ public class UploadCAFRequest {
 	@NotNull(message = "Rut Emisor no debe ser nulo")
 	private String rutEmisor;
 
-	@Schema(description = "Tipo de documento para los que esta asignado el CAF", allowableValues = {"39", "56", "61"})
+	@Schema(description = "Tipo de documento para los que esta asignado el CAF", allowableValues = {"33","34","39","41","56","61"})
 	@NotNull(message = "Tipo de documento no debe ser nulo")
-	@OneOf(attribute = "Tipo de documento", intValues={39, 56, 61})
+	@OneOf(attribute = "Tipo de documento", intValues={33, 34, 39, 41, 56, 61})
 	private Integer tipoDocumento;
 
 	@Schema(description = "Folio limite inferior contenido en el CAF", required = false, example = "1")

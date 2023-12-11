@@ -229,7 +229,7 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                       &lt;/complexContent&gt;
  *                     &lt;/complexType&gt;
  *                   &lt;/element&gt;
- *                   &lt;element name="Detalle" maxOccurs="1000" minOccurs="0"&gt;
+ *                   &lt;element name="Detalle" maxOccurs="1000"&gt;
  *                     &lt;complexType&gt;
  *                       &lt;complexContent&gt;
  *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
@@ -313,7 +313,7 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                                           &lt;/restriction&gt;
  *                                         &lt;/simpleType&gt;
  *                                       &lt;/element&gt;
- *                                       &lt;element name="TpoTicket"&gt;
+ *                                       &lt;element name="TpoTiket"&gt;
  *                                         &lt;simpleType&gt;
  *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
  *                                             &lt;maxLength value="10"/&gt;
@@ -375,12 +375,7 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
  *                             &lt;/element&gt;
- *                             &lt;element name="QtyItem" minOccurs="0"&gt;
- *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{}Dec5Type"&gt;
- *                                 &lt;/restriction&gt;
- *                               &lt;/simpleType&gt;
- *                             &lt;/element&gt;
+ *                             &lt;element name="QtyItem" type="{}Dec5Type" minOccurs="0"/&gt;
  *                             &lt;element name="UnmdItem" minOccurs="0"&gt;
  *                               &lt;simpleType&gt;
  *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -388,16 +383,11 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
  *                             &lt;/element&gt;
- *                             &lt;element name="PrcItem" minOccurs="0"&gt;
- *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{}Dec5Type"&gt;
- *                                 &lt;/restriction&gt;
- *                               &lt;/simpleType&gt;
- *                             &lt;/element&gt;
+ *                             &lt;element name="PrcItem" type="{}Dec5Type" minOccurs="0"/&gt;
  *                             &lt;element name="DescuentoPct" minOccurs="0"&gt;
  *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{}PctType"&gt;
- *                                   &lt;minInclusive value="0.00"/&gt;
+ *                                 &lt;restriction base="{http://www.sii.cl/SiiDte}PctType"&gt;
+ *                                   &lt;minInclusive value="0.01"/&gt;
  *                                   &lt;maxInclusive value="100.00"/&gt;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
@@ -411,9 +401,9 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                             &lt;/element&gt;
  *                             &lt;element name="RecargoPct" minOccurs="0"&gt;
  *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{}PctType"&gt;
+ *                                 &lt;restriction base="{http://www.sii.cl/SiiDte}PctType"&gt;
  *                                   &lt;maxInclusive value="100.00"/&gt;
- *                                   &lt;minInclusive value="0.00"/&gt;
+ *                                   &lt;minInclusive value="0.01"/&gt;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
  *                             &lt;/element&gt;
@@ -449,32 +439,22 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
  *                             &lt;/element&gt;
- *                             &lt;element name="OrdenSTI" minOccurs="0"&gt;
+ *                             &lt;element name="OrdenSTI"&gt;
  *                               &lt;simpleType&gt;
  *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
  *                                   &lt;maxInclusive value="99"/&gt;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
  *                             &lt;/element&gt;
- *                             &lt;element name="SubTotNetoSTI" minOccurs="0"&gt;
- *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{}Dec1Type"&gt;
- *                                 &lt;/restriction&gt;
- *                               &lt;/simpleType&gt;
- *                             &lt;/element&gt;
- *                             &lt;element name="SubTotIVASTI" minOccurs="0"&gt;
- *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{}Dec1Type"&gt;
- *                                 &lt;/restriction&gt;
- *                               &lt;/simpleType&gt;
- *                             &lt;/element&gt;
+ *                             &lt;element name="SubTotNetoSTI" type="{}Dec1Type" minOccurs="0"/&gt;
+ *                             &lt;element name="SubTotIVASTI" type="{}Dec1Type" minOccurs="0"/&gt;
  *                             &lt;element name="SubTotAdicSTI" type="{}Dec1Type" minOccurs="0"/&gt;
  *                             &lt;element name="SubTotExeSTI" type="{}Dec1Type" minOccurs="0"/&gt;
  *                             &lt;element name="ValSubtotSTI" type="{}Dec1Type" minOccurs="0"/&gt;
- *                             &lt;element name="LineasDeta" maxOccurs="1000" minOccurs="0"&gt;
+ *                             &lt;element name="LineasDeta" maxOccurs="60" minOccurs="0"&gt;
  *                               &lt;simpleType&gt;
  *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
- *                                   &lt;maxInclusive value="1000"/&gt;
+ *                                   &lt;maxInclusive value="60"/&gt;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
  *                             &lt;/element&gt;
@@ -542,20 +522,6 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                               &lt;simpleType&gt;
  *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
  *                                   &lt;maxInclusive value="40"/&gt;
- *                                 &lt;/restriction&gt;
- *                               &lt;/simpleType&gt;
- *                             &lt;/element&gt;
- *                             &lt;element name="TpoDocRef" minOccurs="0"&gt;
- *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *                                   &lt;maxLength value="3"/&gt;
- *                                 &lt;/restriction&gt;
- *                               &lt;/simpleType&gt;
- *                             &lt;/element&gt;
- *                             &lt;element name="FolioRef" minOccurs="0"&gt;
- *                               &lt;simpleType&gt;
- *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *                                   &lt;maxLength value="18"/&gt;
  *                                 &lt;/restriction&gt;
  *                               &lt;/simpleType&gt;
  *                             &lt;/element&gt;
@@ -753,22 +719,21 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "documento",
     "signature"
 })
-@XmlRootElement(name = "BOLETADefType")
-@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
 public class BOLETADefType
     implements Serializable
 {
 
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     private final static long serialVersionUID = -1L;
     @XmlElement(name = "Documento", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     protected BOLETADefType.Documento documento;
     @XmlElement(name = "Signature", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     protected Signature signature;
     @XmlAttribute(name = "version", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     protected BigDecimal version;
 
     /**
@@ -779,7 +744,7 @@ public class BOLETADefType
      *     {@link BOLETADefType.Documento }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     public BOLETADefType.Documento getDocumento() {
         return documento;
     }
@@ -792,7 +757,7 @@ public class BOLETADefType
      *     {@link BOLETADefType.Documento }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     public void setDocumento(BOLETADefType.Documento value) {
         this.documento = value;
     }
@@ -805,7 +770,7 @@ public class BOLETADefType
      *     {@link Signature }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     public Signature getSignature() {
         return signature;
     }
@@ -818,7 +783,7 @@ public class BOLETADefType
      *     {@link Signature }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     public void setSignature(Signature value) {
         this.signature = value;
     }
@@ -831,7 +796,7 @@ public class BOLETADefType
      *     {@link BigDecimal }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     public BigDecimal getVersion() {
         if (version == null) {
             return new BigDecimal("1.0");
@@ -848,7 +813,7 @@ public class BOLETADefType
      *     {@link BigDecimal }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     public void setVersion(BigDecimal value) {
         this.version = value;
     }
@@ -1052,7 +1017,7 @@ public class BOLETADefType
      *             &lt;/complexContent&gt;
      *           &lt;/complexType&gt;
      *         &lt;/element&gt;
-     *         &lt;element name="Detalle" maxOccurs="1000" minOccurs="0"&gt;
+     *         &lt;element name="Detalle" maxOccurs="1000"&gt;
      *           &lt;complexType&gt;
      *             &lt;complexContent&gt;
      *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
@@ -1136,7 +1101,7 @@ public class BOLETADefType
      *                                 &lt;/restriction&gt;
      *                               &lt;/simpleType&gt;
      *                             &lt;/element&gt;
-     *                             &lt;element name="TpoTicket"&gt;
+     *                             &lt;element name="TpoTiket"&gt;
      *                               &lt;simpleType&gt;
      *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
      *                                   &lt;maxLength value="10"/&gt;
@@ -1198,12 +1163,7 @@ public class BOLETADefType
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
      *                   &lt;/element&gt;
-     *                   &lt;element name="QtyItem" minOccurs="0"&gt;
-     *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{}Dec5Type"&gt;
-     *                       &lt;/restriction&gt;
-     *                     &lt;/simpleType&gt;
-     *                   &lt;/element&gt;
+     *                   &lt;element name="QtyItem" type="{}Dec5Type" minOccurs="0"/&gt;
      *                   &lt;element name="UnmdItem" minOccurs="0"&gt;
      *                     &lt;simpleType&gt;
      *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -1211,16 +1171,11 @@ public class BOLETADefType
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
      *                   &lt;/element&gt;
-     *                   &lt;element name="PrcItem" minOccurs="0"&gt;
-     *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{}Dec5Type"&gt;
-     *                       &lt;/restriction&gt;
-     *                     &lt;/simpleType&gt;
-     *                   &lt;/element&gt;
+     *                   &lt;element name="PrcItem" type="{}Dec5Type" minOccurs="0"/&gt;
      *                   &lt;element name="DescuentoPct" minOccurs="0"&gt;
      *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{}PctType"&gt;
-     *                         &lt;minInclusive value="0.00"/&gt;
+     *                       &lt;restriction base="{http://www.sii.cl/SiiDte}PctType"&gt;
+     *                         &lt;minInclusive value="0.01"/&gt;
      *                         &lt;maxInclusive value="100.00"/&gt;
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
@@ -1234,9 +1189,9 @@ public class BOLETADefType
      *                   &lt;/element&gt;
      *                   &lt;element name="RecargoPct" minOccurs="0"&gt;
      *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{}PctType"&gt;
+     *                       &lt;restriction base="{http://www.sii.cl/SiiDte}PctType"&gt;
      *                         &lt;maxInclusive value="100.00"/&gt;
-     *                         &lt;minInclusive value="0.00"/&gt;
+     *                         &lt;minInclusive value="0.01"/&gt;
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
      *                   &lt;/element&gt;
@@ -1272,32 +1227,22 @@ public class BOLETADefType
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
      *                   &lt;/element&gt;
-     *                   &lt;element name="OrdenSTI" minOccurs="0"&gt;
+     *                   &lt;element name="OrdenSTI"&gt;
      *                     &lt;simpleType&gt;
      *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
      *                         &lt;maxInclusive value="99"/&gt;
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
      *                   &lt;/element&gt;
-     *                   &lt;element name="SubTotNetoSTI" minOccurs="0"&gt;
-     *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{}Dec1Type"&gt;
-     *                       &lt;/restriction&gt;
-     *                     &lt;/simpleType&gt;
-     *                   &lt;/element&gt;
-     *                   &lt;element name="SubTotIVASTI" minOccurs="0"&gt;
-     *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{}Dec1Type"&gt;
-     *                       &lt;/restriction&gt;
-     *                     &lt;/simpleType&gt;
-     *                   &lt;/element&gt;
+     *                   &lt;element name="SubTotNetoSTI" type="{}Dec1Type" minOccurs="0"/&gt;
+     *                   &lt;element name="SubTotIVASTI" type="{}Dec1Type" minOccurs="0"/&gt;
      *                   &lt;element name="SubTotAdicSTI" type="{}Dec1Type" minOccurs="0"/&gt;
      *                   &lt;element name="SubTotExeSTI" type="{}Dec1Type" minOccurs="0"/&gt;
      *                   &lt;element name="ValSubtotSTI" type="{}Dec1Type" minOccurs="0"/&gt;
-     *                   &lt;element name="LineasDeta" maxOccurs="1000" minOccurs="0"&gt;
+     *                   &lt;element name="LineasDeta" maxOccurs="60" minOccurs="0"&gt;
      *                     &lt;simpleType&gt;
      *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
-     *                         &lt;maxInclusive value="1000"/&gt;
+     *                         &lt;maxInclusive value="60"/&gt;
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
      *                   &lt;/element&gt;
@@ -1365,20 +1310,6 @@ public class BOLETADefType
      *                     &lt;simpleType&gt;
      *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
      *                         &lt;maxInclusive value="40"/&gt;
-     *                       &lt;/restriction&gt;
-     *                     &lt;/simpleType&gt;
-     *                   &lt;/element&gt;
-     *                   &lt;element name="TpoDocRef" minOccurs="0"&gt;
-     *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
-     *                         &lt;maxLength value="3"/&gt;
-     *                       &lt;/restriction&gt;
-     *                     &lt;/simpleType&gt;
-     *                   &lt;/element&gt;
-     *                   &lt;element name="FolioRef" minOccurs="0"&gt;
-     *                     &lt;simpleType&gt;
-     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
-     *                         &lt;maxLength value="18"/&gt;
      *                       &lt;/restriction&gt;
      *                     &lt;/simpleType&gt;
      *                   &lt;/element&gt;
@@ -1574,41 +1505,41 @@ public class BOLETADefType
         "ted",
         "tmstFirma"
     })
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
     public static class Documento
         implements Serializable
     {
 
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         private final static long serialVersionUID = -1L;
         @XmlElement(name = "Encabezado", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected BOLETADefType.Documento.Encabezado encabezado;
-        @XmlElement(name = "Detalle")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @XmlElement(name = "Detalle", required = true)
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected List<BOLETADefType.Documento.Detalle> detalles;
         @XmlElement(name = "SubTotInfo")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected List<BOLETADefType.Documento.SubTotInfo> subTotInfos;
         @XmlElement(name = "DscRcgGlobal")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected List<BOLETADefType.Documento.DscRcgGlobal> dscRcgGlobals;
         @XmlElement(name = "Referencia")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected List<BOLETADefType.Documento.Referencia> referencias;
         @XmlElement(name = "TED", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected BOLETADefType.Documento.TED ted;
         @XmlElement(name = "TmstFirma", required = true, type = String.class)
         @XmlJavaTypeAdapter(DateTimeAdapter.class)
         @XmlSchemaType(name = "dateTime")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected Date tmstFirma;
         @XmlAttribute(name = "ID", required = true)
         @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
         @XmlID
         @XmlSchemaType(name = "ID")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         protected String id;
 
         /**
@@ -1619,7 +1550,7 @@ public class BOLETADefType
          *     {@link BOLETADefType.Documento.Encabezado }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public BOLETADefType.Documento.Encabezado getEncabezado() {
             return encabezado;
         }
@@ -1632,7 +1563,7 @@ public class BOLETADefType
          *     {@link BOLETADefType.Documento.Encabezado }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public void setEncabezado(BOLETADefType.Documento.Encabezado value) {
             this.encabezado = value;
         }
@@ -1659,7 +1590,7 @@ public class BOLETADefType
          * 
          * 
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public List<BOLETADefType.Documento.Detalle> getDetalles() {
             if (detalles == null) {
                 detalles = new ArrayList<BOLETADefType.Documento.Detalle>();
@@ -1689,7 +1620,7 @@ public class BOLETADefType
          * 
          * 
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public List<BOLETADefType.Documento.SubTotInfo> getSubTotInfos() {
             if (subTotInfos == null) {
                 subTotInfos = new ArrayList<BOLETADefType.Documento.SubTotInfo>();
@@ -1719,7 +1650,7 @@ public class BOLETADefType
          * 
          * 
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public List<BOLETADefType.Documento.DscRcgGlobal> getDscRcgGlobals() {
             if (dscRcgGlobals == null) {
                 dscRcgGlobals = new ArrayList<BOLETADefType.Documento.DscRcgGlobal>();
@@ -1749,7 +1680,7 @@ public class BOLETADefType
          * 
          * 
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public List<BOLETADefType.Documento.Referencia> getReferencias() {
             if (referencias == null) {
                 referencias = new ArrayList<BOLETADefType.Documento.Referencia>();
@@ -1765,7 +1696,7 @@ public class BOLETADefType
          *     {@link BOLETADefType.Documento.TED }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public BOLETADefType.Documento.TED getTED() {
             return ted;
         }
@@ -1778,7 +1709,7 @@ public class BOLETADefType
          *     {@link BOLETADefType.Documento.TED }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public void setTED(BOLETADefType.Documento.TED value) {
             this.ted = value;
         }
@@ -1791,7 +1722,7 @@ public class BOLETADefType
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public Date getTmstFirma() {
             return tmstFirma;
         }
@@ -1804,7 +1735,7 @@ public class BOLETADefType
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public void setTmstFirma(Date value) {
             this.tmstFirma = value;
         }
@@ -1817,7 +1748,7 @@ public class BOLETADefType
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public String getID() {
             return id;
         }
@@ -1830,7 +1761,7 @@ public class BOLETADefType
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public void setID(String value) {
             this.id = value;
         }
@@ -1925,7 +1856,7 @@ public class BOLETADefType
          *                       &lt;/restriction&gt;
          *                     &lt;/simpleType&gt;
          *                   &lt;/element&gt;
-         *                   &lt;element name="TpoTicket"&gt;
+         *                   &lt;element name="TpoTiket"&gt;
          *                     &lt;simpleType&gt;
          *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
          *                         &lt;maxLength value="10"/&gt;
@@ -1987,12 +1918,7 @@ public class BOLETADefType
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
          *         &lt;/element&gt;
-         *         &lt;element name="QtyItem" minOccurs="0"&gt;
-         *           &lt;simpleType&gt;
-         *             &lt;restriction base="{}Dec5Type"&gt;
-         *             &lt;/restriction&gt;
-         *           &lt;/simpleType&gt;
-         *         &lt;/element&gt;
+         *         &lt;element name="QtyItem" type="{}Dec5Type" minOccurs="0"/&gt;
          *         &lt;element name="UnmdItem" minOccurs="0"&gt;
          *           &lt;simpleType&gt;
          *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -2000,16 +1926,11 @@ public class BOLETADefType
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
          *         &lt;/element&gt;
-         *         &lt;element name="PrcItem" minOccurs="0"&gt;
-         *           &lt;simpleType&gt;
-         *             &lt;restriction base="{}Dec5Type"&gt;
-         *             &lt;/restriction&gt;
-         *           &lt;/simpleType&gt;
-         *         &lt;/element&gt;
+         *         &lt;element name="PrcItem" type="{}Dec5Type" minOccurs="0"/&gt;
          *         &lt;element name="DescuentoPct" minOccurs="0"&gt;
          *           &lt;simpleType&gt;
-         *             &lt;restriction base="{}PctType"&gt;
-         *               &lt;minInclusive value="0.00"/&gt;
+         *             &lt;restriction base="{http://www.sii.cl/SiiDte}PctType"&gt;
+         *               &lt;minInclusive value="0.01"/&gt;
          *               &lt;maxInclusive value="100.00"/&gt;
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
@@ -2023,9 +1944,9 @@ public class BOLETADefType
          *         &lt;/element&gt;
          *         &lt;element name="RecargoPct" minOccurs="0"&gt;
          *           &lt;simpleType&gt;
-         *             &lt;restriction base="{}PctType"&gt;
+         *             &lt;restriction base="{http://www.sii.cl/SiiDte}PctType"&gt;
          *               &lt;maxInclusive value="100.00"/&gt;
-         *               &lt;minInclusive value="0.00"/&gt;
+         *               &lt;minInclusive value="0.01"/&gt;
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
          *         &lt;/element&gt;
@@ -2064,62 +1985,62 @@ public class BOLETADefType
             "recargoMonto",
             "montoItem"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public static class Detalle
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "NroLinDet", required = true)
             @XmlSchemaType(name = "positiveInteger")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigInteger nroLinDet;
             @XmlElement(name = "CdgItem")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected List<BOLETADefType.Documento.Detalle.CdgItem> cdgItems;
             @XmlElement(name = "IndExe")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigInteger indExe;
             @XmlElement(name = "ItemEspectaculo")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected Integer itemEspectaculo;
             @XmlElement(name = "RUTMandante")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String rutMandante;
             @XmlElement(name = "NmbItem", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String nmbItem;
             @XmlElement(name = "InfoTicket")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BOLETADefType.Documento.Detalle.InfoTicket infoTicket;
             @XmlElement(name = "DscItem")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String dscItem;
             @XmlElement(name = "QtyItem")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal qtyItem;
             @XmlElement(name = "UnmdItem")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String unmdItem;
             @XmlElement(name = "PrcItem")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal prcItem;
             @XmlElement(name = "DescuentoPct")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal descuentoPct;
             @XmlElement(name = "DescuentoMonto")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigInteger descuentoMonto;
             @XmlElement(name = "RecargoPct")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal recargoPct;
             @XmlElement(name = "RecargoMonto")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigInteger recargoMonto;
             @XmlElement(name = "MontoItem", required = true)
             @XmlSchemaType(name = "nonNegativeInteger")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigInteger montoItem;
 
             /**
@@ -2130,7 +2051,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigInteger getNroLinDet() {
                 return nroLinDet;
             }
@@ -2143,7 +2064,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setNroLinDet(BigInteger value) {
                 this.nroLinDet = value;
             }
@@ -2170,7 +2091,7 @@ public class BOLETADefType
              * 
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public List<BOLETADefType.Documento.Detalle.CdgItem> getCdgItems() {
                 if (cdgItems == null) {
                     cdgItems = new ArrayList<BOLETADefType.Documento.Detalle.CdgItem>();
@@ -2186,7 +2107,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigInteger getIndExe() {
                 return indExe;
             }
@@ -2199,7 +2120,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setIndExe(BigInteger value) {
                 this.indExe = value;
             }
@@ -2212,7 +2133,7 @@ public class BOLETADefType
              *     {@link Integer }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public Integer getItemEspectaculo() {
                 return itemEspectaculo;
             }
@@ -2225,7 +2146,7 @@ public class BOLETADefType
              *     {@link Integer }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setItemEspectaculo(Integer value) {
                 this.itemEspectaculo = value;
             }
@@ -2238,7 +2159,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getRUTMandante() {
                 return rutMandante;
             }
@@ -2251,7 +2172,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setRUTMandante(String value) {
                 this.rutMandante = value;
             }
@@ -2264,7 +2185,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getNmbItem() {
                 return nmbItem;
             }
@@ -2277,7 +2198,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setNmbItem(String value) {
                 this.nmbItem = value;
             }
@@ -2290,7 +2211,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Detalle.InfoTicket }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BOLETADefType.Documento.Detalle.InfoTicket getInfoTicket() {
                 return infoTicket;
             }
@@ -2303,7 +2224,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Detalle.InfoTicket }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setInfoTicket(BOLETADefType.Documento.Detalle.InfoTicket value) {
                 this.infoTicket = value;
             }
@@ -2316,7 +2237,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getDscItem() {
                 return dscItem;
             }
@@ -2329,7 +2250,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setDscItem(String value) {
                 this.dscItem = value;
             }
@@ -2342,7 +2263,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getQtyItem() {
                 return qtyItem;
             }
@@ -2355,7 +2276,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setQtyItem(BigDecimal value) {
                 this.qtyItem = value;
             }
@@ -2368,7 +2289,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getUnmdItem() {
                 return unmdItem;
             }
@@ -2381,7 +2302,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setUnmdItem(String value) {
                 this.unmdItem = value;
             }
@@ -2394,7 +2315,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getPrcItem() {
                 return prcItem;
             }
@@ -2407,7 +2328,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setPrcItem(BigDecimal value) {
                 this.prcItem = value;
             }
@@ -2420,7 +2341,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getDescuentoPct() {
                 return descuentoPct;
             }
@@ -2433,7 +2354,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setDescuentoPct(BigDecimal value) {
                 this.descuentoPct = value;
             }
@@ -2446,7 +2367,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigInteger getDescuentoMonto() {
                 return descuentoMonto;
             }
@@ -2459,7 +2380,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setDescuentoMonto(BigInteger value) {
                 this.descuentoMonto = value;
             }
@@ -2472,7 +2393,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getRecargoPct() {
                 return recargoPct;
             }
@@ -2485,7 +2406,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setRecargoPct(BigDecimal value) {
                 this.recargoPct = value;
             }
@@ -2498,7 +2419,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigInteger getRecargoMonto() {
                 return recargoMonto;
             }
@@ -2511,7 +2432,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setRecargoMonto(BigInteger value) {
                 this.recargoMonto = value;
             }
@@ -2524,7 +2445,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigInteger getMontoItem() {
                 return montoItem;
             }
@@ -2537,7 +2458,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setMontoItem(BigInteger value) {
                 this.montoItem = value;
             }
@@ -2580,18 +2501,18 @@ public class BOLETADefType
                 "tpoCodigo",
                 "vlrCodigo"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class CdgItem
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "TpoCodigo", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String tpoCodigo;
                 @XmlElement(name = "VlrCodigo", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String vlrCodigo;
 
                 /**
@@ -2602,7 +2523,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getTpoCodigo() {
                     return tpoCodigo;
                 }
@@ -2615,7 +2536,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setTpoCodigo(String value) {
                     this.tpoCodigo = value;
                 }
@@ -2628,7 +2549,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getVlrCodigo() {
                     return vlrCodigo;
                 }
@@ -2641,7 +2562,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setVlrCodigo(String value) {
                     this.vlrCodigo = value;
                 }
@@ -2681,7 +2602,7 @@ public class BOLETADefType
              *             &lt;/restriction&gt;
              *           &lt;/simpleType&gt;
              *         &lt;/element&gt;
-             *         &lt;element name="TpoTicket"&gt;
+             *         &lt;element name="TpoTiket"&gt;
              *           &lt;simpleType&gt;
              *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
              *               &lt;maxLength value="10"/&gt;
@@ -2744,52 +2665,52 @@ public class BOLETADefType
                 "folioTicket",
                 "fchGenera",
                 "nmbEvento",
-                "tpoTicket",
+                "TpoTiket",
                 "cdgEvento",
                 "fchEvento",
                 "lugarEvento",
                 "ubicEvento",
                 "filaUbicEvento",
-                "asntoUbicEvento"
+                "asntoUbicEvento",
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class InfoTicket
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "FolioTicket", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger folioTicket;
                 @XmlElement(name = "FchGenera", required = true, type = String.class)
                 @XmlJavaTypeAdapter(DateTimeAdapter.class)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date fchGenera;
                 @XmlElement(name = "NmbEvento", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String nmbEvento;
-                @XmlElement(name = "TpoTicket", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-                protected String tpoTicket;
+                @XmlElement(name = "TpoTiket", required = true)
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                protected String tpoTiket;
                 @XmlElement(name = "CdgEvento", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String cdgEvento;
                 @XmlElement(name = "FchEvento", required = true, type = String.class)
                 @XmlJavaTypeAdapter(DateTimeAdapter.class)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date fchEvento;
                 @XmlElement(name = "LugarEvento", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String lugarEvento;
                 @XmlElement(name = "UbicEvento", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String ubicEvento;
                 @XmlElement(name = "FilaUbicEvento")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String filaUbicEvento;
                 @XmlElement(name = "AsntoUbicEvento")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String asntoUbicEvento;
 
                 /**
@@ -2800,7 +2721,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getFolioTicket() {
                     return folioTicket;
                 }
@@ -2813,7 +2734,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFolioTicket(BigInteger value) {
                     this.folioTicket = value;
                 }
@@ -2826,7 +2747,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getFchGenera() {
                     return fchGenera;
                 }
@@ -2839,7 +2760,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFchGenera(Date value) {
                     this.fchGenera = value;
                 }
@@ -2852,7 +2773,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getNmbEvento() {
                     return nmbEvento;
                 }
@@ -2865,35 +2786,35 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setNmbEvento(String value) {
                     this.nmbEvento = value;
                 }
 
                 /**
-                 * Obtiene el valor de la propiedad tpoTicket.
+                 * Obtiene el valor de la propiedad tpoTiket.
                  * 
                  * @return
                  *     possible object is
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-                public String getTpoTicket() {
-                    return tpoTicket;
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                public String getTpoTiket() {
+                    return tpoTiket;
                 }
 
                 /**
-                 * Define el valor de la propiedad tpoTicket.
+                 * Define el valor de la propiedad tpoTiket.
                  * 
                  * @param value
                  *     allowed object is
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-                public void setTpoTicket(String value) {
-                    this.tpoTicket = value;
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                public void setTpoTiket(String value) {
+                    this.tpoTiket = value;
                 }
 
                 /**
@@ -2904,7 +2825,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCdgEvento() {
                     return cdgEvento;
                 }
@@ -2917,7 +2838,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCdgEvento(String value) {
                     this.cdgEvento = value;
                 }
@@ -2930,7 +2851,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getFchEvento() {
                     return fchEvento;
                 }
@@ -2943,7 +2864,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFchEvento(Date value) {
                     this.fchEvento = value;
                 }
@@ -2956,7 +2877,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getLugarEvento() {
                     return lugarEvento;
                 }
@@ -2969,7 +2890,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setLugarEvento(String value) {
                     this.lugarEvento = value;
                 }
@@ -2982,7 +2903,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getUbicEvento() {
                     return ubicEvento;
                 }
@@ -2995,7 +2916,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setUbicEvento(String value) {
                     this.ubicEvento = value;
                 }
@@ -3008,7 +2929,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getFilaUbicEvento() {
                     return filaUbicEvento;
                 }
@@ -3021,7 +2942,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFilaUbicEvento(String value) {
                     this.filaUbicEvento = value;
                 }
@@ -3034,7 +2955,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getAsntoUbicEvento() {
                     return asntoUbicEvento;
                 }
@@ -3047,11 +2968,10 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setAsntoUbicEvento(String value) {
                     this.asntoUbicEvento = value;
                 }
-
             }
 
         }
@@ -3124,37 +3044,37 @@ public class BOLETADefType
             "valorDR",
             "indExeDR"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public static class DscRcgGlobal
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "NroLinDR")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected int nroLinDR;
             @XmlElement(name = "TpoMov", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String tpoMov;
             @XmlElement(name = "GlosaDR")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String glosaDR;
             @XmlElement(name = "TpoValor", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String tpoValor;
             @XmlElement(name = "ValorDR", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal valorDR;
             @XmlElement(name = "IndExeDR")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigInteger indExeDR;
 
             /**
              * Obtiene el valor de la propiedad nroLinDR.
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public int getNroLinDR() {
                 return nroLinDR;
             }
@@ -3163,7 +3083,7 @@ public class BOLETADefType
              * Define el valor de la propiedad nroLinDR.
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setNroLinDR(int value) {
                 this.nroLinDR = value;
             }
@@ -3176,7 +3096,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getTpoMov() {
                 return tpoMov;
             }
@@ -3189,7 +3109,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setTpoMov(String value) {
                 this.tpoMov = value;
             }
@@ -3202,7 +3122,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getGlosaDR() {
                 return glosaDR;
             }
@@ -3215,7 +3135,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setGlosaDR(String value) {
                 this.glosaDR = value;
             }
@@ -3228,7 +3148,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getTpoValor() {
                 return tpoValor;
             }
@@ -3241,7 +3161,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setTpoValor(String value) {
                 this.tpoValor = value;
             }
@@ -3254,7 +3174,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getValorDR() {
                 return valorDR;
             }
@@ -3267,7 +3187,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setValorDR(BigDecimal value) {
                 this.valorDR = value;
             }
@@ -3280,7 +3200,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigInteger getIndExeDR() {
                 return indExeDR;
             }
@@ -3293,7 +3213,7 @@ public class BOLETADefType
              *     {@link BigInteger }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setIndExeDR(BigInteger value) {
                 this.indExeDR = value;
             }
@@ -3504,24 +3424,24 @@ public class BOLETADefType
             "receptor",
             "totales"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public static class Encabezado
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "IdDoc", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BOLETADefType.Documento.Encabezado.IdDoc idDoc;
             @XmlElement(name = "Emisor", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BOLETADefType.Documento.Encabezado.Emisor emisor;
             @XmlElement(name = "Receptor", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BOLETADefType.Documento.Encabezado.Receptor receptor;
             @XmlElement(name = "Totales", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BOLETADefType.Documento.Encabezado.Totales totales;
 
             /**
@@ -3532,7 +3452,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.IdDoc }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BOLETADefType.Documento.Encabezado.IdDoc getIdDoc() {
                 return idDoc;
             }
@@ -3545,7 +3465,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.IdDoc }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setIdDoc(BOLETADefType.Documento.Encabezado.IdDoc value) {
                 this.idDoc = value;
             }
@@ -3558,7 +3478,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.Emisor }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BOLETADefType.Documento.Encabezado.Emisor getEmisor() {
                 return emisor;
             }
@@ -3571,7 +3491,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.Emisor }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setEmisor(BOLETADefType.Documento.Encabezado.Emisor value) {
                 this.emisor = value;
             }
@@ -3584,7 +3504,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.Receptor }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BOLETADefType.Documento.Encabezado.Receptor getReceptor() {
                 return receptor;
             }
@@ -3597,7 +3517,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.Receptor }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setReceptor(BOLETADefType.Documento.Encabezado.Receptor value) {
                 this.receptor = value;
             }
@@ -3610,7 +3530,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.Totales }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BOLETADefType.Documento.Encabezado.Totales getTotales() {
                 return totales;
             }
@@ -3623,7 +3543,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.Encabezado.Totales }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setTotales(BOLETADefType.Documento.Encabezado.Totales value) {
                 this.totales = value;
             }
@@ -3700,33 +3620,33 @@ public class BOLETADefType
                 "cmnaOrigen",
                 "ciudadOrigen"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class Emisor
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "RUTEmisor", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String rutEmisor;
                 @XmlElement(name = "RznSocEmisor")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String rznSocEmisor;
                 @XmlElement(name = "GiroEmisor")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String giroEmisor;
                 @XmlElement(name = "CdgSIISucur")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger cdgSIISucur;
                 @XmlElement(name = "DirOrigen")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String dirOrigen;
                 @XmlElement(name = "CmnaOrigen")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String cmnaOrigen;
                 @XmlElement(name = "CiudadOrigen")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String ciudadOrigen;
 
                 /**
@@ -3737,7 +3657,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getRUTEmisor() {
                     return rutEmisor;
                 }
@@ -3750,7 +3670,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setRUTEmisor(String value) {
                     this.rutEmisor = value;
                 }
@@ -3763,7 +3683,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getRznSocEmisor() {
                     return rznSocEmisor;
                 }
@@ -3776,7 +3696,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setRznSocEmisor(String value) {
                     this.rznSocEmisor = value;
                 }
@@ -3789,7 +3709,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getGiroEmisor() {
                     return giroEmisor;
                 }
@@ -3802,7 +3722,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setGiroEmisor(String value) {
                     this.giroEmisor = value;
                 }
@@ -3815,7 +3735,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getCdgSIISucur() {
                     return cdgSIISucur;
                 }
@@ -3828,7 +3748,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCdgSIISucur(BigInteger value) {
                     this.cdgSIISucur = value;
                 }
@@ -3841,7 +3761,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getDirOrigen() {
                     return dirOrigen;
                 }
@@ -3854,7 +3774,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setDirOrigen(String value) {
                     this.dirOrigen = value;
                 }
@@ -3867,7 +3787,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCmnaOrigen() {
                     return cmnaOrigen;
                 }
@@ -3880,7 +3800,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCmnaOrigen(String value) {
                     this.cmnaOrigen = value;
                 }
@@ -3893,7 +3813,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCiudadOrigen() {
                     return ciudadOrigen;
                 }
@@ -3906,7 +3826,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCiudadOrigen(String value) {
                     this.ciudadOrigen = value;
                 }
@@ -3966,46 +3886,46 @@ public class BOLETADefType
                 "periodoHasta",
                 "fchVenc"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class IdDoc
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "TipoDTE", required = true)
                 @XmlSchemaType(name = "positiveInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger tipoDTE;
                 @XmlElement(name = "Folio", required = true)
                 @XmlSchemaType(name = "positiveInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger folio;
                 @XmlElement(name = "FchEmis", required = true, type = String.class)
                 @XmlJavaTypeAdapter(DateAdapter.class)
                 @XmlSchemaType(name = "date")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date fchEmis;
                 @XmlElement(name = "IndServicio", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger indServicio;
                 @XmlElement(name = "IndMntNeto")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger indMntNeto;
                 @XmlElement(name = "PeriodoDesde", type = String.class)
                 @XmlJavaTypeAdapter(DateAdapter.class)
                 @XmlSchemaType(name = "date")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date periodoDesde;
                 @XmlElement(name = "PeriodoHasta", type = String.class)
                 @XmlJavaTypeAdapter(DateAdapter.class)
                 @XmlSchemaType(name = "date")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date periodoHasta;
                 @XmlElement(name = "FchVenc", type = String.class)
                 @XmlJavaTypeAdapter(DateAdapter.class)
                 @XmlSchemaType(name = "date")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date fchVenc;
 
                 /**
@@ -4016,7 +3936,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getTipoDTE() {
                     return tipoDTE;
                 }
@@ -4029,7 +3949,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setTipoDTE(BigInteger value) {
                     this.tipoDTE = value;
                 }
@@ -4042,7 +3962,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getFolio() {
                     return folio;
                 }
@@ -4055,7 +3975,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFolio(BigInteger value) {
                     this.folio = value;
                 }
@@ -4068,7 +3988,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getFchEmis() {
                     return fchEmis;
                 }
@@ -4081,7 +4001,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFchEmis(Date value) {
                     this.fchEmis = value;
                 }
@@ -4094,7 +4014,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getIndServicio() {
                     return indServicio;
                 }
@@ -4107,7 +4027,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setIndServicio(BigInteger value) {
                     this.indServicio = value;
                 }
@@ -4120,7 +4040,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getIndMntNeto() {
                     return indMntNeto;
                 }
@@ -4133,7 +4053,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setIndMntNeto(BigInteger value) {
                     this.indMntNeto = value;
                 }
@@ -4146,7 +4066,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getPeriodoDesde() {
                     return periodoDesde;
                 }
@@ -4159,7 +4079,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setPeriodoDesde(Date value) {
                     this.periodoDesde = value;
                 }
@@ -4172,7 +4092,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getPeriodoHasta() {
                     return periodoHasta;
                 }
@@ -4185,7 +4105,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setPeriodoHasta(Date value) {
                     this.periodoHasta = value;
                 }
@@ -4198,7 +4118,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getFchVenc() {
                     return fchVenc;
                 }
@@ -4211,7 +4131,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFchVenc(Date value) {
                     this.fchVenc = value;
                 }
@@ -4314,42 +4234,42 @@ public class BOLETADefType
                 "cmnaPostal",
                 "ciudadPostal"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class Receptor
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "RUTRecep", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String rutRecep;
                 @XmlElement(name = "CdgIntRecep")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String cdgIntRecep;
                 @XmlElement(name = "RznSocRecep")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String rznSocRecep;
                 @XmlElement(name = "Contacto")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String contacto;
                 @XmlElement(name = "DirRecep")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String dirRecep;
                 @XmlElement(name = "CmnaRecep")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String cmnaRecep;
                 @XmlElement(name = "CiudadRecep")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String ciudadRecep;
                 @XmlElement(name = "DirPostal")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String dirPostal;
                 @XmlElement(name = "CmnaPostal")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String cmnaPostal;
                 @XmlElement(name = "CiudadPostal")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String ciudadPostal;
 
                 /**
@@ -4360,7 +4280,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getRUTRecep() {
                     return rutRecep;
                 }
@@ -4373,7 +4293,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setRUTRecep(String value) {
                     this.rutRecep = value;
                 }
@@ -4386,7 +4306,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCdgIntRecep() {
                     return cdgIntRecep;
                 }
@@ -4399,7 +4319,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCdgIntRecep(String value) {
                     this.cdgIntRecep = value;
                 }
@@ -4412,7 +4332,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getRznSocRecep() {
                     return rznSocRecep;
                 }
@@ -4425,7 +4345,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setRznSocRecep(String value) {
                     this.rznSocRecep = value;
                 }
@@ -4438,7 +4358,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getContacto() {
                     return contacto;
                 }
@@ -4451,7 +4371,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setContacto(String value) {
                     this.contacto = value;
                 }
@@ -4464,7 +4384,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getDirRecep() {
                     return dirRecep;
                 }
@@ -4477,7 +4397,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setDirRecep(String value) {
                     this.dirRecep = value;
                 }
@@ -4490,7 +4410,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCmnaRecep() {
                     return cmnaRecep;
                 }
@@ -4503,7 +4423,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCmnaRecep(String value) {
                     this.cmnaRecep = value;
                 }
@@ -4516,7 +4436,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCiudadRecep() {
                     return ciudadRecep;
                 }
@@ -4529,7 +4449,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCiudadRecep(String value) {
                     this.ciudadRecep = value;
                 }
@@ -4542,7 +4462,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getDirPostal() {
                     return dirPostal;
                 }
@@ -4555,7 +4475,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setDirPostal(String value) {
                     this.dirPostal = value;
                 }
@@ -4568,7 +4488,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCmnaPostal() {
                     return cmnaPostal;
                 }
@@ -4581,7 +4501,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCmnaPostal(String value) {
                     this.cmnaPostal = value;
                 }
@@ -4594,7 +4514,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getCiudadPostal() {
                     return ciudadPostal;
                 }
@@ -4607,7 +4527,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCiudadPostal(String value) {
                     this.ciudadPostal = value;
                 }
@@ -4652,41 +4572,41 @@ public class BOLETADefType
                 "saldoAnterior",
                 "vlrPagar"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class Totales
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "MntNeto")
                 @XmlSchemaType(name = "nonNegativeInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger mntNeto;
                 @XmlElement(name = "MntExe")
                 @XmlSchemaType(name = "nonNegativeInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger mntExe;
                 @XmlElement(name = "IVA")
                 @XmlSchemaType(name = "positiveInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger iva;
                 @XmlElement(name = "MntTotal", required = true)
                 @XmlSchemaType(name = "nonNegativeInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger mntTotal;
                 @XmlElement(name = "MontoNF")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger montoNF;
                 @XmlElement(name = "TotalPeriodo")
                 @XmlSchemaType(name = "nonNegativeInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger totalPeriodo;
                 @XmlElement(name = "SaldoAnterior")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger saldoAnterior;
                 @XmlElement(name = "VlrPagar")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger vlrPagar;
 
                 /**
@@ -4697,7 +4617,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getMntNeto() {
                     return mntNeto;
                 }
@@ -4710,7 +4630,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setMntNeto(BigInteger value) {
                     this.mntNeto = value;
                 }
@@ -4723,7 +4643,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getMntExe() {
                     return mntExe;
                 }
@@ -4736,7 +4656,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setMntExe(BigInteger value) {
                     this.mntExe = value;
                 }
@@ -4749,7 +4669,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getIVA() {
                     return iva;
                 }
@@ -4762,7 +4682,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setIVA(BigInteger value) {
                     this.iva = value;
                 }
@@ -4775,7 +4695,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getMntTotal() {
                     return mntTotal;
                 }
@@ -4788,7 +4708,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setMntTotal(BigInteger value) {
                     this.mntTotal = value;
                 }
@@ -4801,7 +4721,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getMontoNF() {
                     return montoNF;
                 }
@@ -4814,7 +4734,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setMontoNF(BigInteger value) {
                     this.montoNF = value;
                 }
@@ -4827,7 +4747,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getTotalPeriodo() {
                     return totalPeriodo;
                 }
@@ -4840,7 +4760,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setTotalPeriodo(BigInteger value) {
                     this.totalPeriodo = value;
                 }
@@ -4853,7 +4773,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getSaldoAnterior() {
                     return saldoAnterior;
                 }
@@ -4866,7 +4786,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setSaldoAnterior(BigInteger value) {
                     this.saldoAnterior = value;
                 }
@@ -4879,7 +4799,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getVlrPagar() {
                     return vlrPagar;
                 }
@@ -4892,7 +4812,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setVlrPagar(BigInteger value) {
                     this.vlrPagar = value;
                 }
@@ -4916,20 +4836,6 @@ public class BOLETADefType
          *           &lt;simpleType&gt;
          *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
          *               &lt;maxInclusive value="40"/&gt;
-         *             &lt;/restriction&gt;
-         *           &lt;/simpleType&gt;
-         *         &lt;/element&gt;
-         *         &lt;element name="TpoDocRef" minOccurs="0"&gt;
-         *           &lt;simpleType&gt;
-         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
-         *               &lt;maxLength value="3"/&gt;
-         *             &lt;/restriction&gt;
-         *           &lt;/simpleType&gt;
-         *         &lt;/element&gt;
-         *         &lt;element name="FolioRef" minOccurs="0"&gt;
-         *           &lt;simpleType&gt;
-         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
-         *               &lt;maxLength value="18"/&gt;
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
          *         &lt;/element&gt;
@@ -4972,47 +4878,47 @@ public class BOLETADefType
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
             "nroLinRef",
-            "tpoDocRef",
-            "folioRef",
             "codRef",
             "razonRef",
             "codVndor",
-            "codCaja"
+            "codCaja",
+            "tpodocref",
+            "folioref"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public static class Referencia
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "NroLinRef")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected int nroLinRef;
-            @XmlElement(name = "TpoDocRef")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            protected String tpoDocRef;
-            @XmlElement(name = "FolioRef")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            protected String folioRef;
             @XmlElement(name = "CodRef")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String codRef;
             @XmlElement(name = "RazonRef")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String razonRef;
             @XmlElement(name = "CodVndor")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String codVndor;
             @XmlElement(name = "CodCaja")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String codCaja;
-
+            @XmlElement(name = "tpoDocRef")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            protected String tpodocref;
+            @XmlElement(name = "folioRef")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            protected String folioref;
+            
             /**
              * Obtiene el valor de la propiedad nroLinRef.
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public int getNroLinRef() {
                 return nroLinRef;
             }
@@ -5021,61 +4927,9 @@ public class BOLETADefType
              * Define el valor de la propiedad nroLinRef.
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setNroLinRef(int value) {
                 this.nroLinRef = value;
-            }
-
-            /**
-             * Obtiene el valor de la propiedad tpoDocRef.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            public String getTpoDocRef() {
-                return tpoDocRef;
-            }
-
-            /**
-             * Define el valor de la propiedad tpoDocRef.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            public void setTpoDocRef(String value) {
-                this.tpoDocRef = value;
-            }
-
-            /**
-             * Obtiene el valor de la propiedad folioRef.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            public String getFolioRef() {
-                return folioRef;
-            }
-
-            /**
-             * Define el valor de la propiedad folioRef.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            public void setFolioRef(String value) {
-                this.folioRef = value;
             }
 
             /**
@@ -5086,7 +4940,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getCodRef() {
                 return codRef;
             }
@@ -5099,7 +4953,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setCodRef(String value) {
                 this.codRef = value;
             }
@@ -5112,7 +4966,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getRazonRef() {
                 return razonRef;
             }
@@ -5125,7 +4979,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setRazonRef(String value) {
                 this.razonRef = value;
             }
@@ -5138,7 +4992,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getCodVndor() {
                 return codVndor;
             }
@@ -5151,7 +5005,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setCodVndor(String value) {
                 this.codVndor = value;
             }
@@ -5164,7 +5018,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getCodCaja() {
                 return codCaja;
             }
@@ -5177,9 +5031,61 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setCodCaja(String value) {
                 this.codCaja = value;
+            }
+
+            /**
+             * Obtiene el valor de la propiedad tpoDocRef.
+             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
+             */
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            public String getTpodocref() {
+                return tpodocref;
+            }
+
+            /**
+             * Define el valor de la propiedad tpoDocRef.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            public void setTpoDocRef(String value) {
+                this.tpodocref = value;
+            }
+
+            /**
+             * Obtiene el valor de la propiedad folioRef.
+             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
+             */
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            public String getFolioRef() {
+                return folioref;
+            }
+
+            /**
+             * Define el valor de la propiedad folioRef.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            public void setFolioRef(String value) {
+                this.folioref = value;
             }
 
         }
@@ -5209,32 +5115,22 @@ public class BOLETADefType
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
          *         &lt;/element&gt;
-         *         &lt;element name="OrdenSTI" minOccurs="0"&gt;
+         *         &lt;element name="OrdenSTI"&gt;
          *           &lt;simpleType&gt;
          *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
          *               &lt;maxInclusive value="99"/&gt;
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
          *         &lt;/element&gt;
-         *         &lt;element name="SubTotNetoSTI" minOccurs="0"&gt;
-         *           &lt;simpleType&gt;
-         *             &lt;restriction base="{}Dec1Type"&gt;
-         *             &lt;/restriction&gt;
-         *           &lt;/simpleType&gt;
-         *         &lt;/element&gt;
-         *         &lt;element name="SubTotIVASTI" minOccurs="0"&gt;
-         *           &lt;simpleType&gt;
-         *             &lt;restriction base="{}Dec1Type"&gt;
-         *             &lt;/restriction&gt;
-         *           &lt;/simpleType&gt;
-         *         &lt;/element&gt;
+         *         &lt;element name="SubTotNetoSTI" type="{}Dec1Type" minOccurs="0"/&gt;
+         *         &lt;element name="SubTotIVASTI" type="{}Dec1Type" minOccurs="0"/&gt;
          *         &lt;element name="SubTotAdicSTI" type="{}Dec1Type" minOccurs="0"/&gt;
          *         &lt;element name="SubTotExeSTI" type="{}Dec1Type" minOccurs="0"/&gt;
          *         &lt;element name="ValSubtotSTI" type="{}Dec1Type" minOccurs="0"/&gt;
-         *         &lt;element name="LineasDeta" maxOccurs="1000" minOccurs="0"&gt;
+         *         &lt;element name="LineasDeta" maxOccurs="60" minOccurs="0"&gt;
          *           &lt;simpleType&gt;
          *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger"&gt;
-         *               &lt;maxInclusive value="1000"/&gt;
+         *               &lt;maxInclusive value="60"/&gt;
          *             &lt;/restriction&gt;
          *           &lt;/simpleType&gt;
          *         &lt;/element&gt;
@@ -5258,46 +5154,46 @@ public class BOLETADefType
             "valSubtotSTI",
             "lineasDetas"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public static class SubTotInfo
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "NroSTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected int nroSTI;
             @XmlElement(name = "GlosaSTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String glosaSTI;
             @XmlElement(name = "OrdenSTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            protected Integer ordenSTI;
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            protected int ordenSTI;
             @XmlElement(name = "SubTotNetoSTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal subTotNetoSTI;
             @XmlElement(name = "SubTotIVASTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal subTotIVASTI;
             @XmlElement(name = "SubTotAdicSTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal subTotAdicSTI;
             @XmlElement(name = "SubTotExeSTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal subTotExeSTI;
             @XmlElement(name = "ValSubtotSTI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BigDecimal valSubtotSTI;
             @XmlElement(name = "LineasDeta", type = Integer.class)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected List<Integer> lineasDetas;
 
             /**
              * Obtiene el valor de la propiedad nroSTI.
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public int getNroSTI() {
                 return nroSTI;
             }
@@ -5306,7 +5202,7 @@ public class BOLETADefType
              * Define el valor de la propiedad nroSTI.
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setNroSTI(int value) {
                 this.nroSTI = value;
             }
@@ -5319,7 +5215,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getGlosaSTI() {
                 return glosaSTI;
             }
@@ -5332,7 +5228,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setGlosaSTI(String value) {
                 this.glosaSTI = value;
             }
@@ -5340,26 +5236,18 @@ public class BOLETADefType
             /**
              * Obtiene el valor de la propiedad ordenSTI.
              * 
-             * @return
-             *     possible object is
-             *     {@link Integer }
-             *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            public Integer getOrdenSTI() {
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            public int getOrdenSTI() {
                 return ordenSTI;
             }
 
             /**
              * Define el valor de la propiedad ordenSTI.
              * 
-             * @param value
-             *     allowed object is
-             *     {@link Integer }
-             *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
-            public void setOrdenSTI(Integer value) {
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            public void setOrdenSTI(int value) {
                 this.ordenSTI = value;
             }
 
@@ -5371,7 +5259,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getSubTotNetoSTI() {
                 return subTotNetoSTI;
             }
@@ -5384,7 +5272,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setSubTotNetoSTI(BigDecimal value) {
                 this.subTotNetoSTI = value;
             }
@@ -5397,7 +5285,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getSubTotIVASTI() {
                 return subTotIVASTI;
             }
@@ -5410,7 +5298,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setSubTotIVASTI(BigDecimal value) {
                 this.subTotIVASTI = value;
             }
@@ -5423,7 +5311,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getSubTotAdicSTI() {
                 return subTotAdicSTI;
             }
@@ -5436,7 +5324,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setSubTotAdicSTI(BigDecimal value) {
                 this.subTotAdicSTI = value;
             }
@@ -5449,7 +5337,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getSubTotExeSTI() {
                 return subTotExeSTI;
             }
@@ -5462,7 +5350,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setSubTotExeSTI(BigDecimal value) {
                 this.subTotExeSTI = value;
             }
@@ -5475,7 +5363,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BigDecimal getValSubtotSTI() {
                 return valSubtotSTI;
             }
@@ -5488,7 +5376,7 @@ public class BOLETADefType
              *     {@link BigDecimal }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setValSubtotSTI(BigDecimal value) {
                 this.valSubtotSTI = value;
             }
@@ -5515,7 +5403,7 @@ public class BOLETADefType
              * 
              * 
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public List<Integer> getLineasDetas() {
                 if (lineasDetas == null) {
                     lineasDetas = new ArrayList<Integer>();
@@ -5678,22 +5566,22 @@ public class BOLETADefType
             "dd",
             "frmt"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
         public static class TED
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "DD", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BOLETADefType.Documento.TED.DD dd;
             @XmlElement(name = "FRMT", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected BOLETADefType.Documento.TED.FRMT frmt;
             @XmlAttribute(name = "version", required = true)
             @XmlSchemaType(name = "anySimpleType")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             protected String version;
 
             /**
@@ -5704,7 +5592,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.TED.DD }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BOLETADefType.Documento.TED.DD getDD() {
                 return dd;
             }
@@ -5717,7 +5605,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.TED.DD }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setDD(BOLETADefType.Documento.TED.DD value) {
                 this.dd = value;
             }
@@ -5730,7 +5618,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.TED.FRMT }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public BOLETADefType.Documento.TED.FRMT getFRMT() {
                 return frmt;
             }
@@ -5743,7 +5631,7 @@ public class BOLETADefType
              *     {@link BOLETADefType.Documento.TED.FRMT }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setFRMT(BOLETADefType.Documento.TED.FRMT value) {
                 this.frmt = value;
             }
@@ -5756,7 +5644,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public String getVersion() {
                 if (version == null) {
                     return "1.0";
@@ -5773,7 +5661,7 @@ public class BOLETADefType
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public void setVersion(String value) {
                 this.version = value;
             }
@@ -5913,49 +5801,49 @@ public class BOLETADefType
                 "tsted"
             })
             @XmlRootElement(name = "DD")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class DD
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "RE", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String re;
                 @XmlElement(name = "TD", required = true)
                 @XmlSchemaType(name = "positiveInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger td;
                 @XmlElement(name = "F", required = true)
                 @XmlSchemaType(name = "positiveInteger")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger f;
                 @XmlElement(name = "FE", required = true, type = String.class)
                 @XmlJavaTypeAdapter(DateAdapter.class)
                 @XmlSchemaType(name = "date")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date fe;
                 @XmlElement(name = "RR", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String rr;
                 @XmlElement(name = "RSR", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String rsr;
                 @XmlElement(name = "MNT", required = true)
                 @XmlSchemaType(name = "unsignedLong")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BigInteger mnt;
                 @XmlElement(name = "IT1", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String it1;
                 @XmlElement(name = "CAF", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected BOLETADefType.Documento.TED.DD.CAF caf;
                 @XmlElement(name = "TSTED", required = true, type = String.class)
                 @XmlJavaTypeAdapter(DateTimeAdapter.class)
                 @XmlSchemaType(name = "dateTime")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected Date tsted;
 
                 /**
@@ -5966,7 +5854,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getRE() {
                     return re;
                 }
@@ -5979,7 +5867,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setRE(String value) {
                     this.re = value;
                 }
@@ -5992,7 +5880,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getTD() {
                     return td;
                 }
@@ -6005,7 +5893,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setTD(BigInteger value) {
                     this.td = value;
                 }
@@ -6018,7 +5906,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getF() {
                     return f;
                 }
@@ -6031,7 +5919,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setF(BigInteger value) {
                     this.f = value;
                 }
@@ -6044,7 +5932,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getFE() {
                     return fe;
                 }
@@ -6057,7 +5945,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setFE(Date value) {
                     this.fe = value;
                 }
@@ -6070,7 +5958,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getRR() {
                     return rr;
                 }
@@ -6083,7 +5971,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setRR(String value) {
                     this.rr = value;
                 }
@@ -6096,7 +5984,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getRSR() {
                     return rsr;
                 }
@@ -6109,7 +5997,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setRSR(String value) {
                     this.rsr = value;
                 }
@@ -6122,7 +6010,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BigInteger getMNT() {
                     return mnt;
                 }
@@ -6135,7 +6023,7 @@ public class BOLETADefType
                  *     {@link BigInteger }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setMNT(BigInteger value) {
                     this.mnt = value;
                 }
@@ -6148,7 +6036,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getIT1() {
                     return it1;
                 }
@@ -6161,7 +6049,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setIT1(String value) {
                     this.it1 = value;
                 }
@@ -6174,7 +6062,7 @@ public class BOLETADefType
                  *     {@link BOLETADefType.Documento.TED.DD.CAF }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public BOLETADefType.Documento.TED.DD.CAF getCAF() {
                     return caf;
                 }
@@ -6187,7 +6075,7 @@ public class BOLETADefType
                  *     {@link BOLETADefType.Documento.TED.DD.CAF }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setCAF(BOLETADefType.Documento.TED.DD.CAF value) {
                     this.caf = value;
                 }
@@ -6200,7 +6088,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public Date getTSTED() {
                     return tsted;
                 }
@@ -6213,7 +6101,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setTSTED(Date value) {
                     this.tsted = value;
                 }
@@ -6313,22 +6201,22 @@ public class BOLETADefType
                     "da",
                     "frma"
                 })
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public static class CAF
                     implements Serializable
                 {
 
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     private final static long serialVersionUID = -1L;
                     @XmlElement(name = "DA", required = true)
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     protected BOLETADefType.Documento.TED.DD.CAF.DA da;
                     @XmlElement(name = "FRMA", required = true)
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     protected BOLETADefType.Documento.TED.DD.CAF.FRMA frma;
                     @XmlAttribute(name = "version", required = true)
                     @XmlSchemaType(name = "anySimpleType")
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     protected String version;
 
                     /**
@@ -6339,7 +6227,7 @@ public class BOLETADefType
                      *     {@link BOLETADefType.Documento.TED.DD.CAF.DA }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public BOLETADefType.Documento.TED.DD.CAF.DA getDA() {
                         return da;
                     }
@@ -6352,7 +6240,7 @@ public class BOLETADefType
                      *     {@link BOLETADefType.Documento.TED.DD.CAF.DA }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public void setDA(BOLETADefType.Documento.TED.DD.CAF.DA value) {
                         this.da = value;
                     }
@@ -6365,7 +6253,7 @@ public class BOLETADefType
                      *     {@link BOLETADefType.Documento.TED.DD.CAF.FRMA }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public BOLETADefType.Documento.TED.DD.CAF.FRMA getFRMA() {
                         return frma;
                     }
@@ -6378,7 +6266,7 @@ public class BOLETADefType
                      *     {@link BOLETADefType.Documento.TED.DD.CAF.FRMA }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public void setFRMA(BOLETADefType.Documento.TED.DD.CAF.FRMA value) {
                         this.frma = value;
                     }
@@ -6391,7 +6279,7 @@ public class BOLETADefType
                      *     {@link String }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public String getVersion() {
                         if (version == null) {
                             return "1.0";
@@ -6408,7 +6296,7 @@ public class BOLETADefType
                      *     {@link String }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public void setVersion(String value) {
                         this.version = value;
                     }
@@ -6494,39 +6382,39 @@ public class BOLETADefType
                         "rsapk",
                         "idk"
                     })
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public static class DA
                         implements Serializable
                     {
 
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         private final static long serialVersionUID = -1L;
                         @XmlElement(name = "RE", required = true)
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected String re;
                         @XmlElement(name = "RS", required = true)
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected String rs;
                         @XmlElement(name = "TD", required = true)
                         @XmlSchemaType(name = "positiveInteger")
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected BigInteger td;
                         @XmlElement(name = "RNG", required = true)
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected BOLETADefType.Documento.TED.DD.CAF.DA.RNG rng;
                         @XmlElement(name = "FA", required = true, type = String.class)
                         @XmlJavaTypeAdapter(DateAdapter.class)
                         @XmlSchemaType(name = "date")
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected Date fa;
                         @XmlElement(name = "DSAPK")
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected BOLETADefType.Documento.TED.DD.CAF.DA.DSAPK dsapk;
                         @XmlElement(name = "RSAPK")
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected BOLETADefType.Documento.TED.DD.CAF.DA.RSAPK rsapk;
                         @XmlElement(name = "IDK")
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected long idk;
 
                         /**
@@ -6537,7 +6425,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public String getRE() {
                             return re;
                         }
@@ -6550,7 +6438,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setRE(String value) {
                             this.re = value;
                         }
@@ -6563,7 +6451,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public String getRS() {
                             return rs;
                         }
@@ -6576,7 +6464,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setRS(String value) {
                             this.rs = value;
                         }
@@ -6589,7 +6477,7 @@ public class BOLETADefType
                          *     {@link BigInteger }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public BigInteger getTD() {
                             return td;
                         }
@@ -6602,7 +6490,7 @@ public class BOLETADefType
                          *     {@link BigInteger }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setTD(BigInteger value) {
                             this.td = value;
                         }
@@ -6615,7 +6503,7 @@ public class BOLETADefType
                          *     {@link BOLETADefType.Documento.TED.DD.CAF.DA.RNG }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public BOLETADefType.Documento.TED.DD.CAF.DA.RNG getRNG() {
                             return rng;
                         }
@@ -6628,7 +6516,7 @@ public class BOLETADefType
                          *     {@link BOLETADefType.Documento.TED.DD.CAF.DA.RNG }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setRNG(BOLETADefType.Documento.TED.DD.CAF.DA.RNG value) {
                             this.rng = value;
                         }
@@ -6641,7 +6529,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public Date getFA() {
                             return fa;
                         }
@@ -6654,7 +6542,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setFA(Date value) {
                             this.fa = value;
                         }
@@ -6667,7 +6555,7 @@ public class BOLETADefType
                          *     {@link BOLETADefType.Documento.TED.DD.CAF.DA.DSAPK }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public BOLETADefType.Documento.TED.DD.CAF.DA.DSAPK getDSAPK() {
                             return dsapk;
                         }
@@ -6680,7 +6568,7 @@ public class BOLETADefType
                          *     {@link BOLETADefType.Documento.TED.DD.CAF.DA.DSAPK }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setDSAPK(BOLETADefType.Documento.TED.DD.CAF.DA.DSAPK value) {
                             this.dsapk = value;
                         }
@@ -6693,7 +6581,7 @@ public class BOLETADefType
                          *     {@link BOLETADefType.Documento.TED.DD.CAF.DA.RSAPK }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public BOLETADefType.Documento.TED.DD.CAF.DA.RSAPK getRSAPK() {
                             return rsapk;
                         }
@@ -6706,7 +6594,7 @@ public class BOLETADefType
                          *     {@link BOLETADefType.Documento.TED.DD.CAF.DA.RSAPK }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setRSAPK(BOLETADefType.Documento.TED.DD.CAF.DA.RSAPK value) {
                             this.rsapk = value;
                         }
@@ -6715,7 +6603,7 @@ public class BOLETADefType
                          * Obtiene el valor de la propiedad idk.
                          * 
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public long getIDK() {
                             return idk;
                         }
@@ -6724,7 +6612,7 @@ public class BOLETADefType
                          * Define el valor de la propiedad idk.
                          * 
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setIDK(long value) {
                             this.idk = value;
                         }
@@ -6759,32 +6647,32 @@ public class BOLETADefType
                             "g",
                             "y"
                         })
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public static class DSAPK
                             implements Serializable
                         {
 
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             private final static long serialVersionUID = -1L;
                             @XmlElement(name = "P", required = true, type = String.class)
                             @XmlJavaTypeAdapter(Base64Adapter.class)
                             @XmlSchemaType(name = "base64Binary")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected byte[] p;
                             @XmlElement(name = "Q", required = true, type = String.class)
                             @XmlJavaTypeAdapter(Base64Adapter.class)
                             @XmlSchemaType(name = "base64Binary")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected byte[] q;
                             @XmlElement(name = "G", required = true, type = String.class)
                             @XmlJavaTypeAdapter(Base64Adapter.class)
                             @XmlSchemaType(name = "base64Binary")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected byte[] g;
                             @XmlElement(name = "Y", required = true, type = String.class)
                             @XmlJavaTypeAdapter(Base64Adapter.class)
                             @XmlSchemaType(name = "base64Binary")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected byte[] y;
 
                             /**
@@ -6795,7 +6683,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public byte[] getP() {
                                 return p;
                             }
@@ -6808,7 +6696,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setP(byte[] value) {
                                 this.p = value;
                             }
@@ -6821,7 +6709,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public byte[] getQ() {
                                 return q;
                             }
@@ -6834,7 +6722,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setQ(byte[] value) {
                                 this.q = value;
                             }
@@ -6847,7 +6735,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public byte[] getG() {
                                 return g;
                             }
@@ -6860,7 +6748,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setG(byte[] value) {
                                 this.g = value;
                             }
@@ -6873,7 +6761,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public byte[] getY() {
                                 return y;
                             }
@@ -6886,7 +6774,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setY(byte[] value) {
                                 this.y = value;
                             }
@@ -6919,20 +6807,20 @@ public class BOLETADefType
                             "d",
                             "h"
                         })
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public static class RNG
                             implements Serializable
                         {
 
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             private final static long serialVersionUID = -1L;
                             @XmlElement(name = "D", required = true)
                             @XmlSchemaType(name = "positiveInteger")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected BigInteger d;
                             @XmlElement(name = "H", required = true)
                             @XmlSchemaType(name = "positiveInteger")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected BigInteger h;
 
                             /**
@@ -6943,7 +6831,7 @@ public class BOLETADefType
                              *     {@link BigInteger }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public BigInteger getD() {
                                 return d;
                             }
@@ -6956,7 +6844,7 @@ public class BOLETADefType
                              *     {@link BigInteger }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setD(BigInteger value) {
                                 this.d = value;
                             }
@@ -6969,7 +6857,7 @@ public class BOLETADefType
                              *     {@link BigInteger }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public BigInteger getH() {
                                 return h;
                             }
@@ -6982,7 +6870,7 @@ public class BOLETADefType
                              *     {@link BigInteger }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setH(BigInteger value) {
                                 this.h = value;
                             }
@@ -7015,22 +6903,22 @@ public class BOLETADefType
                             "m",
                             "e"
                         })
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public static class RSAPK
                             implements Serializable
                         {
 
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             private final static long serialVersionUID = -1L;
                             @XmlElement(name = "M", required = true, type = String.class)
                             @XmlJavaTypeAdapter(Base64Adapter.class)
                             @XmlSchemaType(name = "base64Binary")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected byte[] m;
                             @XmlElement(name = "E", required = true, type = String.class)
                             @XmlJavaTypeAdapter(Base64Adapter.class)
                             @XmlSchemaType(name = "base64Binary")
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             protected byte[] e;
 
                             /**
@@ -7041,7 +6929,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public byte[] getM() {
                                 return m;
                             }
@@ -7054,7 +6942,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setM(byte[] value) {
                                 this.m = value;
                             }
@@ -7067,7 +6955,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public byte[] getE() {
                                 return e;
                             }
@@ -7080,7 +6968,7 @@ public class BOLETADefType
                              *     {@link String }
                              *     
                              */
-                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                             public void setE(byte[] value) {
                                 this.e = value;
                             }
@@ -7111,20 +6999,20 @@ public class BOLETADefType
                     @XmlType(name = "", propOrder = {
                         "value"
                     })
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                     public static class FRMA
                         implements Serializable
                     {
 
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         private final static long serialVersionUID = -1L;
                         @XmlValue
                         @XmlJavaTypeAdapter(Base64Adapter.class)
                         @XmlSchemaType(name = "base64Binary")
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected byte[] value;
                         @XmlAttribute(name = "algoritmo", required = true)
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         protected String algoritmo;
 
                         /**
@@ -7135,7 +7023,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public byte[] getValue() {
                             return value;
                         }
@@ -7148,7 +7036,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setValue(byte[] value) {
                             this.value = value;
                         }
@@ -7161,7 +7049,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public String getAlgoritmo() {
                             if (algoritmo == null) {
                                 return "SHA1withRSA";
@@ -7178,7 +7066,7 @@ public class BOLETADefType
                          *     {@link String }
                          *     
                          */
-                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                         public void setAlgoritmo(String value) {
                             this.algoritmo = value;
                         }
@@ -7218,20 +7106,20 @@ public class BOLETADefType
             @XmlType(name = "", propOrder = {
                 "value"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
             public static class FRMT
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlValue
                 @XmlJavaTypeAdapter(Base64Adapter.class)
                 @XmlSchemaType(name = "base64Binary")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected byte[] value;
                 @XmlAttribute(name = "algoritmo", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 protected String algoritmo;
 
                 /**
@@ -7242,7 +7130,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public byte[] getValue() {
                     return value;
                 }
@@ -7255,7 +7143,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setValue(byte[] value) {
                     this.value = value;
                 }
@@ -7268,7 +7156,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public String getAlgoritmo() {
                     return algoritmo;
                 }
@@ -7281,7 +7169,7 @@ public class BOLETADefType
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-09-27T11:34:31-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
                 public void setAlgoritmo(String value) {
                     this.algoritmo = value;
                 }

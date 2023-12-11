@@ -71,7 +71,8 @@ public class GenerarNotaCreditoSetDTEController {
 			// completo la parte emisor del mensaje
 			String rutemisor = payload.getRutEmisor();
 			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
-
+			log.debug("Nro max dte en set: "+payload.getNroMaxDteEnSet());
+			log.debug(payload.getTipoDocumentos().toString());
 			Optional<Emisores> emisor = repoEmisores.findById(rutemisor);
 			if (!emisor.isPresent()) {
 				log.error("El Emisor rut=" + rutemisor + " no existe en la base de datos");
@@ -82,8 +83,10 @@ public class GenerarNotaCreditoSetDTEController {
 			}
 
 			// obtiene los documentos jaxb a partir del request a la api
-			List<Integer> tiposDocumentoEnSet = new ArrayList<Integer>();
-			tiposDocumentoEnSet.add(ConstantesTipoDocumento.NOTA_CREDITO.getValue());
+			List<Integer> tiposDocumentoEnSet = payload.getTipoDocumentos();
+
+			//tiposDocumentoEnSet.add(ConstantesTipoDocumento.NOTA_CREDITO.getValue());
+			log.debug("Tipos de dto en set: "+tiposDocumentoEnSet.toString());
 			
 			ConvertRequestToEnvioDTEResponse response = mapperToDTESetDTE.toEnvioDTESetDTE(emisor.get(), rutfirmante, payload, tiposDocumentoEnSet);
 			if (response == null) {
@@ -128,7 +131,7 @@ public class GenerarNotaCreditoSetDTEController {
 	 * @return
 	 */
 	@Transactional
-	private Setdte generateEntityFromJaxbEnvioDTESetDTE(String xmldtes, EnvioDTE.SetDTE documento, String rutemisor, String rutfirmante, List<Long> dteList) {
+	public Setdte generateEntityFromJaxbEnvioDTESetDTE(String xmldtes, EnvioDTE.SetDTE documento, String rutemisor, String rutfirmante, List<Long> dteList) {
 		try {
 			if (rutemisor == null) {
 				// no se indica el rut del emisor => no es posible construir un dte
@@ -197,9 +200,15 @@ public class GenerarNotaCreditoSetDTEController {
 					String ID = envDTE.getSetDTE().getID();
 					String setdteURI = "#" + ID;
 
-					String xmlsetdteSigned = docxml.sign(new ByteArrayInputStream(xmlcontent.getBytes("ISO-8859-1")), "EnvioDTE", "SetDTE", documento.getID(), kinfo.getCertificate(), kinfo.getPrivatekey());
+					String xmlsetdteSigned = docxml.sign(
+							new ByteArrayInputStream(xmlcontent.getBytes("ISO-8859-1")),
+							"EnvioDTE",
+							"SetDTE",
+							documento.getID(),
+							kinfo.getCertificate(),
+							kinfo.getPrivatekey());
 					if (xmlsetdteSigned == null) {
-						log.error("Ocurrio un error firmando URI=" + setdteURI);
+						log.error("Ocurrio un error firmando URI=" + setdteURI + ". No fue posible firmar SetDTE ID=" + ID);
 						throw new Exception("No fue posible generar DTE ID=" + ID);
 					}
 					

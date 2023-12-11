@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SiiDte="http://www.sii.cl/SiiDte" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xs:import namespace="http://www.sii.cl/SiiDte"  schemaLocation="../xsd/SiiTypes_v10.xsd"/>
+<xs:schema targetNamespace="http://www.sii.cl/SiiDte" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SiiDte="http://www.sii.cl/SiiDte" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- 
       Modificacion : 22 de Abril de 2005 - 09:27 Hrs.
       Modificacion : 28 de Abril de 2010 - 14:58 Hrs.
@@ -128,7 +127,7 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-													<xs:element name="TpoDoc" type="DoctoType">
+													<xs:element name="TpoDoc" type="SiiDte:DoctoType">
 														<xs:annotation>
 															<xs:documentation>Tipo de Documento Resumido</xs:documentation>
 														</xs:annotation>
@@ -255,7 +254,7 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-													<xs:element name="TpoDoc" type="DoctoType">
+													<xs:element name="TpoDoc" type="SiiDte:DoctoType">
 														<xs:annotation>
 															<xs:documentation>Tipo de Documento Resumido</xs:documentation>
 														</xs:annotation>
@@ -386,7 +385,7 @@
 								</xs:annotation>
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="TpoDoc" type="DoctoType">
+										<xs:element name="TpoDoc" type="SiiDte:DoctoType">
 											<xs:annotation>
 												<xs:documentation>Tipo de Boleta</xs:documentation>
 											</xs:annotation>
@@ -545,7 +544,7 @@
 						<xs:attribute name="ID" type="xs:ID" use="required"/>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="Signature" type="SignatureType">
+				<xs:element name="Signature" type="SiiDte:SignatureType">
 					<xs:annotation>
 						<xs:documentation>Firma Digital del Envio del Libro Electronico</xs:documentation>
 					</xs:annotation>
@@ -712,7 +711,6 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- 
 	<xs:simpleType name="RUTType">
 		<xs:annotation>
 			<xs:documentation>RUT 99999999-X</xs:documentation>
@@ -739,7 +737,6 @@
 			<xs:totalDigits value="18"/>
 		</xs:restriction>
 	</xs:simpleType>
-	-->
 	<xs:simpleType name="DoctoType">
 		<xs:annotation>
 			<xs:documentation>Tipos de Documentos</xs:documentation>
@@ -757,7 +754,6 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<!-- 
 	<xs:simpleType name="PctType">
 		<xs:annotation>
 			<xs:documentation>Porcentaje (3 enteros y 2 decimales)</xs:documentation>
@@ -767,5 +763,4 @@
 			<xs:fractionDigits value="2"/>
 		</xs:restriction>
 	</xs:simpleType>
-	-->
 </xs:schema>

@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,9 +74,15 @@ public class GenerarDtesSetDTEControllerMapper {
 				log.debug("IdDTE=" + dte.getIdDte());
 				try {
 					// hace el unmarshall del xml contenido en la entidad dte
-					DTE unmarshallDte = (DTE) context.createUnmarshaller().unmarshal(new StringReader(dte.getDocumentoXml()));
+					log.debug("Paso 1");
+					log.debug(dte.getDocumentoXml());
+					String asd = dte.getDocumentoXml().getBytes(StandardCharsets.ISO_8859_1).toString();
+					log.debug(asd);
+					DTE unmarshallDte = (DTE) context.createUnmarshaller().unmarshal(new StringReader(asd));
+
 
 					// toda boleta almacenada, tiene un identificador
+					log.debug("Paso 2");
 					DTE.Documento.Encabezado.IdDoc iddoc = unmarshallDte.getDocumento().getEncabezado().getIdDoc();
 
 					// incrementa un contador por tipoDTE
@@ -98,7 +105,8 @@ public class GenerarDtesSetDTEControllerMapper {
 					dteList.add(dte.getIdDte());
 
 					// concatena cada xml que forma parte del set. reemplaza por el encabezado que espera setdte
-					String xx = new String(dte.getDocumentoXml().getBytes("UTF-8")); // modificado 28072023...getBytes("ISO-8859-1"));
+					String xx = new String(dte.getDocumentoXml().getBytes(StandardCharsets.ISO_8859_1)); // modificado 28072023...getBytes("ISO-8859-1"));
+					log.debug(xx);
 					//String xmlboleta = xx.replace("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?><BOLETADefType version=\"1.0\">", SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "<DTE version=\"1.0\">");
 					String xmlboleta = xx.replace("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><DTE version=\"1.0\">",  SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "<DTE version=\"1.0\">");
 					xmlboleta = xmlboleta.replace("</DTE>", "</DTE>");

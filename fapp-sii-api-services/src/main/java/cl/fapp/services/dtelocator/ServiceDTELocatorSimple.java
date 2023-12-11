@@ -38,10 +38,14 @@ public class ServiceDTELocatorSimple {
 	public ServiceDTELocatorSimpleResponse locatorSimple(ServiceDTELocatorSimpleRequest request) {
 		try {
 			ServiceDTELocatorSimpleResponse response;
+			log.debug(request.getDteRutEmisor());
+			log.debug(request.getDteUUID());
 			if (request.getDteUUID() != null && !request.getDteUUID().isEmpty() && !request.getDteUUID().isBlank()) {
 				// busca por uuid
 				Optional<List<Dte>> dteEntity = repoDTE.findAllByDteUuidAndEmisoreRutemisor(request.getDteUUID(), request.getDteRutEmisor());
 				if (dteEntity.isPresent()) {
+					log.debug(dteEntity.get().get(0).toString());
+					log.debug(dteEntity.get().get(0).getEmisore().toString());
 					if (dteEntity.get().size() != 1) {
 						log.error("Se encontro mas de un DTE que cumple con los criterios de busqueda. Request=" + request);
 						throw new Exception("DTE no es unico");

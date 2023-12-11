@@ -32,4 +32,15 @@ public interface IEmailService {
 	 * @param text    texto del correo
 	 */
 	void sendSimpleMessage(String to, String subject, String text);
+
+	/**
+	 * Envia un correo
+	 * 
+	 * @param to      				email de destino
+	 * @param subject 				asunto
+	 * @param htmlBody 				texto del correo
+	 * @param attachmentFilename 	nombre del archivo
+	 * @param attachmentContent 	Contenido del archivo
+	 */
+	//void sendHtmlMessageWithSendGrid(String to, String subject, String htmlBody, String attachmentFilename, byte[] attachmentContent);
 }

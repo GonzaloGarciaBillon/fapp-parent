@@ -70,8 +70,8 @@ public class UploadCAFController {
 
 			// verifica que el tipo de documento informado en el CAF sea BOLETA_AFECTA, o NOTA_CREDITO
 			Integer TD = Integer.parseInt(XMLUtils.getText(cafdocument, tag_TD));
-			if( TD != ConstantesTipoDocumento.BOLETA_AFECTA.getValue() && TD!= ConstantesTipoDocumento.NOTA_CREDITO.getValue() && TD!= ConstantesTipoDocumento.NOTA_DEBITO.getValue()) {
-				log.error("El tipo de documento informado en el CAF=" + TD + " es diferente a los aceptados en esta version=" + ConstantesTipoDocumento.BOLETA_AFECTA.getValue() + ", " + ConstantesTipoDocumento.NOTA_CREDITO.getValue()+ ", " + ConstantesTipoDocumento.NOTA_DEBITO.getValue());
+			if( TD != ConstantesTipoDocumento.FACTURA_AFECTA.getValue() && TD != ConstantesTipoDocumento.FACTURA_EXENTA.getValue() && TD != ConstantesTipoDocumento.BOLETA_AFECTA.getValue() && TD != ConstantesTipoDocumento.BOLETA_EXENTA.getValue() && TD!= ConstantesTipoDocumento.NOTA_CREDITO.getValue() && TD!= ConstantesTipoDocumento.NOTA_DEBITO.getValue()) {
+				log.error("El tipo de documento informado en el CAF=" + TD + " es diferente a los aceptados en esta version=" + ", " + ConstantesTipoDocumento.FACTURA_AFECTA.getValue()+ ", " + ConstantesTipoDocumento.FACTURA_EXENTA.getValue()+ ", " +ConstantesTipoDocumento.BOLETA_AFECTA.getValue() + ", " +ConstantesTipoDocumento.BOLETA_EXENTA.getValue() + ", " + ConstantesTipoDocumento.NOTA_CREDITO.getValue()+ ", " + ConstantesTipoDocumento.NOTA_DEBITO.getValue());
 				throw new Exception("El tipo de documento no esta soportado");
 			}
 			

@@ -70,6 +70,7 @@ public class EnviarDteSetDTEController {
 			String rutemisor = payload.getRutEmisor();
 			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
 			Long idsetdte = payload.getIdSetDte();
+			log.debug("paso 1 "+payload.getIdSetDte());
 
 			if (idsetdte == null) {
 				log.error("No se especifica el idDte que enviar");

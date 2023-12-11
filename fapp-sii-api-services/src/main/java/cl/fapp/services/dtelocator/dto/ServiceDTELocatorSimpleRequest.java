@@ -21,5 +21,8 @@ public class ServiceDTELocatorSimpleRequest {
 	private BigInteger dteMonto;
 	private Integer dteTipoDocumento;
 	private String dteUUID;
-	private String dteEmailReceptor;
+	private String emailReceptor;
+	private String impresora;
+	private String puerto;
+	private String tipoImpresora;
 }

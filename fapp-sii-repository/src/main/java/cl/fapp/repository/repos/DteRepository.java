@@ -136,7 +136,7 @@ public interface DteRepository extends JpaRepository<Dte, Long> {
 	 * Busca por dtes que cumplan los filtros
 	 * 
 	 * @param dteUuid   uuid asignado al DTE
-	 * @param rutEmusor rut del emisor
+	 * @param rutEmisor rut del emisor
 	 * @return dte que cumple el criterio de busqueda
 	 */
 	Optional<List<Dte>> findAllByDteUuidAndEmisoreRutemisor(String dteUuid, String rutEmisor);

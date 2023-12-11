@@ -116,6 +116,7 @@ public class SOAPClientSIIConsultas {
 
 			GetEstUp request = new GetEstUp();
 			request.setToken(token);
+			log.debug(token);
 			request.setDvCompania(params.getDvCompania());
 			request.setRutCompania(params.getRutCompania());
 			request.setTrackId(params.getTrackId());

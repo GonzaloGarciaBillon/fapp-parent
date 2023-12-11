@@ -18,7 +18,7 @@ public class EnviarDTERequest {
 	 * Rut del emisor
 	 */
 	@Schema(description = "Rut del emisor.", required = true)
-	private String rutEmisor = null;	
+	private String rutEmisor = null;
 
 	/**
 	 * Rut del firmante. Si es null, se intenta con el mismo rut de emisor

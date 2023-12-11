@@ -15,6 +15,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
@@ -56,6 +58,20 @@ public class GenerarDTEControllerMapper {
 	FolioManager foliomanager;
 
 	ObjectFactory jaxbFactory = new ObjectFactory();
+
+
+	private static String extractContent(String input) {
+		// Definir el patrón de la expresión regular
+		Pattern pattern = Pattern.compile("<RSASK>(.+?)</RSASK>", Pattern.DOTALL);
+		Matcher matcher = pattern.matcher(input);
+
+		// Encontrar la coincidencia y extraer el contenido
+		if (matcher.find()) {
+			return matcher.group(1).trim();
+		} else {
+			return "No se encontró contenido entre las etiquetas <RSASK>.";
+		}
+	}
 
 	/**
 	 * Mapping del request DTO {@link GenerarDTERequest} a JAXB List<{@link DTE}>
@@ -172,11 +188,19 @@ public class GenerarDTEControllerMapper {
 				// - recupera la llave privada que esta en el caf
 				String tagRsask = folio.getRsask();
 
-				// - quita encabezados pkcs1 (BEGIN RSA PRIVATE KEY)
-				String rsask = tagRsask;
-				rsask = rsask.replaceAll("<RSASK>-----BEGIN RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, "");
-				rsask = rsask.replaceAll("-----END RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "</RSASK>", "");
-				rsask = rsask.replaceAll(SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, "");
+				// Encabezados a buscar
+				String beginMarker = "-----BEGIN RSA PRIVATE KEY-----";
+				String endMarker = "-----END RSA PRIVATE KEY-----";
+
+				// Encuentra las posiciones de los encabezados
+				int beginIndex = tagRsask.indexOf(beginMarker);
+				int endIndex = tagRsask.indexOf(endMarker) + endMarker.length();
+
+				// Extrae la subcadena que contiene la llave
+				String rsask = tagRsask.substring(beginIndex, endIndex);
+				rsask = rsask.replaceAll(beginMarker, "")
+								.replaceAll(endMarker, "")
+								.replaceAll("\\s", "");
 
 				// recupera la llave rsask
 				byte[] keyBytes = Base64.getDecoder().decode(rsask);
@@ -285,7 +309,7 @@ public class GenerarDTEControllerMapper {
 
 	/**
 	 * Crea un encabezado de tipo {@link DTE.Documento.Encabezado} para crear el DTE
-	 * 
+	 *
 	 * @param emisor       emisor del documento
 	 * @param request      los datos del request al servicio
 	 * @param fechaEmision fecha de emision del documento
@@ -295,7 +319,15 @@ public class GenerarDTEControllerMapper {
 	private DTE.Documento.Encabezado obtenerEncabezado(DTEEmisor emisor, DTEDocumento request, Date fechaEmision, BigInteger folio) {
 
 		try {
+			if (request == null) {
+				log.error("El objeto request es nulo.");
+				throw new RuntimeException("El objeto request es nulo.");
+			}
 			DTEReceptor receptor = request.getReceptor();
+			if (receptor == null) {
+				log.error("El objeto receptor en request es nulo.");
+				throw new RuntimeException("El receptor es nulo o le falta información.");
+			}
 
 			// encabezado del dte
 			DTE.Documento.Encabezado.Emisor jaxbEmisor = jaxbFactory.createDTEDocumentoEncabezadoEmisor();
@@ -337,7 +369,9 @@ public class GenerarDTEControllerMapper {
 			jaxbReceptor.setDirRecep(XMLUtils.replaceSiiEspecialChars(receptor.getDireccion()));
 			jaxbReceptor.setRUTRecep(receptor.getRut());
 			jaxbReceptor.setRznSocRecep(XMLUtils.replaceSiiEspecialChars(receptor.getRazonsocial()));
-
+			jaxbReceptor.setGiroRecep(XMLUtils.replaceSiiEspecialChars(receptor.getGiro()));
+			jaxbReceptor.setCorreoRecep(receptor.getCorreo());
+			log.info(String.valueOf(jaxbReceptor));
 			// encabezado - totales (Montos totales del DTE)
 			// se calcula en forma independiente, despues de procesar el detalle
 
@@ -358,7 +392,7 @@ public class GenerarDTEControllerMapper {
 
 	/**
 	 * Crea un detalle de tipo {@link List<DTE.Documento.Detalle>}
-	 * 
+	 *
 	 * @param documento documento especifico indicado en el request
 	 * @return el detalle asociado al documento
 	 */
@@ -404,7 +438,7 @@ public class GenerarDTEControllerMapper {
 
 	/**
 	 * Crea la porcion referencias del documento
-	 * 
+	 *
 	 * @param documento el documento es pecifico indicado en el request
 	 * @return lista de referencias asociadas al documento
 	 */
@@ -470,7 +504,7 @@ public class GenerarDTEControllerMapper {
 
 	/**
 	 * Crea la porcion de descuentos y recargos asociados al documento
-	 * 
+	 *
 	 * @param documento documento especifico indicado en el request
 	 * @return lista de descuentos/recargos asociados al documento
 	 */
@@ -516,7 +550,7 @@ public class GenerarDTEControllerMapper {
 
 	/**
 	 * Crea la porcion de subtotales informativos
-	 * 
+	 *
 	 * @param documento documento especifico indicado en el request
 	 * @return lista de subtotales informativos
 	 */
@@ -553,7 +587,6 @@ public class GenerarDTEControllerMapper {
 	}
 
 	/**
-	 * 
 	 * @param documento documento al que se le calculan totales. Se utiliza la version jaxb del documento (la que se informara como xml)
 	 * @param tasaIva   la tasa que se indique se divide por 100
 	 * @return totales a informar en el encabezado del documento
@@ -665,7 +698,7 @@ public class GenerarDTEControllerMapper {
 
 	/**
 	 * Aplica descuentos/recargos globales a los totales
-	 * 
+	 *
 	 * @param encabezado   jaxb correspondiente al encabezado del dte que se esta procesando. Ya debe tener calculado los valores en el objeto {@link DTE.Documento.Encabezado.Totales}
 	 * @param dscRcgGlobal descuentos/recargos globales
 	 * @return encabezado jaxb con sus totales actualizados segun descuentos/recargos aplicados

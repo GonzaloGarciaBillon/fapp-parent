@@ -1,12 +1,9 @@
 package cl.fapp.pdfmanager;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.Base64;
 
@@ -43,13 +40,9 @@ public class PDFBuilder {
 
 			fopFactory = builder.build();
 			transformerFactory = TransformerFactory.newInstance();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+		} catch (IllegalArgumentException | ConfigurationException e) {
 			e.printStackTrace();
-		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 	}
 
 	/**
@@ -127,11 +120,16 @@ public class PDFBuilder {
 		switch (tipoDocumento) {
 
 		case BOLETA_AFECTA:
-			foXml = "xml/xslt/boleta2fo.xsl";
+			foXml = "xml/xslt/boleta_termica_2fo.xsl";
 			break;
 
 		case NOTA_CREDITO:
 			foXml = "xml/xslt/notaCredito2fo.xsl";
+			break;
+		// Se agrega factura afecta 29-11-23
+		case FACTURA_AFECTA:
+			//foXml = "xml/xslt/factura_estandar_2fo.xsl";
+			foXml = "xml/xslt/factura_termica_2fo.xsl";
 			break;
 
 		default:

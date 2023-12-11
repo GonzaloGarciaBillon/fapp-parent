@@ -1,5 +1,7 @@
 package cl.fapp.restapi.controller.dte;
 
+//import cl.fapp.restapi.controller.repos.dto.KeyinfoFindResponse;
+//import cl.fapp.restapi.controller.utils.KeystoreFirmanteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import cl.fapp.siiclient.axis.SOAPClientSIIConsultas;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoDteAVRequest;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoDteRequest;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoUploadRequest;
+//import cl.fapp.siiclient.axis.SOAPClientSIIAuthentication;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
@@ -75,9 +78,18 @@ public class ConsultarEstadoDTEController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/estadoenviodte", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSend> consultaEstadoEnvioDTE(@RequestBody EstadoUploadRequest payload) {
+		String token = "sin-token";
 		try {
-			log.debug("Request procesado correctamente");
-
+			/*
+			String rutemisor = payload.getRutEmisor();
+			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
+			// recupera los datos para firmas
+			KeyinfoFindResponse kinfo = ksfirmanteUtils.getKeystoreInfo(rutemisor, rutfirmante);
+			if (kinfo == null) {
+				log.error("No fue posible obtener informacion del keystore");
+				throw new Exception("No es posible obtener KeyStoreInfo");
+			}
+			token = soapAuthClient.getToken(kinfo.getCertificate(), kinfo.getPrivatekey());*/
 			String response = soapService.invokeEstadoUploadService(null, payload);
 
 			return ResponseEntity.ok().body(JSend.success(response));

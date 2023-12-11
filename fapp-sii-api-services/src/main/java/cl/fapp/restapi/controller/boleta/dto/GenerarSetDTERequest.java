@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,5 +32,8 @@ public class GenerarSetDTERequest {
 	 */
 	@Schema(description = "Numero maximo de dte's a incluir en el set. Si no se indica, las incluye todas")
 	private Integer nroMaxDteEnSet = null;
-	
+
+
+	@Schema(description = "Tipo de documentos a incluir en el set. Si no se indica, los incluye todos")
+	private List<Integer> tipoDocumentos = null;
 }

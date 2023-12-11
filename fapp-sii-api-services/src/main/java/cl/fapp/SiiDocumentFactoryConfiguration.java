@@ -20,10 +20,10 @@ public class SiiDocumentFactoryConfiguration {
 	public static final String SII_RUT_RECEPTOR = "60803000-K";
 	
 	// windows
-	// public static final String CARRIAGE_RETURN = "\r\n";
+	public static final String CARRIAGE_RETURN = "\r\n";
 	
 	// linux
-	public static final String CARRIAGE_RETURN = "\n";
+	//public static final String CARRIAGE_RETURN = "\n";
 
 	/**
 	 * Configuracion de opciones que se aplican a los xml

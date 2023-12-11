@@ -234,16 +234,17 @@ public class GenerarDteController {
 				log.error("No fue posible generar DTE");
 				return JSend.error("No fue posible generar DTE");
 			}
-
+			// Declarar la variable fuera del bucle
+			Dte newdte = null;
 			// guarda los documentos jaxb en la base de datos
 			for (DTEAndVerbatimCAF jaxbDTEtype : documentos) {
 				String xmlDTESigned = signJaxbDTE(jaxbDTEtype, rutemisor, rutfirmante);
-				Dte newdte = saveNewDteEntity(emisor.get(), rutfirmante, jaxbDTEtype, xmlDTESigned);
-				log.debug("Se crea el dte en la base de datos con id=" + newdte.getIdDte());
+				newdte = saveNewDteEntity(emisor.get(), rutfirmante, jaxbDTEtype, xmlDTESigned);
+				log.debug("Se crea el dte en la base de datos con id=" + newdte.getDteUuid());
 			}
 			log.debug("Request procesado correctamente");
-
-			return JSend.success("DocumentosGenerados=" + documentos.size());
+			
+			return JSend.success(newdte.getDteUuid());
 
 		} catch (Exception ex) {
 			log.error("Se produjo un error generando nota de credito. Error=" + ex.getMessage());

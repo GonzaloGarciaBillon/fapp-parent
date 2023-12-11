@@ -38,6 +38,8 @@ import cl.fapp.sii.jaxb.ObjectFactory;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Service
@@ -141,12 +143,23 @@ public class GenerarBoletaControllerMapper {
 				// - recupera la llave privada que esta en el caf
 				String tagRsask = folio.getRsask();
 
-				// - quita encabezados pkcs1 (BEGIN RSA PRIVATE KEY)
-				String rsask = tagRsask;
-				rsask = rsask.replaceAll("<RSASK>-----BEGIN RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, "");
-				rsask = rsask.replaceAll("-----END RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "</RSASK>", "");
-				rsask = rsask.replaceAll(SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, "");
+				log.debug(tagRsask);
+				// Encabezados a buscar
+				String beginMarker = "-----BEGIN RSA PRIVATE KEY-----";
+				String endMarker = "-----END RSA PRIVATE KEY-----";
 
+				// Encuentra las posiciones de los encabezados
+				int beginIndex = tagRsask.indexOf(beginMarker);
+				int endIndex = tagRsask.indexOf(endMarker) + endMarker.length();
+
+				// Extrae la subcadena que contiene la llave
+				String rsask = tagRsask.substring(beginIndex, endIndex);
+				log.debug(rsask);
+				rsask = rsask.replace(beginMarker, "")
+							 .replace(endMarker, "")
+							 .replaceAll("\\s", "");
+
+				log.debug(rsask);
 				// recupera la llave rsask
 				byte[] keyBytes = Base64.getDecoder().decode(rsask);
 
@@ -175,11 +188,11 @@ public class GenerarBoletaControllerMapper {
 				// se firma el xml del DD
 				Signature dmSignature = Signature.getInstance(SiiDocumentFactoryConfiguration.DD.SIGNATURE_ALGORITHM);
 				dmSignature.initSign(privateKey);
-				dmSignature.update(xmlDD.getBytes(SiiDocumentFactoryConfiguration.DEFAULT_ENCODING));
+				dmSignature.update(xmlDD.getBytes(StandardCharsets.ISO_8859_1));
 
 				// se codifica el dd firmado
 				byte[] xmlsigned = dmSignature.sign();
-				String signedDD = new String(xmlsigned, SiiDocumentFactoryConfiguration.DEFAULT_ENCODING);
+				String signedDD = new String(xmlsigned, StandardCharsets.ISO_8859_1);
 
 				// documento - TED - FRMT
 				BOLETADefType.Documento.TED.FRMT frmt = jaxbFactory.createBOLETADefTypeDocumentoTEDFRMT();

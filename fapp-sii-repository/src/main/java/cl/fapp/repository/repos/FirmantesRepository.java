@@ -11,7 +11,7 @@ import cl.fapp.repository.model.Firmantes;
 
 @Repository
 @RepositoryRestResource(exported = false)
-public interface FirmantesRepository extends JpaRepository<Firmantes, String> {
+public interface FirmantesRepository extends JpaRepository<Firmantes, Long> {
 	// busca en la entidad Firmantes, por rutfirmante y rutemisor
 	Optional<Firmantes> findByRutfirmanteAndEmisoreRutemisor(String rutfirmante, String rutemisor);
 	boolean existsByRutfirmanteAndEmisoreRutemisor(String rutfirmante, String rutemisor);

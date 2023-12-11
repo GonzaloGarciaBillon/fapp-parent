@@ -1,5 +1,6 @@
 package cl.fapp.restapi.controller.pdf;
 
+import java.awt.print.PrinterJob;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -34,6 +35,7 @@ import cl.fapp.common.domain.ConstantesTipoDocumento;
 import cl.fapp.common.jsend.JSend;
 import cl.fapp.pdfmanager.PDFBuilder;
 import cl.fapp.pdfmanager.domain.PdfRequest;
+import cl.fapp.restapi.controller.impresoras.Print;
 import cl.fapp.services.dtelocator.ServiceDTELocatorSimple;
 import cl.fapp.services.dtelocator.dto.ServiceDTELocatorSimpleRequest;
 import cl.fapp.services.dtelocator.dto.ServiceDTELocatorSimpleResponse;
@@ -57,6 +59,9 @@ public class GenerarPDFController {
 	@Autowired
 	EmailServiceImpl emailService;
 
+	@Autowired
+	Print printService;
+
 	// @formatter:off
 
 	/**
@@ -72,14 +77,24 @@ public class GenerarPDFController {
 	// @formatter:on
 	@RequestMapping(method = RequestMethod.POST, value = "/pdffromdte", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSend> generarPDFfromDTE(@RequestBody ServiceDTELocatorSimpleRequest payload) {
+
 		try {
 			ServiceDTELocatorSimpleResponse dtelocatorResponse = dteLocator.locatorSimple(payload);
+			// verifica si se indico el correo en el input al servicio
+			String emailReceptor = payload.getEmailReceptor();
+			log.debug("Email receptor: "+emailReceptor);
+			String impresora = payload.getImpresora();
+			log.debug("impresora: "+impresora);
+			String puerto = payload.getPuerto();
+			log.debug("puerto: "+puerto);
+			String tipoImpresora = payload.getTipoImpresora();
+			log.debug("tipoImpresora: "+tipoImpresora);
 			if (dtelocatorResponse == null) {
 				log.error("No fue posible localizar DTE utilizando los filtros indicados. Payload=" + payload);
 				throw new Exception("No se localiza DTE");
 			} else {
 				log.debug("Localizado DTE=" + dtelocatorResponse.getDte().getIdDte()); //-->.getDteId());
-				log.debug("Datos del emisor=" + dtelocatorResponse.getEmisor().getFechaResolucion());
+				//log.debug("Datos del emisor=" + dtelocatorResponse.getEmisor().getFechaResolucion());
 
 				// crea el pdf
 				PdfRequest request = new PdfRequest();
@@ -104,28 +119,45 @@ public class GenerarPDFController {
 				builder.generatePdf(request, osStream);
 				String bs = Base64.getEncoder().encodeToString(osStream.toByteArray());
 
+				String filename = dtelocatorResponse.getDte().getIdDocumento() + ".pdf";
+				String pathToAttachment = "c:/borrame/" + filename;
+
 				try {
-					// verifica si se indico el correo en el input al servicio
-					String emailReceptor = payload.getDteEmailReceptor();
+					// Seccion para enviar pdf por correo
 					if (emailReceptor != null && !emailReceptor.isBlank() && !emailReceptor.isEmpty()) {
 						log.debug("Se indica correo => se enviara el pdf al correo indicado=" + emailReceptor);
-						String filename = dtelocatorResponse.getDte().getIdDocumento() + ".pdf";
-						String pathToAttachment = "c:/borrame/" + filename;
 						OutputStream outputStream = new FileOutputStream(pathToAttachment);
-
 						osStream.writeTo(outputStream);
 						outputStream.close();
-
 						try {
-							emailService.sendMessageWithAttachment(emailReceptor, "Prueba boleta", "Adjuntamos su boleta", filename, pathToAttachment);
-
+							//emailService.sendMessageWithAttachment(emailReceptor, "Prueba boleta", "Adjuntamos su boleta", filename, pathToAttachment);
+							//emailService.sendHtmlMessageWithSendGrid(emailReceptor, "Prueba boleta", "Adjuntamos su boleta", filename, osStream.toByteArray());
 							// se retorna el pdf como base64
 							return ResponseEntity.ok().body(JSend.success(bs));
-
 						} catch (Exception ex) {
 							log.error("Se produjo un error enviando PDF por correo. Error=" + ex.getMessage());
 							return ResponseEntity.ok().body(JSend.error("PDF generado, pero no enviado a=" + emailReceptor));
 						}
+					// Seccion para imprimir pdf
+					} else if ( (impresora != null && !impresora.isBlank() && !impresora.isEmpty()) ){
+						try {
+							log.debug("Se indica impresora => se enviara el pdf a la impresora: " + impresora);
+
+							OutputStream outputStream = new FileOutputStream(pathToAttachment);
+							osStream.writeTo(outputStream);
+							outputStream.close();
+							// Enviar la tarea de impresión
+							printService.setFilePath(pathToAttachment);
+							printService.print();
+						
+							return ResponseEntity.ok().body(JSend.success("Impresión enviada")); //cambiar esto por sistema de impresion
+						} catch (IllegalArgumentException e) {
+							return ResponseEntity.ok().body(JSend.error("No se encontró la impresora con la dirección IP: " + e.getMessage()));
+						} catch (Exception e) {
+							return ResponseEntity.ok().body(JSend.error("No se pudo imprimir: " + e.getMessage()));
+						}
+						
+					// Seccion para descargar/visualizar pdf
 					} else {
 						// se retorna el pdf como base64
 						return ResponseEntity.ok().body(JSend.success(bs));
@@ -153,7 +185,7 @@ public class GenerarPDFController {
 	public ResponseEntity<JSend> getDataFromDTE(@RequestBody GetDataFromDTERequest payload) {
 		try {
 			ServiceDTELocatorSimpleRequest newRequest = new ServiceDTELocatorSimpleRequest();
-			newRequest.setDteEmailReceptor(null);
+			newRequest.setEmailReceptor(null);
 			newRequest.setDteFolioAsignado(payload.getDteFolioAsignado());
 			newRequest.setDteMonto(payload.getDteMonto());
 			newRequest.setDteRutEmisor(payload.getDteRutEmisor());

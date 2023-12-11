@@ -10,7 +10,7 @@ import cl.fapp.repository.model.Task;
 
 @Repository
 @RepositoryRestResource(exported = false)
-public interface TaskRepository extends JpaRepository<Task, Long> {
+public interface TaskRepository extends JpaRepository<Task, Integer> {
 
 	Optional<Task> findByNameIgnoreCase(String name);
 

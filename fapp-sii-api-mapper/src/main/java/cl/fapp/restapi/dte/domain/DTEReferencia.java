@@ -18,7 +18,7 @@ public class DTEReferencia {
 	@Schema(description = "Numero secuencial de linea de Referencia", example = "1", required = false, accessMode = AccessMode.READ_ONLY )
 	private Integer nrolinref;
 	
-	@Schema(description = "Tipo de documento de referencia", example = "39", required = false, accessMode = AccessMode.READ_ONLY )
+	@Schema(description = "Tipo de documento de referencia", example = "39", required = true, accessMode = AccessMode.READ_ONLY )
 	private String tipoDocRef;
 	
 	@Schema(description = "Indica que se esta referenciando un conjunto de documentos. 1:El documento hace referencia a un conjunto de documentos del mismo tipo", example = "1", required = false )

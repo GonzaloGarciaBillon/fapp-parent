@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -40,6 +41,7 @@ public class Emisores implements Serializable {
 	private List<Caf> cafs;
 	private List<Dte> dtes;
 	private List<Firmantes> firmantes;
+	private List<Impresoras> impresoras;
 
 	public Emisores() {
 	}
@@ -284,6 +286,8 @@ public class Emisores implements Serializable {
 		return dte;
 	}
 
+	
+
 	public Dte removeDte(Dte dte) {
 		getDtes().remove(dte);
 		dte.setEmisore(null);
@@ -316,4 +320,28 @@ public class Emisores implements Serializable {
 		return firmante;
 	}
 
+	//bi-directional many-to-one association to Impresoras
+	@OneToMany(mappedBy="cliente")
+	public List<Impresoras> getImpresoras() {
+		return this.impresoras;
+	}
+
+	public void setImpresoras(List<Impresoras> impresoras) {
+		this.impresoras = impresoras;
+	}
+	
+	public Impresoras addImpresoras(Impresoras impresora) {
+		getImpresoras().add(impresora);
+		impresora.setCliente(this);
+
+		return impresora;
+	}
+
+	public Impresoras removeImpresoras(Impresoras impresora) {
+		getImpresoras().remove(impresora);
+		impresora.setCliente(null);
+
+		return impresora;
+	}	
+	
 }

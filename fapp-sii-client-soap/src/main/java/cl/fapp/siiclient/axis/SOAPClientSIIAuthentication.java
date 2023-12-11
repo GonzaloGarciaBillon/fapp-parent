@@ -44,8 +44,8 @@ public class SOAPClientSIIAuthentication {
 
 	/**
 	 * Encapsula la obtencion de un token. Obtiene una semilla, la firma y solicita un token
-	 * 
-	 * @param cert certificado con el cual firmar la semilla
+	 * 	 *
+	 * 	 * @param cert certificado con el cual firmar la semilla
 	 * @param pk   llave privada para encriptar la semilla
 	 * @return un token
 	 */

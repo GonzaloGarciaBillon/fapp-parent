@@ -65,7 +65,7 @@
 				top="8cm">
 				<fo:block font-size="8pt" font-family="monospace"
 					color="black" text-align="left" space-before="8pt">
-					<fo:table table-layout="fixed" width="100%"
+					<fo:table width="100%"
 						border-collapse="collapse">
 						<fo:table-column column-width="2cm" />
 						<fo:table-column column-width="12.5cm" />
@@ -452,7 +452,7 @@
 		
 			<fo:block font-size="10pt" font-family="monospace"
 				language="es" hyphenate="true" color="black" text-align="left">
-				<fo:table table-layout="fixed" width="100%">
+				<fo:table width="100%">
 					<fo:table-column column-width="3cm" />
 					<fo:table-column column-width="5cm" />
 					<fo:table-column column-width="4cm" />

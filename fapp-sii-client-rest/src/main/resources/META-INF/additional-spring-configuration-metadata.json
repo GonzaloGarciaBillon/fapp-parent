@@ -19,19 +19,29 @@
     "type": "java.lang.String",
     "description": "A description for 'boleta.token.action'"
   },
-{
+  {
     "name": "boleta.semilla.action",
     "type": "java.lang.String",
     "description": "A description for 'boleta.semilla.action'"
   },
-{
+  {
     "name": "boleta.api.scheme",
     "type": "java.lang.String",
     "description": "A description for 'boleta.api.scheme'"
   },
-{
+  {
     "name": "boleta.api",
     "type": "java.lang.String",
     "description": "A description for 'boleta.api'"
+  },
+  {
+    "name": "app.sendgrid.templateId",
+    "type": "java.lang.String",
+    "description": "A description for 'app.sendgrid.templateId'"
+  },
+  {
+    "name": "app.sendgrid.key",
+    "type": "java.lang.String",
+    "description": "A description for 'app.sendgrid.key'"
   }
 ]}
