@@ -1,7 +1,5 @@
 package cl.fapp.restapi.controller.dte;
 
-//import cl.fapp.restapi.controller.repos.dto.KeyinfoFindResponse;
-//import cl.fapp.restapi.controller.utils.KeystoreFirmanteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,6 @@ import cl.fapp.siiclient.axis.SOAPClientSIIConsultas;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoDteAVRequest;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoDteRequest;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoUploadRequest;
-//import cl.fapp.siiclient.axis.SOAPClientSIIAuthentication;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 

@@ -276,7 +276,7 @@ public class BoletaEnvioDTEMapper {
 			detalle_infoticket.setFolioTicket(infoticket_folioticket);
 			detalle_infoticket.setLugarEvento(infoticket_lugarevento);
 			detalle_infoticket.setNmbEvento(infoticket_nmbevento);
-			detalle_infoticket.setTpoTiket(infoticket_tpoticket);
+			detalle_infoticket.setTpoTicket(infoticket_tpoticket);
 			detalle_infoticket.setUbicEvento(infoticket_ubicevento);
 			detalle.setInfoTicket(detalle_infoticket);
 			

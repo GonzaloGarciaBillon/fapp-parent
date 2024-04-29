@@ -1,6 +1,5 @@
 package cl.fapp.restapi.controller.pdf;
 
-import java.awt.print.PrinterJob;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -8,10 +7,12 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -19,13 +20,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +38,8 @@ import cl.fapp.common.domain.ConstantesTipoDocumento;
 import cl.fapp.common.jsend.JSend;
 import cl.fapp.pdfmanager.PDFBuilder;
 import cl.fapp.pdfmanager.domain.PdfRequest;
+import cl.fapp.repository.model.Dte;
+import cl.fapp.repository.model.Emisores;
 import cl.fapp.restapi.controller.impresoras.Print;
 import cl.fapp.services.dtelocator.ServiceDTELocatorSimple;
 import cl.fapp.services.dtelocator.dto.ServiceDTELocatorSimpleRequest;
@@ -42,6 +47,7 @@ import cl.fapp.services.dtelocator.dto.ServiceDTELocatorSimpleResponse;
 import cl.fapp.services.mail.EmailServiceImpl;
 import cl.fapp.sii.jaxb.BOLETADefType;
 import cl.fapp.sii.jaxb.DTE;
+import cl.fapp.restapi.security.service.RateLimitingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.xml.bind.JAXBContext;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +68,8 @@ public class GenerarPDFController {
 	@Autowired
 	Print printService;
 
+	@Autowired
+	RateLimitingService rateLimitingService;
 	// @formatter:off
 
 	/**
@@ -76,32 +84,32 @@ public class GenerarPDFController {
 	 
 	// @formatter:on
 	@RequestMapping(method = RequestMethod.POST, value = "/pdffromdte", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSend> generarPDFfromDTE(@RequestBody ServiceDTELocatorSimpleRequest payload) {
-
+	public ResponseEntity<JSend> generarPDFfromDTE(@RequestBody ServiceDTELocatorSimpleRequest payload,
+			HttpServletRequest request) {
+		if (!rateLimitingService.isAllowed(request.getRemoteAddr(), request.getRequestURI())) {
+			return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(JSend.error("Demasiadas solicitudes"));
+		}
 		try {
 			ServiceDTELocatorSimpleResponse dtelocatorResponse = dteLocator.locatorSimple(payload);
+			Dte dte = dtelocatorResponse.getDte();
+			Emisores emisor = dtelocatorResponse.getEmisor();
 			// verifica si se indico el correo en el input al servicio
 			String emailReceptor = payload.getEmailReceptor();
-			log.debug("Email receptor: "+emailReceptor);
 			String impresora = payload.getImpresora();
-			log.debug("impresora: "+impresora);
-			String puerto = payload.getPuerto();
-			log.debug("puerto: "+puerto);
-			String tipoImpresora = payload.getTipoImpresora();
-			log.debug("tipoImpresora: "+tipoImpresora);
+			// String puerto = payload.getPuerto();
+			// String tipoImpresora = payload.getTipoImpresora();
 			if (dtelocatorResponse == null) {
 				log.error("No fue posible localizar DTE utilizando los filtros indicados. Payload=" + payload);
 				throw new Exception("No se localiza DTE");
 			} else {
-				log.debug("Localizado DTE=" + dtelocatorResponse.getDte().getIdDte()); //-->.getDteId());
-				//log.debug("Datos del emisor=" + dtelocatorResponse.getEmisor().getFechaResolucion());
+				log.debug("Localizado DTE=" + dtelocatorResponse.getDte().getIdDte());
 
 				// crea el pdf
-				PdfRequest request = new PdfRequest();
-				request.setDte(dtelocatorResponse.getDte().getDocumentoXml());
+				PdfRequest pdfRequest = new PdfRequest();
+				pdfRequest.setDte(dtelocatorResponse.getDte().getDocumentoXml());
 
-				request.setLogo(dtelocatorResponse.getEmisor().getLogo());
-				request.setResolucionCodigo(dtelocatorResponse.getEmisor().getCodigoResolucion());
+				pdfRequest.setLogo(dtelocatorResponse.getEmisor().getLogo());
+				pdfRequest.setResolucionCodigo(dtelocatorResponse.getEmisor().getCodigoResolucion());
 
 				// -------------------------------------------------------------------------------
 				// convierte la fecha de resolucion a string con formato dd-MM-yyyy
@@ -110,65 +118,77 @@ public class GenerarPDFController {
 				LocalDateTime ldt = instant.atZone(ZoneId.of("UTC")).toLocalDateTime();
 				// -------------------------------------------------------------------------------
 
-				request.setResolucionFecha(ldt.format(formatter));
-				request.setRut(dtelocatorResponse.getEmisor().getRutemisor());
-				request.setTipoDte(dtelocatorResponse.getDte().getTipoDocumento());
-
+				pdfRequest.setResolucionFecha(ldt.format(formatter));
+				pdfRequest.setRut(dtelocatorResponse.getEmisor().getRutemisor());
+				pdfRequest.setTipoDte(dtelocatorResponse.getDte().getTipoDocumento());
 				ByteArrayOutputStream osStream = new ByteArrayOutputStream();
 				PDFBuilder builder = new PDFBuilder();
-				builder.generatePdf(request, osStream);
-				String bs = Base64.getEncoder().encodeToString(osStream.toByteArray());
+				builder.generatePdf(pdfRequest, osStream);
+				String base64 = Base64.getEncoder().encodeToString(osStream.toByteArray());
+				String bs = new String(base64.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
 				String filename = dtelocatorResponse.getDte().getIdDocumento() + ".pdf";
-				String pathToAttachment = "c:/borrame/" + filename;
 
-				try {
-					// Seccion para enviar pdf por correo
-					if (emailReceptor != null && !emailReceptor.isBlank() && !emailReceptor.isEmpty()) {
-						log.debug("Se indica correo => se enviara el pdf al correo indicado=" + emailReceptor);
+				// windows
+				// String pathToAttachment = "c:/borrame/" + filename;
+
+				// linux
+				String pathToAttachment = "/home/billon/temp/" + filename;
+
+				// Seccion para enviar pdf por correo
+				if (emailReceptor != null && !emailReceptor.isBlank() && !emailReceptor.isEmpty()) {
+					log.debug("Se indica correo => se enviara el pdf al correo indicado=" + emailReceptor);
+					try {
+						// emailService.sendMessageWithAttachment(emailReceptor, "Prueba boleta",
+						// "Adjuntamos su boleta", filename, pathToAttachment);
+						if (emailService.sendHtmlMessageWithSendGrid(emailReceptor, "Prueba boleta",
+								"Adjuntamos su boleta", filename, osStream.toByteArray(), dte, emisor)) {
+							log.debug("Correo enviado exitosamente a " + emailReceptor);
+							return ResponseEntity.ok()
+									.body(JSend.success("Correo enviado exitosamente a " + emailReceptor));
+						} else {
+							log.debug("Se produjo un error al enviar el correo a " + emailReceptor);
+							return ResponseEntity.ok()
+									.body(JSend.error("Se produjo un error al enviar el correo a " + emailReceptor));
+						}
+					} catch (Exception ex) {
+						log.error("Se produjo un error enviando PDF por correo. Error=" + ex.getMessage());
+						return ResponseEntity.ok()
+								.body(JSend.error("PDF generado, pero no enviado a=" + emailReceptor));
+					}
+					// Seccion para imprimir pdf
+				} else if ((impresora != null && !impresora.isBlank() && !impresora.isEmpty())) {
+					try {
+						log.debug("Se indica impresora => se enviara el pdf a la impresora: " + impresora);
+
 						OutputStream outputStream = new FileOutputStream(pathToAttachment);
 						osStream.writeTo(outputStream);
 						outputStream.close();
-						try {
-							//emailService.sendMessageWithAttachment(emailReceptor, "Prueba boleta", "Adjuntamos su boleta", filename, pathToAttachment);
-							//emailService.sendHtmlMessageWithSendGrid(emailReceptor, "Prueba boleta", "Adjuntamos su boleta", filename, osStream.toByteArray());
-							// se retorna el pdf como base64
-							return ResponseEntity.ok().body(JSend.success(bs));
-						} catch (Exception ex) {
-							log.error("Se produjo un error enviando PDF por correo. Error=" + ex.getMessage());
-							return ResponseEntity.ok().body(JSend.error("PDF generado, pero no enviado a=" + emailReceptor));
+						// Enviar la tarea de impresión
+						printService.setFilePath(pathToAttachment);
+						printService.print();
+						// Delete the file after printing
+						File fileToDelete = new File(pathToAttachment);
+						if (fileToDelete.delete()) {
+							log.debug("Archivo eliminado después de la impresión: " + pathToAttachment);
+						} else {
+							log.debug("No se pudo eliminar el archivo después de la impresión: " + pathToAttachment);
 						}
-					// Seccion para imprimir pdf
-					} else if ( (impresora != null && !impresora.isBlank() && !impresora.isEmpty()) ){
-						try {
-							log.debug("Se indica impresora => se enviara el pdf a la impresora: " + impresora);
-
-							OutputStream outputStream = new FileOutputStream(pathToAttachment);
-							osStream.writeTo(outputStream);
-							outputStream.close();
-							// Enviar la tarea de impresión
-							printService.setFilePath(pathToAttachment);
-							printService.print();
-						
-							return ResponseEntity.ok().body(JSend.success("Impresión enviada")); //cambiar esto por sistema de impresion
-						} catch (IllegalArgumentException e) {
-							return ResponseEntity.ok().body(JSend.error("No se encontró la impresora con la dirección IP: " + e.getMessage()));
-						} catch (Exception e) {
-							return ResponseEntity.ok().body(JSend.error("No se pudo imprimir: " + e.getMessage()));
-						}
-						
-					// Seccion para descargar/visualizar pdf
-					} else {
-						// se retorna el pdf como base64
-						return ResponseEntity.ok().body(JSend.success(bs));
+						return ResponseEntity.ok().body(JSend.success("Impresión enviada")); // cambiar esto por sistema
+																								// de impresion
+					} catch (IllegalArgumentException e) {
+						return ResponseEntity.ok().body(
+								JSend.error("No se encontró la impresora con la dirección IP: " + e.getMessage()));
+					} catch (Exception e) {
+						return ResponseEntity.ok().body(JSend.error("No se pudo imprimir: " + e.getMessage()));
 					}
 
-				} catch (IOException ex) {
-					log.error("Ocurrio un error retornando PDF. Error=" + ex.getMessage());
-					return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
+					// Seccion para descargar/visualizar pdf
+				} else {
+					// se retorna el pdf como base64
+					return ResponseEntity.ok().body(JSend.success(bs));
 				}
 			}
-
 		} catch (Exception ex) {
 			log.error("Ocurrio un error generando PDF. Error=" + ex.getMessage());
 			return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
@@ -176,13 +196,20 @@ public class GenerarPDFController {
 	}
 
 	/**
-	 * Recupera el xml de un DTE, realiza unmarshall, y retorna un objeto json que contiene los datos del xml
+	 * Recupera el xml de un DTE, realiza unmarshall, y retorna un objeto json que
+	 * contiene los datos del xml
 	 * 
 	 * @param payload datos a aplicar como filtros en la busqueda del DTE.
 	 * @return la api retornara los datos del DTE que se encuentran en el xml
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/datosboleta", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSend> getDataFromDTE(@RequestBody GetDataFromDTERequest payload) {
+	@PostMapping(value = "/datosboleta", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSend> getDataFromDTE(@RequestBody GetDataFromDTERequest payload,
+			HttpServletRequest request) {
+		String clientIp = request.getRemoteAddr();
+		String requestPath = request.getRequestURI();
+		if (!rateLimitingService.isAllowed(clientIp, requestPath)) {
+			return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(JSend.error("Demasiadas solicitudes"));
+		}
 		try {
 			ServiceDTELocatorSimpleRequest newRequest = new ServiceDTELocatorSimpleRequest();
 			newRequest.setEmailReceptor(null);
@@ -201,17 +228,23 @@ public class GenerarPDFController {
 
 			} else {
 				log.debug("Localizado DTE=" + dtelocatorResponse.getDte().getIdDte());
-				log.debug("Datos del emisor=" + dtelocatorResponse.getEmisor().getFechaResolucion());
-
-				if (dtelocatorResponse.getEmisor().getLogo() != null) {
+				byte[] logoArray = dtelocatorResponse.getEmisor().getLogo();
+				if (logoArray != null && logoArray.length > 0) {
 					// obtiene y cambia el tamano al logo
-					BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(dtelocatorResponse.getEmisor().getLogo()));
-					BufferedImage resizedImage = resizeImage(originalImage, 350, 350);
+					BufferedImage originalImage = ImageIO
+							.read(new ByteArrayInputStream(dtelocatorResponse.getEmisor().getLogo()));
+					if (originalImage != null) {
+						BufferedImage resizedImage = resizeImage(originalImage, 350, 350);
 
-					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					ImageIO.write(resizedImage, "png", bos);
-					byte[] encoded = Base64.getEncoder().encode(bos.toByteArray());
-					logo = new String(encoded);
+						ByteArrayOutputStream bos = new ByteArrayOutputStream();
+						ImageIO.write(resizedImage, "png", bos);
+						byte[] encoded = Base64.getEncoder().encode(bos.toByteArray());
+						logo = new String(encoded);
+					} else {
+						logo = "";
+					}
+				} else {
+					logo = "";
 				}
 
 				// obtiene el ted
@@ -229,10 +262,12 @@ public class GenerarPDFController {
 					GetDataFromDTEResponse response = new GetDataFromDTEResponse();
 					int tipoDocumento = payload.getDteTipoDocumento();
 					Object unmarshalledType = null;
-					if (tipoDocumento == ConstantesTipoDocumento.BOLETA_AFECTA.getValue() || tipoDocumento == ConstantesTipoDocumento.BOLETA_EXENTA.getValue()) {
+					if (tipoDocumento == ConstantesTipoDocumento.BOLETA_AFECTA.getValue()
+							|| tipoDocumento == ConstantesTipoDocumento.BOLETA_EXENTA.getValue()) {
 						// hace el unmarshall del xml contenido en la entidad dte
 						JAXBContext context = JAXBContext.newInstance(BOLETADefType.class);
-						BOLETADefType unmarshallDbDte = (BOLETADefType) context.createUnmarshaller().unmarshal(new StringReader(dtelocatorResponse.getDte().getDocumentoXml()));
+						BOLETADefType unmarshallDbDte = (BOLETADefType) context.createUnmarshaller()
+								.unmarshal(new StringReader(dtelocatorResponse.getDte().getDocumentoXml()));
 						unmarshallDbDte.getDocumento().setTED(null);
 						unmarshalledType = unmarshallDbDte;
 
@@ -240,7 +275,8 @@ public class GenerarPDFController {
 						if (tipoDocumento == ConstantesTipoDocumento.NOTA_CREDITO.getValue()) {
 							// hace el unmarshall del xml contenido en la entidad dte
 							JAXBContext context = JAXBContext.newInstance(DTE.class);
-							DTE unmarshallDbDte = (DTE) context.createUnmarshaller().unmarshal(new StringReader(dtelocatorResponse.getDte().getDocumentoXml()));
+							DTE unmarshallDbDte = (DTE) context.createUnmarshaller()
+									.unmarshal(new StringReader(dtelocatorResponse.getDte().getDocumentoXml()));
 							unmarshallDbDte.getDocumento().setTED(null);
 							unmarshalledType = unmarshallDbDte;
 						} else {
@@ -261,7 +297,6 @@ public class GenerarPDFController {
 					return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
 				}
 			}
-
 		} catch (Exception ex) {
 			log.error("Ocurrio un error extrayendo data del xml. Error=" + ex.getMessage());
 			return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
@@ -277,7 +312,8 @@ public class GenerarPDFController {
 	 * @return imagen original escalada al nuevo tamano
 	 */
 	@SuppressWarnings("unused")
-	private BufferedImage resizeImage2(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+	public BufferedImage resizeImage2(BufferedImage originalImage, int targetWidth, int targetHeight)
+			throws IOException {
 		Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
 
 		BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
@@ -294,14 +330,15 @@ public class GenerarPDFController {
 	 * @param areaHeight nuevo alto
 	 * @return imagen original escalada al nuevo tamano
 	 */
-	private static BufferedImage resizeImage(BufferedImage image, int areaWidth, int areaHeight) {
+	public static BufferedImage resizeImage(BufferedImage image, int areaWidth, int areaHeight) {
 		float scaleX = (float) areaWidth / image.getWidth();
 		float scaleY = (float) areaHeight / image.getHeight();
 		float scale = Math.min(scaleX, scaleY);
 		int w = Math.round(image.getWidth() * scale);
 		int h = Math.round(image.getHeight() * scale);
 
-		int type = image.getTransparency() == Transparency.OPAQUE ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+		int type = image.getTransparency() == Transparency.OPAQUE ? BufferedImage.TYPE_INT_RGB
+				: BufferedImage.TYPE_INT_ARGB;
 
 		boolean scaleDown = scale < 1;
 
@@ -324,7 +361,8 @@ public class GenerarPDFController {
 			return resized;
 
 		} else {
-			Object hint = scale > 2 ? RenderingHints.VALUE_INTERPOLATION_BICUBIC : RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+			Object hint = scale > 2 ? RenderingHints.VALUE_INTERPOLATION_BICUBIC
+					: RenderingHints.VALUE_INTERPOLATION_BILINEAR;
 
 			BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = resized.createGraphics();

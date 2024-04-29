@@ -1,5 +1,8 @@
 package cl.fapp.services.mail;
 
+import cl.fapp.repository.model.Dte;
+import cl.fapp.repository.model.Emisores;
+
 /**
  * Interfaz del servicio de envio de correos
  */
@@ -41,6 +44,7 @@ public interface IEmailService {
 	 * @param htmlBody 				texto del correo
 	 * @param attachmentFilename 	nombre del archivo
 	 * @param attachmentContent 	Contenido del archivo
+	 * @return 
 	 */
-	//void sendHtmlMessageWithSendGrid(String to, String subject, String htmlBody, String attachmentFilename, byte[] attachmentContent);
+	boolean sendHtmlMessageWithSendGrid(String to, String subject, String htmlBody, String attachmentFilename, byte[] attachmentContent,Dte dte,Emisores emisor);
 }

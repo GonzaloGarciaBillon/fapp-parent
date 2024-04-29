@@ -78,7 +78,7 @@ public class BoletaEnvioStatusResponse {
 
   String rut_emisor;
   String rut_envia;
-  Integer trackid;
+  Long trackid;
   String fecha_recepcion;
   String estado;
 

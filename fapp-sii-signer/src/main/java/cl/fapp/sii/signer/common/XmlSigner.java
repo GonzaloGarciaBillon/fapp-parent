@@ -3,7 +3,6 @@ package cl.fapp.sii.signer.common;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -49,10 +48,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import lombok.extern.slf4j.Slf4j;
+
+
 
 /**
  * Firma XML empleando diferentes metodos
  */
+@Slf4j
 public class XmlSigner {
     static {
     	System.setProperty("com.sun.org.apache.xml.internal.security.ignoreLineBreaks", "true");
@@ -62,10 +65,10 @@ public class XmlSigner {
 	static final Logger logger = LoggerFactory.getLogger(XmlSigner.class);
 	
 	// windows
-	public static final String CARRIAGE_RETURN = "\r\n";
+	// public static final String CARRIAGE_RETURN = "\r\n";
 	
 	// linux
-	//public static final String CARRIAGE_RETURN = "\n";
+	public static final String CARRIAGE_RETURN = "\n";
 
 	/**
 	 * Firma sourceXml, a partir del tag domIdElement, utilizando certificate y pkey
@@ -123,11 +126,10 @@ public class XmlSigner {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			dbf.setNamespaceAware(true);
 			DocumentBuilder builder = dbf.newDocumentBuilder();
-			
 			// --18072023---------------------------------------
 			InputSource is = new InputSource(sourceXml);
 			is.setEncoding(StandardCharsets.ISO_8859_1.name());
-			Document doc = builder.parse(is); //sourceXml);	
+			Document doc = builder.parse(is); //sourceXml);
 			// -----------------------------------------
 			
 			//-->Document doc = builder.parse(sourceXml);
@@ -162,7 +164,7 @@ public class XmlSigner {
 
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-			//------>transformer.setOutputProperty(OutputKeys.ENCODING,"ISO-8859-1");
+			// transformer.setOutputProperty(OutputKeys.ENCODING,"ISO-8859-1");
 			
 			// las dos siguientes estaban en comentario
 			//-->transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // sin indentacion, si no, causa error en la firma
@@ -170,10 +172,7 @@ public class XmlSigner {
 
 			transformer.transform(new DOMSource(doc), new StreamResult(output));
 			//transformer.transform(new DOMSource(doc), new StreamResult(new OutputStreamWriter(output, "ISO-8859-1")));
-			
-			//String rawSignedXml = new String(output.toByteArray()); //, "UTF-8"); //, "ISO-8859-1");
-			String rawSignedXml = new String(output.toByteArray(), "ISO-8859-1");
-			
+			String rawSignedXml = new String(output.toByteArray(),"UTF-8"); //, "UTF-8"); //, "ISO-8859-1");
 			// normaliza el xml para que el sii lo pueda procesar
 			logger.debug("Se formatea segun reglas del SII...");
 			String newRawSignedXml = replaceTagValue("SignatureValue", 76, rawSignedXml);
@@ -181,13 +180,11 @@ public class XmlSigner {
 			newRawSignedXml = replaceTagValue("X509Certificate", 76, newRawSignedXml);
 			
 			newRawSignedXml = newRawSignedXml.replace("UTF-8", "ISO-8859-1");
-			// logger.debug("NUEVO XML=[" + newRawSignedXml + "]");
 
-			SignedXml xml = new SignedXml(newRawSignedXml); //rawSignedXml);
-			return xml;
+			return new SignedXml(newRawSignedXml);
 
 		} catch (Exception ex) {
-			logger.error("Ocurrio un error durante el proceso de firma. Error=" + ex.getMessage());
+			logger.error("Ocurrio un error durante el proceso de firma. Error= {}", ex.getMessage());
 			return null;
 		}
 	}
@@ -283,8 +280,7 @@ public class XmlSigner {
 
 			String rawSignedXml = new String(output.toByteArray(), "ISO-8859-1");
 			
-			SignedXml xml = new SignedXml(rawSignedXml);
-			return xml;
+			return new SignedXml(rawSignedXml);
 
 		} catch (Exception ex) {
 			logger.error("Ocurrio un error durante el proceso de firma. Error=" + ex.getMessage());
@@ -414,10 +410,9 @@ public class XmlSigner {
 	 * @param xml xml que contiene el tag a reemplazar
 	 * @return el xml modificado
 	 */
-	private static String replaceTagValue(String tag, Integer numchar, String xml) throws UnsupportedEncodingException {
+	private static String replaceTagValue(String tag, Integer numchar, String xml) {
 		Pattern TAG_PATTERN = Pattern.compile("<" + tag + ">(.+?)</" + tag + ">", Pattern.DOTALL);
-		//String original = new String(xml);
-		String original = new String(xml.getBytes("ISO-8859-1"));
+		String original = new String(xml);
 		int lastIndex = 0;
 		StringBuilder output = new StringBuilder();
 		Matcher matcher = TAG_PATTERN.matcher(original);
@@ -441,28 +436,11 @@ public class XmlSigner {
 	 * @param value valor del tag
 	 * @return el tag formateado
 	 */
-	private static String splitTagValue(String tag, Integer numchar, String value) {
-		StringBuilder parsedTagValue = new StringBuilder();
-		int length = value.length();
-
-		for (int i = 0; i < length; i += numchar) {
-			int endIndex = Math.min(i + numchar, length);
-			parsedTagValue.append(value, i, endIndex);
-
-			if (endIndex < length) {
-				parsedTagValue.append(CARRIAGE_RETURN);
-			}
-		}
-
-		String newValue = "<" + tag + ">" + parsedTagValue + "</" + tag + ">";
-		return newValue;
-	}
-	/*
-	private static String splitTagValue(String tag, Integer numchar, String value) {
+    private static String splitTagValue(String tag, Integer numchar, String value) {
 		String crlf = value.contains(CARRIAGE_RETURN) ? "" : CARRIAGE_RETURN;
 		String parsedTagValue = value.replaceAll("(.{" + numchar + "})", "$1" + crlf);
     	//String parsedTagValue = value.replaceAll("(.{" + numchar + "})", "$1" + CARRIAGE_RETURN);
     	String newValue = "<" + tag + ">" + parsedTagValue + "</" + tag + ">";
         return newValue;
-    }*/
+    }
 }

@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
@@ -57,7 +61,8 @@ public class EnviarDteSetDTEController {
 	SetDTERepository repoSetDTE;
 
 	/**
-	 * Envia un setdte especifico, que se encuentre en estado con envio pendiente empleando la api SOAP de SII
+	 * Envia un setdte especifico, que se encuentre en estado con envio pendiente
+	 * empleando la api SOAP de SII
 	 * 
 	 * @param payload request para enviar el dte
 	 * @return objeto {@link JSend} simple
@@ -70,7 +75,7 @@ public class EnviarDteSetDTEController {
 			String rutemisor = payload.getRutEmisor();
 			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
 			Long idsetdte = payload.getIdSetDte();
-			log.debug("paso 1 "+payload.getIdSetDte());
+			log.debug("paso 1 " + payload.getIdSetDte());
 
 			if (idsetdte == null) {
 				log.error("No se especifica el idDte que enviar");
@@ -87,10 +92,13 @@ public class EnviarDteSetDTEController {
 				log.debug("El emisor rut=" + rutemisor + " existe");
 
 				// recupera el setdte a enviar
-				//Optional<Dte> dteEntity = repoDTE.findByIdDteAndEstado(idDte, EntityDTEStatuses.SETDTEASIGNADO.toString());
-				Optional<Setdte> setdteEntity = repoSetDTE.findByIdSetdteAndEstado(idsetdte, EntitySetDTEStatuses.ENVIOPENDIENTE.toString());
+				// Optional<Dte> dteEntity = repoDTE.findByIdDteAndEstado(idDte,
+				// EntityDTEStatuses.SETDTEASIGNADO.toString());
+				Optional<Setdte> setdteEntity = repoSetDTE.findByIdSetdteAndEstado(idsetdte,
+						EntitySetDTEStatuses.ENVIOPENDIENTE.toString());
 				if (!setdteEntity.isPresent()) {
-					log.error("El idSetDte=" + idsetdte + ", no encuentra en estado: " + EntitySetDTEStatuses.ENVIOPENDIENTE);
+					log.error("El idSetDte=" + idsetdte + ", no encuentra en estado: "
+							+ EntitySetDTEStatuses.ENVIOPENDIENTE);
 					throw new Exception("No se encuentra dte con los criterios de busqueda");
 				}
 
@@ -136,36 +144,54 @@ public class EnviarDteSetDTEController {
 				request.setDvCompany(companyDV);
 				request.setDvSender(senderDV);
 
-				String xmlResponse = soapEnvioDTEClient.sendDTE(request, xmlcontent.getBytes(SiiDocumentFactoryConfiguration.DEFAULT_ENCODING), filename, token);
+				String xmlResponse = soapEnvioDTEClient.sendDTE(request,
+						xmlcontent.getBytes(SiiDocumentFactoryConfiguration.DEFAULT_ENCODING), filename, token);
 				if (xmlResponse == null) {
 					log.error("Respuesta nula del cliente de envioDTE..");
 					throw new Exception("No se obtuvo respuesta esperada del servicio de envio de DTE");
 				}
 
-				// parsea la respuesta xml a un pojo
-				RECEPCIONDTE response = xmlToPojo(xmlResponse);
-				if( response == null ) {
-					log.error("Ocurrio un error obteniendo POJO a partir del XML=" + xmlResponse);
-					throw new Exception("No fue posible parsear la respuesta XML-RECEPCIONDTE");
-				}
+				if (isXml(xmlResponse)) {
+					// parsea la respuesta xml a un pojo
+					RECEPCIONDTE response = xmlToPojo(xmlResponse);
+					if (response == null) {
+						log.error("Ocurrio un error obteniendo POJO a partir del XML=" + xmlResponse);
+						throw new Exception("No fue posible parsear la respuesta XML-RECEPCIONDTE");
+					}
 
-				// verifica el estado de retorno. Solo status=0 => almacenar respuesta en la base de datos
-				if (response.getSTATUS().trim().equalsIgnoreCase("0")) {
-					trackid = String.valueOf(response.getTRACKID());
-					log.info("DTE enviado correctamente. TrackID=" + trackid);
+					// verifica el estado de retorno. Solo status=0 => almacenar respuesta en la
+					// base de datos
+					if (response.getSTATUS().trim().equalsIgnoreCase("0")) {
+						trackid = String.valueOf(response.getTRACKID());
+						log.info("DTE enviado correctamente. TrackID=" + trackid);
 
-					// se actualiza la base de datos
-					Date ahora = new Date();
+						// se actualiza la base de datos
+						Date ahora = new Date();
+						Setdte entity = setdteEntity.get();
+						entity.setUpdatedat(ahora);
+						entity.setEstado(EntitySetDTEStatuses.ENVIADO.toString());
+						entity.setRespuestaSii(response.toString());
+						entity.setTrackid(trackid);
+						repoSetDTE.save(entity);
+					} else {
+						log.error("El envio de DTE's resulto con error. Status=" + response.getSTATUS() + ", DETAIL="
+								+ response.getDETAIL().getERROR());
+						throw new Exception("No fue posible realizar el envio");
+					}
+				} else if (isHtml(xmlResponse)) {
+					// Procesamiento específico para HTML, como extraer el identificador de envío
+					trackid = extraerIdentificadorDeEnvio(xmlResponse);
 					Setdte entity = setdteEntity.get();
+					Date ahora = new Date();
 					entity.setUpdatedat(ahora);
 					entity.setEstado(EntitySetDTEStatuses.ENVIADO.toString());
-					entity.setRespuestaSii(response.toString());
+					entity.setRespuestaSii(xmlResponse);
 					entity.setTrackid(trackid);
 					repoSetDTE.save(entity);
-
+					// Lógica para manejar el identificador de envío
 				} else {
-					log.error("El envio de DTE's resulto con error. Status=" + response.getSTATUS() + ", DETAIL=" + response.getDETAIL().getERROR());
-					throw new Exception("No fue posible realizar el envio");
+					log.error("Formato de respuesta desconocido: " + xmlResponse);
+					throw new Exception("Formato de respuesta no es ni XML ni HTML");
 				}
 			}
 
@@ -198,5 +224,40 @@ public class EnviarDteSetDTEController {
 			log.error("Ocurrio un error convirtiendo xml a objeto. Error=" + ex.getMessage());
 			return null;
 		}
+	}
+
+	/**
+	 * Extrae el identificador de envío de un string HTML.
+	 * 
+	 * @param html string HTML
+	 * @return String representando el identificador de envío
+	 */
+	public static String extraerIdentificadorDeEnvio(String html) {
+		try {
+			Document doc = Jsoup.parse(html);
+
+			// Encuentra todos los elementos <strong> en el documento
+			for (Element strong : doc.select("strong")) {
+				// Encuentra el elemento <strong> que sigue al texto 'Identificador de envío :'
+				if (strong.previousSibling() != null
+						&& strong.previousSibling().toString().contains("Identificador de envío :")) {
+					return strong.text();
+				}
+			}
+
+			return null; // Identificador de envío no encontrado
+
+		} catch (Exception ex) {
+			System.err.println("Ocurrió un error al analizar el HTML: " + ex.getMessage());
+			return null;
+		}
+	}
+
+	private static boolean isXml(String response) {
+		return response.trim().startsWith("<?xml");
+	}
+
+	private static boolean isHtml(String response) {
+		return response.trim().toLowerCase().startsWith("<!doctype html") || response.contains("<html");
 	}
 }

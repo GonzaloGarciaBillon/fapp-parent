@@ -13,5 +13,4 @@ public class EstadoUploadRequest {
 	private String dvCompania;
 	private String rutCompania;
 	private String trackId;
-
 }

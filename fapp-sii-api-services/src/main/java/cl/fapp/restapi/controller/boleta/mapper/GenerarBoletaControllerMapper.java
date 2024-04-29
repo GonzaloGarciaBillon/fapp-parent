@@ -22,6 +22,7 @@ import cl.fapp.common.xml.XMLUtils;
 import cl.fapp.domain.mapper.MapperUtils;
 import cl.fapp.foliomanager.FolioManager;
 import cl.fapp.foliomanager.domain.Folio;
+import cl.fapp.foliomanager.exception.*;
 import cl.fapp.restapi.controller.boleta.domain.BoletaDescuentoRecargo;
 import cl.fapp.restapi.controller.boleta.domain.BoletaDetalle;
 import cl.fapp.restapi.controller.boleta.domain.BoletaDocumento;
@@ -38,8 +39,6 @@ import cl.fapp.sii.jaxb.ObjectFactory;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 import lombok.extern.slf4j.Slf4j;
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Service
@@ -60,7 +59,8 @@ public class GenerarBoletaControllerMapper {
 	 * @param request DTO
 	 * @return tantos List<{@link BOLETADefType}> como boletas se indican en el request
 	 */
-	public List<BOLETADefTypeAndVerbatimCAF> toBOLETADefTypeDocumento(GenerarBoletaRequest request) {
+	public List<BOLETADefTypeAndVerbatimCAF> toBOLETADefTypeDocumento(GenerarBoletaRequest request) 
+	throws FoliosNotAvailableException, FoliosNotExistException {
 		// valores globales
 		Date fechaEmision = new Date();
 
@@ -112,9 +112,14 @@ public class GenerarBoletaControllerMapper {
 					encabezado.getIdDoc().setFolio(BigInteger.valueOf(folio.getCardinal()));
 					log.debug("Se obtuvo folio=" + encabezado.getIdDoc().getFolio() + ", para tipo_documento=" + tipodoc);
 					
-				} catch (Exception ex) {
-					log.error("No fue posible obtener un folio. Error: " + ex.getMessage());
-					return null;
+				} catch (FoliosNotExistException ex) {
+					log.error("No existen folios disponibles para el tipo de documento solicitado. Error: " + ex.getMessage());
+					// Lanza una excepción personalizada indicando que no hay folios disponibles
+					throw new FoliosNotExistException("No existen folios disponibles.");
+				} catch (FoliosNotAvailableException ex) {
+					log.error("No hay folios disponibles. Error: " + ex.getMessage());
+					// Lanza una excepción personalizada indicando que no hay folios disponibles
+					throw new FoliosNotAvailableException("No hay folios disponibles.");
 				}
 
 				// hace el unmarshall al tagCaf del folio
@@ -188,11 +193,11 @@ public class GenerarBoletaControllerMapper {
 				// se firma el xml del DD
 				Signature dmSignature = Signature.getInstance(SiiDocumentFactoryConfiguration.DD.SIGNATURE_ALGORITHM);
 				dmSignature.initSign(privateKey);
-				dmSignature.update(xmlDD.getBytes(StandardCharsets.ISO_8859_1));
+				dmSignature.update(xmlDD.getBytes(SiiDocumentFactoryConfiguration.DEFAULT_ENCODING));
 
 				// se codifica el dd firmado
 				byte[] xmlsigned = dmSignature.sign();
-				String signedDD = new String(xmlsigned, StandardCharsets.ISO_8859_1);
+				String signedDD = new String(xmlsigned, SiiDocumentFactoryConfiguration.DEFAULT_ENCODING);
 
 				// documento - TED - FRMT
 				BOLETADefType.Documento.TED.FRMT frmt = jaxbFactory.createBOLETADefTypeDocumentoTEDFRMT();
@@ -248,7 +253,7 @@ public class GenerarBoletaControllerMapper {
 
 			} catch (Exception ex) {
 				log.error("No fue posible construir BOLETADefType_DTE. Error: " + ex.getMessage(), ex);
-				return null;
+				throw new RuntimeException(ex.getMessage(), ex);
 			}
 		}
 
@@ -396,8 +401,8 @@ public class GenerarBoletaControllerMapper {
 				jaxbReferencia.setRazonRef(XMLUtils.replaceSiiEspecialChars(referencia.getRazonref()));
 				
 				// tipo de documento de referencia, y folio de referencia
-				jaxbReferencia.setTpoDocRef(referencia.getTpodocref());
-				jaxbReferencia.setFolioRef(referencia.getFolioref());
+				//jaxbReferencia.setTpoDocRef(referencia.getTpodocref());
+				//jaxbReferencia.setFolioRef(referencia.getFolioref());
 
 				// agrega a la lista de referencias
 				jaxbReferencias.add(jaxbReferencia);

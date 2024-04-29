@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Mauricio Urbina (Servicios de Impuestos Internos) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:SiiDte="http://www.sii.cl/SiiDte" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:import namespace="http://www.sii.cl/SiiDte"  schemaLocation="../xsd/SiiTypes_v10.xsd"/>
 	<xs:element name="RESULTADO_ENVIO">
 		<xs:complexType>
 			<xs:sequence>
@@ -9,12 +10,12 @@
 						<xs:sequence>
 							<xs:element name="RUTEMISOR">
 								<xs:simpleType>
-									<xs:restriction base="RUTType"/>
+									<xs:restriction base="SiiDte:RUTType"/>
 								</xs:simpleType>
 							</xs:element>
 							<xs:element name="RUTENVIA">
 								<xs:simpleType>
-									<xs:restriction base="RUTType"/>
+									<xs:restriction base="SiiDte:RUTType"/>
 								</xs:simpleType>
 							</xs:element>
 							<xs:element name="TRACKID" type="EnteroType"/>
@@ -29,7 +30,7 @@
 							<xs:element name="SUBTOTAL" maxOccurs="5">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="TIPODOC" type="DTEType"/>
+										<xs:element name="TIPODOC" type="SiiDte:DTEType"/>
 										<xs:element name="INFORMADO" type="EnteroType"/>
 										<xs:element name="RECHAZO" type="EnteroType" minOccurs="0"/>
 										<xs:element name="REPARO" type="EnteroType" minOccurs="0"/>
@@ -54,7 +55,7 @@
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element name="FOLIO" type="EnteroType"/>
-										<xs:element name="TIPODTE" type="DTEType"/>
+										<xs:element name="TIPODTE" type="SiiDte:DTEType"/>
 										<xs:element name="ESTADO" type="xs:string"/>
 										<xs:element name="DETALLE" type="xs:string" maxOccurs="unbounded"/>
 									</xs:sequence>
@@ -66,6 +67,7 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<!-- 
 	<xs:simpleType name="RUTType">
 		<xs:annotation>
 			<xs:documentation>Rol Unico Tributario (99..99-X)</xs:documentation>
@@ -133,6 +135,7 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
+	-->
 	<xs:simpleType name="EnteroType">
 		<xs:restriction base="xs:nonNegativeInteger">
 			<xs:totalDigits value="10"/>

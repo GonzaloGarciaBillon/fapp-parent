@@ -18,7 +18,7 @@ public class DTEReferencia {
 	@Schema(description = "Numero secuencial de linea de Referencia", example = "1", required = false, accessMode = AccessMode.READ_ONLY )
 	private Integer nrolinref;
 	
-	@Schema(description = "Tipo de documento de referencia", example = "39", required = true, accessMode = AccessMode.READ_ONLY )
+	@Schema(description = "Tipo de documento de referencia", example = "39", required = false, accessMode = AccessMode.READ_ONLY )
 	private String tipoDocRef;
 	
 	@Schema(description = "Indica que se esta referenciando un conjunto de documentos. 1:El documento hace referencia a un conjunto de documentos del mismo tipo", example = "1", required = false )
@@ -79,7 +79,7 @@ no afectos o exentos de IVA 35: Boleta
 811 Carta de Porte
 812 Resolución del SNA donde califica Servicios de Exportación
 813 Pasaporte
-814 Certificado de Depósito Bolsa Prod. Chile.
+814 Certificado de Depésito Bolsa Prod. Chile.
 815 Vale de Prenda Bolsa Prod. Chile
 820 Código de Inscripción en el Registro de Acuerdos con Plazo de Pago Excepcional
 

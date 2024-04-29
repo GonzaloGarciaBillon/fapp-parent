@@ -19,7 +19,6 @@ public class SignedXml {
 	}
 
 	public String toBase64() throws UnsupportedEncodingException {
-		String base64Xml = Base64.getEncoder().encodeToString(content.getBytes("ISO-8859-1"));
-		return base64Xml;
+		return Base64.getEncoder().encodeToString(content.getBytes("ISO-8859-1"));
 	}
 }

@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
-			<version>2.0.30</version> <!-- Verifica la Ãºltima versiÃ³n en el repositorio de Maven -->
+			<version>2.0.30</version> <!-- Verifica la última versión en el repositorio de Maven -->
 		</dependency>
 
 	</dependencies>

@@ -61,27 +61,25 @@ public class ServiceDTELocatorSimple {
 					throw new Exception("No se encontro DTE con identificador indicado");
 				}
 			} else {
-
-				// busca por el resto de los parametros
-				Optional<List<Dte>> dteEntity = repoDTE.findAllByFolioAsignadoAndMontoAndTipoDocumentoAndEmisoreRutemisor(request.getDteFolioAsignado(), request.getDteMonto(), request.getDteTipoDocumento(), request.getDteRutEmisor());
-				if (dteEntity.isPresent()) {
-					if (dteEntity.get().size() != 1) {
-						log.error("Se encontro mas de un DTE que cumple con los criterios de busqueda. Request=" + request);
-						throw new Exception("No es posible localizar un unico DTE");
-
+				log.debug(request.getDteFolioAsignado().toString());
+				// Modifica esta sección para usar la nueva consulta
+				List<Dte> dteEntity = repoDTE.findByFolioAsignadoAndEmisoreRutemisorAndTipoDocumento(request.getDteFolioAsignado(), request.getDteRutEmisor(), request.getDteTipoDocumento());
+				if (dteEntity != null && !dteEntity.isEmpty()) {
+					if (dteEntity.size() != 1) {
+						log.error("Se encontró más de un DTE que cumple con los criterios de búsqueda. Request=" + request);
+						throw new Exception("No es posible localizar un único DTE");
 					} else {
 						response = new ServiceDTELocatorSimpleResponse();
-						response.setDte(dteEntity.get().get(0));
-						response.setEmisor(dteEntity.get().get(0).getEmisore());
+						response.setDte(dteEntity.get(0));
+						response.setEmisor(dteEntity.get(0).getEmisore());
 						log.debug("DTE retornado=" + response);
 						return response;
 					}
 				} else {
-					log.warn("No se encontro DTE con propiedades=" + request);
-					throw new Exception("No se encontro DTE con el filtro indicado");
+					log.warn("No se encontró DTE con propiedades=" + request);
+					throw new Exception("No se encontró DTE con el filtro indicado");
 				}
 			}
-
 		} catch (Exception ex) {
 			log.error("Se produjo un error ubicando el DTE. Error=" + ex.getMessage());
 			return null;

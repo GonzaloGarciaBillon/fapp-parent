@@ -2,8 +2,14 @@ package cl.fapp.restapi.controller.impresoras;
 
 import java.awt.*;
 import java.awt.print.*;
+
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,6 +104,8 @@ public class Print implements Printable {
             if (defaultPrintService != null) {
                 job.setPrintService(defaultPrintService);
                 job.print();
+                // Cortar el papel al final de la impresión
+                cutPaper(job);
             } else {
                 log.error("No se encontró la impresora predeterminada.");
             }
@@ -105,6 +113,22 @@ public class Print implements Printable {
             document.close();
         } catch (IOException | PrinterException ex) {
             ex.printStackTrace();
+        }
+    }
+    // Método para enviar el comando de corte de papel
+    private void cutPaper(PrinterJob job) {
+        // Comando ESC/POS para cortar el papel (puede variar según la impresora)
+        byte[] cutP = new byte[]{0x1d, 'V', 1};
+
+        if (job.getPrintService() != null) {
+            DocPrintJob docPrintJob = job.getPrintService().createPrintJob();
+            Doc doc = new SimpleDoc(cutP, DocFlavor.BYTE_ARRAY.AUTOSENSE, null);
+
+            try {
+                docPrintJob.print(doc, null);
+            } catch (PrintException e) {
+                e.printStackTrace();
+            }
         }
     }
 /* 

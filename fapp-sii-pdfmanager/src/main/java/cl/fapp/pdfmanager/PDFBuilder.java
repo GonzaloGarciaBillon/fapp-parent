@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import javax.xml.transform.Result;
@@ -26,7 +27,9 @@ import org.xml.sax.SAXException;
 
 import cl.fapp.common.domain.ConstantesTipoDocumento;
 import cl.fapp.pdfmanager.domain.PdfRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PDFBuilder {
 	FopFactory fopFactory;
 	TransformerFactory transformerFactory;
@@ -76,6 +79,8 @@ public class PDFBuilder {
 				transformer.setParameter("versionParam", "2.0");
 				if (request.getLogo() != null) {
 					transformer.setParameter("logo", this.logoPrepared(request.getLogo()));
+				} else {
+					transformer.setParameter("logo", "");
 				}
 				transformer.setParameter("resolcode", request.getResolucionCodigo());
 				transformer.setParameter("resoldate", request.getResolucionFecha());
@@ -84,7 +89,8 @@ public class PDFBuilder {
 				
 				// --------- agregada el 18072023 ---------------
 				 // la codificacion en la base es utf-8 (para manejar tildes en el caf)
-				String str = new String(request.getDte().getBytes("UTF-8"));
+				log.debug("request.getDte()=" + request.getDte());
+				String str = new String(request.getDte().getBytes(StandardCharsets.ISO_8859_1));
 				Source src = new StreamSource(new StringReader(str));
 				// ----------------------------------------------
 
@@ -129,7 +135,9 @@ public class PDFBuilder {
 		// Se agrega factura afecta 29-11-23
 		case FACTURA_AFECTA:
 			//foXml = "xml/xslt/factura_estandar_2fo.xsl";
-			foXml = "xml/xslt/factura_termica_2fo.xsl";
+			//foXml = "xml/xslt/factura_termica_2fo.xsl";
+			// foXml = "xml/xslt/factura_termica_2fo_test.xsl";
+			foXml = "xml/xslt/notaCredito2fo.xsl";
 			break;
 
 		default:

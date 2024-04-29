@@ -52,7 +52,7 @@ import reactor.netty.transport.logging.AdvancedByteBufFormat;
 @PropertySource("classpath:siiclient.properties")
 
 /**
- * Servicio Rest de comunicaci贸n con el SII
+ * Servicio Rest de comunicaci髇 con el SII
  */
 @Service
 public class SiiClientServiceRestImp implements SiiClientService {
@@ -273,7 +273,7 @@ public class SiiClientServiceRestImp implements SiiClientService {
 					.retrieve()
 					
 				.onStatus(status -> status.value() == HttpStatus.UNAUTHORIZED.value(), // 401
-					response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci贸n")))
+					response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci髇")))
 	
 				.onStatus(status -> status.value() != HttpStatus.OK.value(),
 						response -> Mono.error(new SiiClientWebClientException("Problema con el servicio "
@@ -351,7 +351,7 @@ public class SiiClientServiceRestImp implements SiiClientService {
 					.retrieve()
 					
 				.onStatus(status -> status.value() == HttpStatus.UNAUTHORIZED.value(), // 401
-					response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci贸n")))
+					response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci髇")))
 	
 				.onStatus(status -> status.value() != HttpStatus.OK.value(),
 						response -> Mono.error(new SiiClientWebClientException("Problema con el servicio "
@@ -435,7 +435,7 @@ public class SiiClientServiceRestImp implements SiiClientService {
 					.retrieve()
 					
 					.onStatus(status -> status.value() == HttpStatus.UNAUTHORIZED.value(), // 401
-							response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci贸n")))
+							response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci髇")))
 
 					.onStatus(status -> status.value() != HttpStatus.OK.value(),
 					response -> Mono.error(new SiiClientWebClientException("Problema con el servicio "
@@ -463,7 +463,7 @@ public class SiiClientServiceRestImp implements SiiClientService {
 			throws SiiClientNotAuthorizeException, SiiClientWebClientException {
 
 		if (rut == null || dv == null || trackid == null || token == null) {
-			logger.error("No puede haber par谩mtros null");
+			logger.error("No puede haber par醡tros null");
 			return null;
 		}
 
@@ -487,7 +487,7 @@ public class SiiClientServiceRestImp implements SiiClientService {
 					.retrieve()
 
 					.onStatus(status -> status.value() == HttpStatus.UNAUTHORIZED.value(), // 401
-							response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci贸n")))
+							response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci髇")))
 					
 					.onStatus(status -> status.value() != HttpStatus.OK.value(),
 							response -> Mono.error(new SiiClientWebClientException("Problema con el servicio "
@@ -514,7 +514,7 @@ public class SiiClientServiceRestImp implements SiiClientService {
 			throws SiiClientNotAuthorizeException, SiiClientWebClientException {
 
 		if (rutEmisor == null || dvEmisor == null || tipo == null || folio == null || token == null) {
-			logger.error("par谩mtros insuficientes");
+			logger.error("par醡tros insuficientes");
 			return null;
 		}
 
@@ -547,7 +547,7 @@ public class SiiClientServiceRestImp implements SiiClientService {
 					.retrieve()
 					
 					.onStatus(status -> status.value() == HttpStatus.UNAUTHORIZED.value(), // 401
-							response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci贸n --->  " + response.statusCode().value()    )))
+							response -> Mono.error(new SiiClientNotAuthorizeException("Error de autorizaci髇 --->  " + response.statusCode().value()    )))
 					
 					.onStatus(status -> status.value() != HttpStatus.OK.value(),
 							response -> Mono.error(new SiiClientWebClientException("Problema con el servicio"

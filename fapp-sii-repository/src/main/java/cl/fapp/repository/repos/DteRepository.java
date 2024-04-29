@@ -153,6 +153,16 @@ public interface DteRepository extends JpaRepository<Dte, Long> {
 	Optional<List<Dte>> findAllByFolioAsignadoAndMontoAndTipoDocumentoAndEmisoreRutemisor(Long folioAsignado, BigInteger monto, Integer tipoDocumento, String rutEmisor);
 
 	/**
+	 * Busca por folio, rut emisor y tipo de documento.
+	 * 
+	 * @param folioAsignado   número de folio del DTE
+	 * @param rutEmisor       rut del emisor del DTE
+	 * @param tipoDocumento   tipo de documento del DTE
+	 * @return lista de DTE que cumplen los criterios de búsqueda
+	 */
+	List<Dte> findByFolioAsignadoAndEmisoreRutemisorAndTipoDocumento(Long folioAsignado, String rutEmisor, Integer tipoDocumento);
+	
+	/**
 	 * Reporta numero de dtes en estadoDte, por emisor en estadoEmisor
 	 * 
 	 * @param estadoEmisor en que estado debe encontrarse el Emisor

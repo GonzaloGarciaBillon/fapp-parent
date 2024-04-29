@@ -43,5 +43,50 @@
     "name": "app.sendgrid.key",
     "type": "java.lang.String",
     "description": "A description for 'app.sendgrid.key'"
+  },
+  {
+    "name": "app.sendgrid.mail.sender",
+    "type": "java.lang.String",
+    "description": "A description for 'app.sendgrid.mail.sender'"
+  },
+  {
+    "name": "app.sendgrid.templateId",
+    "type": "java.lang.String",
+    "description": "A description for 'app.sendgrid.templateId'"
+  },
+  {
+    "name": "jwt.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expiration'"
+  },
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.secret'"
+  },
+  {
+    "name": "jwt.pwd",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.pwd'"
+  },
+  {
+    "name": "jwt.username",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.username'"
+  },
+  {
+    "name": "resilience4j.ratelimiter.instances.flightSearchServiceLimiter.limitForPeriod",
+    "type": "java.lang.String",
+    "description": "A description for 'resilience4j.ratelimiter.instances.flightSearchServiceLimiter.limitForPeriod'"
+  },
+  {
+    "name": "resilience4j.ratelimiter.instances.flightSearchServiceLimiter.limitRefreshPeriod",
+    "type": "java.lang.String",
+    "description": "A description for 'resilience4j.ratelimiter.instances.flightSearchServiceLimiter.limitRefreshPeriod'"
+  },
+  {
+    "name": "resilience4j.ratelimiter.instances.flightSearchServiceLimiter.timeoutDuration",
+    "type": "java.lang.String",
+    "description": "A description for 'resilience4j.ratelimiter.instances.flightSearchServiceLimiter.timeoutDuration'"
   }
 ]}

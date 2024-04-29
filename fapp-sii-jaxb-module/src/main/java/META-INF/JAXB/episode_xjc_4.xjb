@@ -4,7 +4,7 @@
 
 Este archivo ha sido generado por Eclipse Implementation of JAXB v3.0.0 
 Visite https://eclipse-ee4j.github.io/jaxb-ri 
-Todas las modificaciones realizadas en este archivo se perderÃ¡n si se vuelve a compilar el esquema de origen. 
+Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
 Generado el: 2022.06.19 a las 02:38:17 PM CLT 
 
   -->
@@ -63,4 +63,3 @@ Generado el: 2022.06.19 a las 02:38:17 PM CLT
     </jaxb:bindings>
   </jaxb:bindings>
 </jaxb:bindings>
-

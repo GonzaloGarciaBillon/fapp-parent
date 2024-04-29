@@ -8,7 +8,7 @@ import cl.fapp.repository.model.SupportTicket;
 
 @Repository
 @RepositoryRestResource(exported = false)
-public interface SupportTicketRepository extends JpaRepository<SupportTicket, Integer> {
+public interface SupportTicketRepository extends JpaRepository<SupportTicket, Long> {
 
 
 }

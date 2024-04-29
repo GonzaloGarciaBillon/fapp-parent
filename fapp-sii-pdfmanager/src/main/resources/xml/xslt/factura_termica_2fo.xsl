@@ -76,11 +76,11 @@
 					</fo:table-row>
 					
 					<fo:table-row>
-						<fo:table-cell text-align="left">
+						<fo:table-cell text-align="left" font-weight="bold">
 						   <fo:block>Fecha: <xsl:value-of select="concat(' ', substring(TmstFirma,9,2),'/',substring(TmstFirma,6,2),'/',substring(TmstFirma,1,4))" />
 						   </fo:block>
 					    </fo:table-cell>
-						<fo:table-cell text-align="right">
+						<fo:table-cell text-align="right" font-weight="bold">
 						   <fo:block>&#160;Hora: <xsl:value-of select="concat(' ', substring(TmstFirma,12,5))" />
 						   </fo:block>
 					    </fo:table-cell>
@@ -94,102 +94,95 @@
 			<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 			<!-- Lista Detalle -->
 			<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-			<fo:table font-size="8pt" font-family="monospace" color="black" text-align="left"
-				space-before="8pt" margin-bottom="2cm">
-				<fo:table-column column-width="66%" />
-				<fo:table-column column-width="17%" />
-				<fo:table-column column-width="17%" />
+			<fo:table font-size="8pt" font-family="monospace" color="black" text-align="left" space-before="8pt" margin-bottom="2cm">
+				<fo:table-column column-width="50%"/>
+				<fo:table-column column-width="20%"/>
+				<fo:table-column column-width="15%"/>
+				<fo:table-column column-width="15%"/>
 
 				<fo:table-header>
-					<fo:table-cell text-align="left">
+
+					<fo:table-cell text-align="left" >
 						<fo:block>
-							<fo:inline font-weight="normal">Detalle</fo:inline>
+							<fo:inline font-weight="bold">Detalle</fo:inline>
 						</fo:block>
 					</fo:table-cell>
-
 					<fo:table-cell>
 						<fo:block>
-							<fo:inline font-weight="normal">
-								Unidad
-							</fo:inline>
+							<fo:inline font-weight="bold">Cant.</fo:inline>
 						</fo:block>
 					</fo:table-cell>
 
 					<fo:table-cell text-align="right">
 						<fo:block>
-							<fo:inline font-weight="normal">
-								Total
-							</fo:inline>
+							<fo:inline font-weight="bold">P.Unit.</fo:inline>
 						</fo:block>
 					</fo:table-cell>
 
+					<fo:table-cell text-align="right">
+						<fo:block>
+							<fo:inline font-weight="bold">Total</fo:inline>
+						</fo:block>
+					</fo:table-cell>
 				</fo:table-header>
 
 
 				<fo:table-body>
 					<fo:table-row>
-						<fo:table-cell number-columns-spanned="3" border-top-width="0.3pt" border-top-style="solid"
-							height="0.3cm">
-							<fo:block />
+						<fo:table-cell number-columns-spanned="4" border-top-width="0.6pt" border-top-style="solid" height="0.3cm">
+							<fo:block/>
 						</fo:table-cell>
 					</fo:table-row>
 
-					<xsl:apply-templates select="Detalle" />
+					<xsl:apply-templates select="Detalle"/>
 
 					<fo:table-row>
-						<fo:table-cell number-columns-spanned="3" border-top-width="0.3pt" border-top-style="solid"
-							height="0.3cm">
-							<fo:block />
+						<fo:table-cell number-columns-spanned="4" border-top-width="0.6pt" border-top-style="solid" height="0.3cm">
+							<fo:block/>
 						</fo:table-cell>
 					</fo:table-row>
 
 
 					<fo:table-row>
-						<fo:table-cell text-align="right" column-number="2" height="0.5cm">
-							<fo:block>
-								<fo:inline font-weight="regular">
-									Suma
-								</fo:inline>
-							</fo:block>
-						</fo:table-cell>
 						<fo:table-cell text-align="right" column-number="3" height="0.5cm">
 							<fo:block>
+								<fo:inline font-weight="regular">Neto</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell text-align="right" column-number="4" height="0.5cm">
+							<fo:block>
 								<fo:inline font-weight="regular">
-									<xsl:value-of select="Encabezado/Totales/MntNeto" />
+									<xsl:value-of select="Encabezado/Totales/MntNeto"/>
 								</fo:inline>
 							</fo:block>
 						</fo:table-cell>
 					</fo:table-row>
 					<fo:table-row>
-						<fo:table-cell text-align="right" column-number="2" height="0.5cm">
-							<fo:block>
-								<fo:inline font-weight="regular">
-									IVA
-									<xsl:value-of select="Encabezado/Totales/TasaIVA" />
-									%
-								</fo:inline>
-							</fo:block>
-						</fo:table-cell>
 						<fo:table-cell text-align="right" column-number="3" height="0.5cm">
 							<fo:block>
+								<fo:inline font-weight="regular">IVA
+									<xsl:value-of select="Encabezado/Totales/TasaIVA"/>
+								</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell text-align="right" column-number="4" height="0.5cm">
+							<fo:block>
 								<fo:inline font-weight="regular">
-									<xsl:value-of select="Encabezado/Totales/IVA" />
+									<xsl:value-of select="Encabezado/Totales/IVA"/>
 								</fo:inline>
 							</fo:block>
 						</fo:table-cell>
 					</fo:table-row>
 					<fo:table-row>
-						<fo:table-cell text-align="right" column-number="2" height="0.5cm">
+						<fo:table-cell text-align="right" column-number="3" height="0.5cm">
+							<fo:block>
+								<fo:inline font-weight="bold">Total</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell text-align="right" column-number="4" height="0.5cm">
 							<fo:block>
 								<fo:inline font-weight="bold">
-									Total
-								</fo:inline>
-							</fo:block>
-						</fo:table-cell>
-						<fo:table-cell text-align="right" column-number="3" height="0.5cm">
-							<fo:block>
-								<fo:inline font-weight="bold">
-									<xsl:value-of select="Encabezado/Totales/MntTotal" />
+									<xsl:value-of select="Encabezado/Totales/MntTotal"/>
 								</fo:inline>
 							</fo:block>
 						</fo:table-cell>
@@ -197,35 +190,32 @@
 				</fo:table-body>
 			</fo:table>
 
-			<xsl:apply-templates select="TED" />
-
+			<xsl:apply-templates select="TED"/>
 		</fo:block>
-
 	</xsl:template>
-
-
-
-
-
 
 
 	<xsl:template match="Detalle">
 		<fo:table-row>
 			<fo:table-cell text-align="left" height="0.5cm">
 				<fo:block>
-					<xsl:value-of select="QtyItem" />
-					-
-					<xsl:value-of select="NmbItem" />
+					<xsl:value-of select="NmbItem"/>
+				</fo:block>
+			</fo:table-cell>
+			<fo:table-cell text-align="center" height="0.5cm">
+				<fo:block>
+					<xsl:value-of select="QtyItem"/>
+					<xsl:value-of select="UnmdItem"/>
 				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell text-align="right" height="0.5cm">
 				<fo:block>
-					<xsl:value-of select="PrcItem" />
+					<xsl:value-of select="PrcItem"/>
 				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell text-align="right" height="0.5cm">
 				<fo:block>
-					<xsl:value-of select="MontoItem" />
+					<xsl:value-of select="MontoItem"/>
 				</fo:block>
 			</fo:table-cell>
 		</fo:table-row>
@@ -239,9 +229,9 @@
 		<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<!-- Recuadro folio -->
 		<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-		<fo:block-container width="6.5cm" border-color="grey" border-style="solid" border-width="0.3mm"
+		<fo:block-container width="6.5cm" border-color="black" border-style="solid" border-width="0.8mm"
 			padding="1mm">
-			<fo:block font-size="11pt" font-family="Courier" color="grey" text-align="center" hyphenate="false">
+			<fo:block font-size="11pt" font-family="Courier" color="black" text-align="center" hyphenate="false">
 				R.U.T.:
 				<xsl:call-template name="RutFormat">
 					<xsl:with-param name="rut">
@@ -249,7 +239,7 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</fo:block>
-			<fo:block font-size="11pt" font-family="Courier" color="grey" text-align="center">
+			<fo:block font-size="11pt" font-family="Courier" color="black" text-align="center">
 				<xsl:choose>
 					<xsl:when test="$tipo=39">
 						BOLETA ELECTRONICA
@@ -271,13 +261,13 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</fo:block>
-			<fo:block font-size="11pt" font-family="Courier" color="grey" text-align="center">
+			<fo:block font-size="11pt" font-family="Courier" color="black" text-align="center">
 				N&#176;<xsl:value-of select="$folio" />
 			</fo:block>
 		</fo:block-container>
 
 		<fo:block-container>
-			<fo:block padding-top="0.3mm" font-size="9pt" font-family="Helvetica" font-weight="bold" color="grey"
+			<fo:block padding-top="0.3mm" font-size="9pt" font-family="Helvetica" font-weight="bold" color="black"
 				text-align="center" hyphenate="false">
 				SII -
 				<xsl:value-of select="CmnaOrigen" />
@@ -298,12 +288,12 @@
 
 		<fo:block-container>
 
-			<fo:block font-size="10pt" font-family="sans-serif" font-weight="regular" text-align="left" color="black">
+			<fo:block font-size="9pt" font-family="sans-serif" font-weight="bold" text-align="left" color="black">
 				<xsl:value-of select="RznSocEmisor" />
 			</fo:block>
 
 			<xsl:if test="Sucursal">
-				<fo:block font-weight="bold" font-size="9pt" font-family="sans-serif" language="es" hyphenate="true"
+				<fo:block font-weight="regular" font-size="8pt" font-family="sans-serif" language="es" hyphenate="true"
 					color="black" text-align="left">
 					Sucursal:
 					<xsl:value-of select="Sucursal" />
@@ -313,21 +303,19 @@
 				</fo:block>
 			</xsl:if>
 
-			<fo:block font-weight="bold" font-size="9pt" font-family="sans-serif" language="es" hyphenate="true"
+			<fo:block font-weight="regular" font-size="8pt" font-family="sans-serif" language="es" hyphenate="true"
 				color="black" text-align="left">
 				<xsl:value-of select="GiroEmisor" />
 			</fo:block>
 
-			<fo:block font-weight="bold" font-size="9pt" font-family="sans-serif" language="es" hyphenate="true"
+			<fo:block font-weight="regular" font-size="8pt" font-family="sans-serif" language="es" hyphenate="true"
 				color="black" text-align="left">
 				<xsl:value-of select="DirOrigen" />
 			</fo:block>
 
-			<fo:block font-weight="bold" font-size="9pt" font-family="sans-serif" language="es" hyphenate="true"
+			<fo:block font-weight="regular" font-size="8pt" font-family="sans-serif" language="es" hyphenate="true"
 				color="black" text-align="left">
-				<xsl:value-of select="CmnaOrigen" />
-				,
-				<xsl:value-of select="CiudadOrigen" />
+				<xsl:value-of select="CmnaOrigen" />, <xsl:value-of select="CiudadOrigen" />
 			</fo:block>
 
 		</fo:block-container>
@@ -396,6 +384,7 @@
 				Res. <xsl:value-of select="$resolcode" /> de <xsl:value-of select="$resoldate" /> - Verifique
 				Documento en www.sii.cl
 			</fo:block>
+			<fo:block font-size="3pt" linefeed-treatment="preserve" text-align="center">&#xA;&#xA;&#xA;.</fo:block>
 		</fo:block-container>
 	</xsl:template>
 
@@ -421,7 +410,7 @@
 				Pago a Cta. Corriente
 			</xsl:when>
 			<xsl:when test="$medioPago='TC'">
-				Tarjeta de CrÃ©dito
+				Tarjeta de Crédito
 			</xsl:when>
 			<xsl:when test="$medioPago='CF'">
 				Cheque a Fecha
@@ -436,7 +425,7 @@
 				(Contado)
 			</xsl:when>
 			<xsl:when test="$formaPago=2">
-				(CrÃ©dito)
+				(Crédito)
 			</xsl:when>
 			<xsl:when test="$formaPago=3">
 				(Sin Valor)

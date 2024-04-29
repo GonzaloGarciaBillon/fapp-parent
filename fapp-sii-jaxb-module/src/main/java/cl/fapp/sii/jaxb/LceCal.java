@@ -92,21 +92,21 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "signature"
 })
 @XmlRootElement(name = "LceCal", namespace = "http://www.sii.cl/SiiLce")
-@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
 public class LceCal
     implements Serializable
 {
 
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     private final static long serialVersionUID = -1L;
     @XmlElement(name = "DocumentoCal", namespace = "http://www.sii.cl/SiiLce", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     protected LceCal.DocumentoCal documentoCal;
     @XmlElement(name = "Signature", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     protected Signature signature;
     @XmlAttribute(name = "version", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     protected BigDecimal version;
 
     /**
@@ -117,7 +117,7 @@ public class LceCal
      *     {@link LceCal.DocumentoCal }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public LceCal.DocumentoCal getDocumentoCal() {
         return documentoCal;
     }
@@ -130,7 +130,7 @@ public class LceCal
      *     {@link LceCal.DocumentoCal }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public void setDocumentoCal(LceCal.DocumentoCal value) {
         this.documentoCal = value;
     }
@@ -143,7 +143,7 @@ public class LceCal
      *     {@link Signature }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public Signature getSignature() {
         return signature;
     }
@@ -156,7 +156,7 @@ public class LceCal
      *     {@link Signature }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public void setSignature(Signature value) {
         this.signature = value;
     }
@@ -169,7 +169,7 @@ public class LceCal
      *     {@link BigDecimal }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public BigDecimal getVersion() {
         if (version == null) {
             return new BigDecimal("1.0");
@@ -186,7 +186,7 @@ public class LceCal
      *     {@link BigDecimal }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public void setVersion(BigDecimal value) {
         this.version = value;
     }
@@ -255,44 +255,44 @@ public class LceCal
         "periodoVigencia",
         "tmstFirma"
     })
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public static class DocumentoCal
         implements Serializable
     {
 
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         private final static long serialVersionUID = -1L;
         @XmlElement(name = "RutDistribuidor", namespace = "http://www.sii.cl/SiiLce", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected String rutDistribuidor;
         @XmlElement(name = "TipoCertificado", namespace = "http://www.sii.cl/SiiLce", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected String tipoCertificado;
         @XmlElement(name = "Clase", namespace = "http://www.sii.cl/SiiLce", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected String clase;
         @XmlElement(name = "TipoLCE", namespace = "http://www.sii.cl/SiiLce", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected BigInteger tipoLCE;
         @XmlElement(name = "FchEmision", namespace = "http://www.sii.cl/SiiLce", required = true, type = String.class)
         @XmlJavaTypeAdapter(DateAdapter.class)
         @XmlSchemaType(name = "date")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected Date fchEmision;
         @XmlElement(name = "PeriodoVigencia", namespace = "http://www.sii.cl/SiiLce", required = true)
         @XmlSchemaType(name = "gYear")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected XMLGregorianCalendar periodoVigencia;
         @XmlElement(name = "TmstFirma", namespace = "http://www.sii.cl/SiiLce", required = true, type = String.class)
         @XmlJavaTypeAdapter(DateTimeAdapter.class)
         @XmlSchemaType(name = "dateTime")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected Date tmstFirma;
         @XmlAttribute(name = "ID", required = true)
         @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
         @XmlID
         @XmlSchemaType(name = "ID")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected String id;
 
         /**
@@ -303,7 +303,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public String getRutDistribuidor() {
             return rutDistribuidor;
         }
@@ -316,7 +316,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setRutDistribuidor(String value) {
             this.rutDistribuidor = value;
         }
@@ -329,7 +329,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public String getTipoCertificado() {
             return tipoCertificado;
         }
@@ -342,7 +342,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setTipoCertificado(String value) {
             this.tipoCertificado = value;
         }
@@ -355,7 +355,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public String getClase() {
             return clase;
         }
@@ -368,7 +368,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setClase(String value) {
             this.clase = value;
         }
@@ -381,7 +381,7 @@ public class LceCal
          *     {@link BigInteger }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public BigInteger getTipoLCE() {
             return tipoLCE;
         }
@@ -394,7 +394,7 @@ public class LceCal
          *     {@link BigInteger }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setTipoLCE(BigInteger value) {
             this.tipoLCE = value;
         }
@@ -407,7 +407,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public Date getFchEmision() {
             return fchEmision;
         }
@@ -420,7 +420,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setFchEmision(Date value) {
             this.fchEmision = value;
         }
@@ -433,7 +433,7 @@ public class LceCal
          *     {@link XMLGregorianCalendar }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public XMLGregorianCalendar getPeriodoVigencia() {
             return periodoVigencia;
         }
@@ -446,7 +446,7 @@ public class LceCal
          *     {@link XMLGregorianCalendar }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setPeriodoVigencia(XMLGregorianCalendar value) {
             this.periodoVigencia = value;
         }
@@ -459,7 +459,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public Date getTmstFirma() {
             return tmstFirma;
         }
@@ -472,7 +472,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setTmstFirma(Date value) {
             this.tmstFirma = value;
         }
@@ -485,7 +485,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public String getID() {
             return id;
         }
@@ -498,7 +498,7 @@ public class LceCal
          *     {@link String }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setID(String value) {
             this.id = value;
         }

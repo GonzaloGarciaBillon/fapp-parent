@@ -2,6 +2,7 @@ package cl.fapp.restapi.controller.dte;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,14 +34,18 @@ import cl.fapp.restapi.controller.dte.mapper.GenerarDTEControllerMapper;
 import cl.fapp.restapi.controller.repos.dto.KeyinfoFindResponse;
 import cl.fapp.restapi.controller.utils.KeystoreFirmanteUtils;
 import cl.fapp.restapi.dte.domain.DTEEmisor;
+import cl.fapp.restapi.dte.domain.DTEReferencia;
 import cl.fapp.restapi.dte.dto.GenerarDTERequest;
 import cl.fapp.restapi.dte.dto.GenerarNotaCreditoRequest;
 import cl.fapp.restapi.dte.dto.GenerarNotaDebitoRequest;
 import cl.fapp.restapi.dte.mapper.NotaCreditoMapper;
 import cl.fapp.restapi.dte.mapper.NotaDebitoMapper;
 import cl.fapp.sii.jaxb.DTE;
+import cl.fapp.sii.jaxb.DTE.Documento.Detalle;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import cl.fapp.restapi.dte.domain.DTEDescuentoRecargo;
+import cl.fapp.restapi.dte.domain.DTEDetalle;
 
 @Slf4j
 @RestController
@@ -234,15 +239,85 @@ public class GenerarDteController {
 				log.error("No fue posible generar DTE");
 				return JSend.error("No fue posible generar DTE");
 			}
+			String logMessage = "";
+			for (DTEAndVerbatimCAF documento : documentos) {
+				logMessage = logMessage.concat(
+				"\n Request generar factura afecta recibido: \n\n"
+				+"Encabezado: \n"
+				+"\tEmisor: "+ payload.getRutEmisor() + "\n"
+				+"\tactividadEconomica: "+ payload.getActividadEconomica() + "\n"
+				+"\trutfirmante: "+ payload.getRutFirmante() + "\n\n"
+				+"DTE: \n"
+				+"\t TipoDocumento: " + documento.getDte().getDocumento().getEncabezado().getIdDoc().getTipoDTE()+"\n"
+				+"\t IndMontoNeto: " + documento.getDte().getDocumento().getEncabezado().getIdDoc().getMntPagos()+"\n"
+				+"\t IndicadorServicio: " + documento.getDte().getDocumento().getEncabezado().getIdDoc().getIndServicio()+"\n"
+				+"\t FechaEmision: " + documento.getDte().getDocumento().getEncabezado().getIdDoc().getFchEmis()+"\n"
+				+"\t MedioPago: " + documento.getDte().getDocumento().getEncabezado().getIdDoc().getMedioPago()+"\n"
+				+"\t FormaPago: " + documento.getDte().getDocumento().getEncabezado().getIdDoc().getFmaPago()+"\n"
+				//+"\t CodigoInterno: " + documento.getDte().getDocumento().get+"\n"
+				+"\n\t Receptor: "+"\n"
+				+"\t\t Rut: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getRUTRecep()+"\n"
+				+"\t\t CodigoInterno Receptor: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getCdgIntRecep()+"\n"
+				+"\t\t Razon Social: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getRznSocRecep()+"\n"
+				+"\t\t Giro: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getGiroRecep()+"\n"
+				+"\t\t Contacto: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getContacto()+"\n"
+				+"\t\t Correo: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getCorreoRecep()+"\n"
+				+"\t\t Direccion: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getDirRecep()+"\n"
+				+"\t\t Comuna: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getCiudadRecep()+"\n"
+				+"\t\t Ciudad: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getCiudadRecep()+"\n"
+				+"\t\t direccionPostal: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getDirPostal()+"\n"
+				+"\t\t comunaPostal: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getCmnaPostal()+"\n"
+				+"\t\t ciudadPostal: " + documento.getDte().getDocumento().getEncabezado().getReceptor().getCiudadPostal()+"\n");
+			
+				for (DTE.Documento.Detalle detalle : documento.getDte().getDocumento().getDetalles()) {
+					logMessage = logMessage.concat("\n \t Detalle: \n"
+						+"\t\t nroLineaDetalle: " + detalle.getNroLinDet() + "\n"
+						+ "\t\t nombreProducto: " + detalle.getNmbItem() + "\n"
+						+ "\t\t cantidadProducto: " + detalle.getQtyItem() + "\n"
+						+ "\t\t umProducto: " + detalle.getUnmdItem() + "\n"
+						+ "\t\t precioUnitario: " + detalle.getPrcItem() + "\n"
+						+ "\t\t montoItem: " + detalle.getMontoItem() + "\n"
+						+ "\t\t indicadorExencion: " + detalle.getIndExe() + "\n"
+						+ "\t\t descuentoPct: " + detalle.getDescuentoPct() + "\n"
+						+ "\t\t descuentoMonto: " + detalle.getDescuentoMonto() + "\n"
+						+ "\t\t descripcionItem: " + detalle.getDscItem() + "\n"
+						+ "\t\t recargoMonto: " + detalle.getRecargoMonto() + "\n"
+						+ "\t\t recargoPct: " + detalle.getRecargoPct() + "\n"
+					);
+				}
+				for (DTE.Documento.DscRcgGlobal descuentoRecargo : documento.getDte().getDocumento().getDscRcgGlobals()) {
+					logMessage = logMessage.concat("\n \t DescuentosRecargos: \n"
+						+"\t\t nroLineaDR: " + descuentoRecargo.getNroLinDR()+"\n"
+						+"\t\t tipoMovimiento: " + descuentoRecargo.getTpoMov()+"\n"
+						+"\t\t glosaDR: " + descuentoRecargo.getGlosaDR()+"\n"
+						+"\t\t tipoValor: " + descuentoRecargo.getTpoValor()+"\n"
+						+"\t\t valorMovimiento: " + descuentoRecargo.getValorDR()+"\n"
+						+"\t\t valorIndicadorEx: " + descuentoRecargo.getIndExeDR()+"\n"
+						+"\t\t valorDROtraMoneda: "+ descuentoRecargo.getValorDROtrMnda()+"\n"
+
+						);
+				}
+				log.debug("\n \t Referencias: \n" + payload.getReferencias() + "\n");
+				for (DTE.Documento.Referencia referencia : documento.getDte().getDocumento().getReferencias()) {
+					logMessage = logMessage.concat(
+						"\t\t nroLineaReferencia: " + referencia.getNroLinRef()+"\n"
+						+"\t\t tipoReferencia: " + referencia.getTpoDocRef()+"\n"
+						+"\t\t folioReferencia: " + referencia.getFolioRef()+"\n"
+						+"\t\t fechaReferencia: " + referencia.getFchRef()+"\n"
+						+"\t\t codigoReferencia: " + referencia.getCodRef()+"\n"
+						+"\t\t razonReferencia: " + referencia.getRazonRef()+"\n"
+						);
+				}
+			}
+			log.debug(logMessage);
 			// Declarar la variable fuera del bucle
 			Dte newdte = null;
 			// guarda los documentos jaxb en la base de datos
 			for (DTEAndVerbatimCAF jaxbDTEtype : documentos) {
 				String xmlDTESigned = signJaxbDTE(jaxbDTEtype, rutemisor, rutfirmante);
 				newdte = saveNewDteEntity(emisor.get(), rutfirmante, jaxbDTEtype, xmlDTESigned);
-				log.debug("Se crea el dte en la base de datos con id=" + newdte.getDteUuid());
+				log.debug("Se crea el dte en la base de datos con uuid=" + newdte.getDteUuid());
 			}
-			log.debug("Request procesado correctamente");
 			
 			return JSend.success(newdte.getDteUuid());
 

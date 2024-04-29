@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.classic.Logger;
 import cl.fapp.SIIDocumentFactoryProvider;
 import cl.fapp.SiiDocumentFactoryConfiguration;
 import cl.fapp.common.domain.ConstantesTipoDocumento;
@@ -260,12 +261,7 @@ public class GenerarBoletasSetDTEController {
 
 			String startString = "<\\/Caratula>";
 			String endString = "<\\/SetDTE>";
-
 			xmlcontent = xmlcontent.replaceAll(startString + "[\\s\\S]*" + endString, startString + xmlboletas + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + endString);
-			//log.debug("xmlcontent (sin saltos de linea extra)=" + xmlcontent);
-
-			//-->Document xmlcontent2 = docxml.marshallToW3CDocument(envBoleta);
-			//-->log.debug("xmlcontent2=" + xmlcontent2.toString());
 
 			// TODO: parche para regularizar las firmas de los documentos (cuando se lee desde el jaxb)
 			// xmlcontent = xmlcontent.replace("<ns2:Signature>", "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">").replace("ns2:", "");

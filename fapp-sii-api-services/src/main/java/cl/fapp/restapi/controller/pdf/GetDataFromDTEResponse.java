@@ -17,4 +17,8 @@ public class GetDataFromDTEResponse {
 	String ted;
 	
 	String logo;
+
+	String xml;
+
+	String trackid;
 }

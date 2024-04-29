@@ -44,12 +44,12 @@ public class ApiRestController {
 			boletaEnvioStatusResponse = siiClientServiceRestImp.envioStatus(boletaStatusEnvioRequest.getRut(), boletaStatusEnvioRequest.getDv(), boletaStatusEnvioRequest.getTrackId(), token);
 			
 			if (boletaEnvioStatusResponse == null) {
-				return JSend.error(-1, "Error en la invocaci贸n", null);
+				return JSend.error(-1, "Error en la invocaci髇", null);
 			}
 			
 			
 		} catch (SiiClientNotAuthorizeException e) {
-			return JSend.error(-1, "Error autorizaci贸n. Token inv谩lido", "Status 401");
+			return JSend.error(-1, "Error autorizaci髇. Token inv醠ido", "Status 401");
 		}
 		catch (SiiClientWebClientException e) {
 			return JSend.error(-1, "Error en el cliente", e.getMessage());
@@ -80,7 +80,7 @@ public class ApiRestController {
 					boletaStatusRequest.getMonto(), boletaStatusRequest.getFechaEmision(), token);
 			
 			if (boletaStatusResponse == null) {
-				return JSend.error(-1, "Error en la invocaci贸n", null);
+				return JSend.error(-1, "Error en la invocaci髇", null);
 			}
 			
 			
@@ -88,7 +88,7 @@ public class ApiRestController {
 			return JSend.error(-1, "Error en el cliente", e.getMessage());
 		}
 		catch (SiiClientNotAuthorizeException e) {
-			return JSend.error(-1, "Error autorizaci贸n. Token inv谩lido", e.getMessage());
+			return JSend.error(-1, "Error autorizaci髇. Token inv醠ido", e.getMessage());
 
 		} 
 		catch (Exception e) {

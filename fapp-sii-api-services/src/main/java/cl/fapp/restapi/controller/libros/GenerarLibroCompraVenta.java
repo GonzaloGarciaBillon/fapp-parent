@@ -335,7 +335,7 @@ public class GenerarLibroCompraVenta {
 			caratula.setTipoOperacion(tipoOperacion.getValue());
 
 			// Periodo Tributario , en formato AAAA-MM (Año (4),Mes (2)).
-			// Si “tipo de Libro” es ESPECIAL y abarca más de un período se debe indicar la fecha del primer período tributario.
+			// Si tipo de Libro es ESPECIAL y abarca más de un período se debe indicar la fecha del primer período tributario.
 			// Para la DJ 3328:
 			// Periodo Tributario, en formato AAAA-MM (Año (4),Mes (2)).
 			// Debe indicarse el período del libro enviado. Se debe enviar un libro por cada período.

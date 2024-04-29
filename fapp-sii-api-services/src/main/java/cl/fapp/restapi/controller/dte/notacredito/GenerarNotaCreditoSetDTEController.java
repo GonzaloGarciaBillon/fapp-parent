@@ -199,7 +199,7 @@ public class GenerarNotaCreditoSetDTEController {
 					newSetDte.setEstado(EntitySetDTEStatuses.ENVIOPENDIENTE.toString());
 					String ID = envDTE.getSetDTE().getID();
 					String setdteURI = "#" + ID;
-
+					log.debug("xmlcontent antes:" + xmlcontent);
 					String xmlsetdteSigned = docxml.sign(
 							new ByteArrayInputStream(xmlcontent.getBytes("ISO-8859-1")),
 							"EnvioDTE",
@@ -207,6 +207,7 @@ public class GenerarNotaCreditoSetDTEController {
 							documento.getID(),
 							kinfo.getCertificate(),
 							kinfo.getPrivatekey());
+					log.debug("xmlsetdteSigned "+xmlsetdteSigned);
 					if (xmlsetdteSigned == null) {
 						log.error("Ocurrio un error firmando URI=" + setdteURI + ". No fue posible firmar SetDTE ID=" + ID);
 						throw new Exception("No fue posible generar DTE ID=" + ID);

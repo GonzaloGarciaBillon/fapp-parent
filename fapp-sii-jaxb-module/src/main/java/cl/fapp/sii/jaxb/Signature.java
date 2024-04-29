@@ -174,23 +174,23 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "keyInfo"
 })
 @XmlRootElement(name = "Signature", namespace = "http://www.w3.org/2000/09/xmldsig#")
-@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
 public class Signature
     implements Serializable
 {
 
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     private final static long serialVersionUID = -1L;
     @XmlElement(name = "SignedInfo", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     protected Signature.SignedInfo signedInfo;
     @XmlElement(name = "SignatureValue", required = true, type = String.class)
     @XmlJavaTypeAdapter(Base64Adapter.class)
     @XmlSchemaType(name = "base64Binary")
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     protected byte[] signatureValue;
     @XmlElement(name = "KeyInfo", required = true)
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     protected Signature.KeyInfo keyInfo;
 
     /**
@@ -201,7 +201,7 @@ public class Signature
      *     {@link Signature.SignedInfo }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public Signature.SignedInfo getSignedInfo() {
         return signedInfo;
     }
@@ -214,7 +214,7 @@ public class Signature
      *     {@link Signature.SignedInfo }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public void setSignedInfo(Signature.SignedInfo value) {
         this.signedInfo = value;
     }
@@ -227,7 +227,7 @@ public class Signature
      *     {@link String }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public byte[] getSignatureValue() {
         return signatureValue;
     }
@@ -240,7 +240,7 @@ public class Signature
      *     {@link String }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public void setSignatureValue(byte[] value) {
         this.signatureValue = value;
     }
@@ -253,7 +253,7 @@ public class Signature
      *     {@link Signature.KeyInfo }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public Signature.KeyInfo getKeyInfo() {
         return keyInfo;
     }
@@ -266,7 +266,7 @@ public class Signature
      *     {@link Signature.KeyInfo }
      *     
      */
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public void setKeyInfo(Signature.KeyInfo value) {
         this.keyInfo = value;
     }
@@ -342,18 +342,18 @@ public class Signature
         "keyValue",
         "x509Data"
     })
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public static class KeyInfo
         implements Serializable
     {
 
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         private final static long serialVersionUID = -1L;
         @XmlElement(name = "KeyValue", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected Signature.KeyInfo.KeyValue keyValue;
         @XmlElement(name = "X509Data", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected Signature.KeyInfo.X509Data x509Data;
 
         /**
@@ -364,7 +364,7 @@ public class Signature
          *     {@link Signature.KeyInfo.KeyValue }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public Signature.KeyInfo.KeyValue getKeyValue() {
             return keyValue;
         }
@@ -377,7 +377,7 @@ public class Signature
          *     {@link Signature.KeyInfo.KeyValue }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setKeyValue(Signature.KeyInfo.KeyValue value) {
             this.keyValue = value;
         }
@@ -390,7 +390,7 @@ public class Signature
          *     {@link Signature.KeyInfo.X509Data }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public Signature.KeyInfo.X509Data getX509Data() {
             return x509Data;
         }
@@ -403,7 +403,7 @@ public class Signature
          *     {@link Signature.KeyInfo.X509Data }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setX509Data(Signature.KeyInfo.X509Data value) {
             this.x509Data = value;
         }
@@ -458,18 +458,18 @@ public class Signature
             "dsaKeyValue",
             "rsaKeyValue"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public static class KeyValue
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "DSAKeyValue", namespace = "http://www.w3.org/2000/09/xmldsig#")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected Signature.KeyInfo.KeyValue.DSAKeyValue dsaKeyValue;
             @XmlElement(name = "RSAKeyValue", namespace = "http://www.w3.org/2000/09/xmldsig#")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected Signature.KeyInfo.KeyValue.RSAKeyValue rsaKeyValue;
 
             /**
@@ -480,7 +480,7 @@ public class Signature
              *     {@link Signature.KeyInfo.KeyValue.DSAKeyValue }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public Signature.KeyInfo.KeyValue.DSAKeyValue getDSAKeyValue() {
                 return dsaKeyValue;
             }
@@ -493,7 +493,7 @@ public class Signature
              *     {@link Signature.KeyInfo.KeyValue.DSAKeyValue }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setDSAKeyValue(Signature.KeyInfo.KeyValue.DSAKeyValue value) {
                 this.dsaKeyValue = value;
             }
@@ -506,7 +506,7 @@ public class Signature
              *     {@link Signature.KeyInfo.KeyValue.RSAKeyValue }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public Signature.KeyInfo.KeyValue.RSAKeyValue getRSAKeyValue() {
                 return rsaKeyValue;
             }
@@ -519,7 +519,7 @@ public class Signature
              *     {@link Signature.KeyInfo.KeyValue.RSAKeyValue }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setRSAKeyValue(Signature.KeyInfo.KeyValue.RSAKeyValue value) {
                 this.rsaKeyValue = value;
             }
@@ -554,32 +554,32 @@ public class Signature
                 "g",
                 "y"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public static class DSAKeyValue
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "P", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
                 @XmlJavaTypeAdapter(Base64Adapter.class)
                 @XmlSchemaType(name = "base64Binary")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected byte[] p;
                 @XmlElement(name = "Q", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
                 @XmlJavaTypeAdapter(Base64Adapter.class)
                 @XmlSchemaType(name = "base64Binary")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected byte[] q;
                 @XmlElement(name = "G", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
                 @XmlJavaTypeAdapter(Base64Adapter.class)
                 @XmlSchemaType(name = "base64Binary")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected byte[] g;
                 @XmlElement(name = "Y", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
                 @XmlJavaTypeAdapter(Base64Adapter.class)
                 @XmlSchemaType(name = "base64Binary")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected byte[] y;
 
                 /**
@@ -590,7 +590,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public byte[] getP() {
                     return p;
                 }
@@ -603,7 +603,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setP(byte[] value) {
                     this.p = value;
                 }
@@ -616,7 +616,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public byte[] getQ() {
                     return q;
                 }
@@ -629,7 +629,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setQ(byte[] value) {
                     this.q = value;
                 }
@@ -642,7 +642,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public byte[] getG() {
                     return g;
                 }
@@ -655,7 +655,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setG(byte[] value) {
                     this.g = value;
                 }
@@ -668,7 +668,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public byte[] getY() {
                     return y;
                 }
@@ -681,7 +681,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setY(byte[] value) {
                     this.y = value;
                 }
@@ -714,22 +714,22 @@ public class Signature
                 "modulus",
                 "exponent"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public static class RSAKeyValue
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "Modulus", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
                 @XmlJavaTypeAdapter(Base64Adapter.class)
                 @XmlSchemaType(name = "base64Binary")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected byte[] modulus;
                 @XmlElement(name = "Exponent", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
                 @XmlJavaTypeAdapter(Base64Adapter.class)
                 @XmlSchemaType(name = "base64Binary")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected byte[] exponent;
 
                 /**
@@ -740,7 +740,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public byte[] getModulus() {
                     return modulus;
                 }
@@ -753,7 +753,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setModulus(byte[] value) {
                     this.modulus = value;
                 }
@@ -766,7 +766,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public byte[] getExponent() {
                     return exponent;
                 }
@@ -779,7 +779,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setExponent(byte[] value) {
                     this.exponent = value;
                 }
@@ -812,17 +812,17 @@ public class Signature
         @XmlType(name = "", propOrder = {
             "x509Certificate"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public static class X509Data
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "X509Certificate", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
             @XmlJavaTypeAdapter(Base64Adapter.class)
             @XmlSchemaType(name = "base64Binary")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected byte[] x509Certificate;
 
             /**
@@ -833,7 +833,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public byte[] getX509Certificate() {
                 return x509Certificate;
             }
@@ -846,7 +846,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setX509Certificate(byte[] value) {
                 this.x509Certificate = value;
             }
@@ -945,21 +945,21 @@ public class Signature
         "signatureMethod",
         "reference"
     })
-    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
     public static class SignedInfo
         implements Serializable
     {
 
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         private final static long serialVersionUID = -1L;
         @XmlElement(name = "CanonicalizationMethod", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected Signature.SignedInfo.CanonicalizationMethod canonicalizationMethod;
         @XmlElement(name = "SignatureMethod", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected Signature.SignedInfo.SignatureMethod signatureMethod;
         @XmlElement(name = "Reference", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         protected Signature.SignedInfo.Reference reference;
 
         /**
@@ -970,7 +970,7 @@ public class Signature
          *     {@link Signature.SignedInfo.CanonicalizationMethod }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public Signature.SignedInfo.CanonicalizationMethod getCanonicalizationMethod() {
             return canonicalizationMethod;
         }
@@ -983,7 +983,7 @@ public class Signature
          *     {@link Signature.SignedInfo.CanonicalizationMethod }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setCanonicalizationMethod(Signature.SignedInfo.CanonicalizationMethod value) {
             this.canonicalizationMethod = value;
         }
@@ -996,7 +996,7 @@ public class Signature
          *     {@link Signature.SignedInfo.SignatureMethod }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public Signature.SignedInfo.SignatureMethod getSignatureMethod() {
             return signatureMethod;
         }
@@ -1009,7 +1009,7 @@ public class Signature
          *     {@link Signature.SignedInfo.SignatureMethod }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setSignatureMethod(Signature.SignedInfo.SignatureMethod value) {
             this.signatureMethod = value;
         }
@@ -1022,7 +1022,7 @@ public class Signature
          *     {@link Signature.SignedInfo.Reference }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public Signature.SignedInfo.Reference getReference() {
             return reference;
         }
@@ -1035,7 +1035,7 @@ public class Signature
          *     {@link Signature.SignedInfo.Reference }
          *     
          */
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public void setReference(Signature.SignedInfo.Reference value) {
             this.reference = value;
         }
@@ -1060,16 +1060,16 @@ public class Signature
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public static class CanonicalizationMethod
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             private final static long serialVersionUID = -1L;
             @XmlAttribute(name = "Algorithm", required = true)
             @XmlSchemaType(name = "anyURI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected String algorithm;
 
             /**
@@ -1080,7 +1080,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public String getAlgorithm() {
                 if (algorithm == null) {
                     return "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
@@ -1097,7 +1097,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setAlgorithm(String value) {
                 this.algorithm = value;
             }
@@ -1159,27 +1159,27 @@ public class Signature
             "digestMethod",
             "digestValue"
         })
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public static class Reference
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             private final static long serialVersionUID = -1L;
             @XmlElement(name = "Transforms", namespace = "http://www.w3.org/2000/09/xmldsig#")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected Signature.SignedInfo.Reference.Transforms transforms;
             @XmlElement(name = "DigestMethod", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected Signature.SignedInfo.Reference.DigestMethod digestMethod;
             @XmlElement(name = "DigestValue", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true, type = String.class)
             @XmlJavaTypeAdapter(Base64Adapter.class)
             @XmlSchemaType(name = "base64Binary")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected byte[] digestValue;
             @XmlAttribute(name = "URI", required = true)
             @XmlSchemaType(name = "anyURI")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected String uri;
 
             /**
@@ -1190,7 +1190,7 @@ public class Signature
              *     {@link Signature.SignedInfo.Reference.Transforms }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public Signature.SignedInfo.Reference.Transforms getTransforms() {
                 return transforms;
             }
@@ -1203,7 +1203,7 @@ public class Signature
              *     {@link Signature.SignedInfo.Reference.Transforms }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setTransforms(Signature.SignedInfo.Reference.Transforms value) {
                 this.transforms = value;
             }
@@ -1216,7 +1216,7 @@ public class Signature
              *     {@link Signature.SignedInfo.Reference.DigestMethod }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public Signature.SignedInfo.Reference.DigestMethod getDigestMethod() {
                 return digestMethod;
             }
@@ -1229,7 +1229,7 @@ public class Signature
              *     {@link Signature.SignedInfo.Reference.DigestMethod }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setDigestMethod(Signature.SignedInfo.Reference.DigestMethod value) {
                 this.digestMethod = value;
             }
@@ -1242,7 +1242,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public byte[] getDigestValue() {
                 return digestValue;
             }
@@ -1255,7 +1255,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setDigestValue(byte[] value) {
                 this.digestValue = value;
             }
@@ -1268,7 +1268,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public String getURI() {
                 return uri;
             }
@@ -1281,7 +1281,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setURI(String value) {
                 this.uri = value;
             }
@@ -1306,16 +1306,16 @@ public class Signature
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "")
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public static class DigestMethod
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlAttribute(name = "Algorithm", required = true)
                 @XmlSchemaType(name = "anyURI")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected String algorithm;
 
                 /**
@@ -1326,7 +1326,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public String getAlgorithm() {
                     if (algorithm == null) {
                         return "http://www.w3.org/2000/09/xmldsig#sha1";
@@ -1343,7 +1343,7 @@ public class Signature
                  *     {@link String }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setAlgorithm(String value) {
                     this.algorithm = value;
                 }
@@ -1382,15 +1382,15 @@ public class Signature
             @XmlType(name = "", propOrder = {
                 "transform"
             })
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public static class Transforms
                 implements Serializable
             {
 
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 private final static long serialVersionUID = -1L;
                 @XmlElement(name = "Transform", namespace = "http://www.w3.org/2000/09/xmldsig#", required = true)
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 protected Signature.SignedInfo.Reference.Transforms.Transform transform;
 
                 /**
@@ -1401,7 +1401,7 @@ public class Signature
                  *     {@link Signature.SignedInfo.Reference.Transforms.Transform }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public Signature.SignedInfo.Reference.Transforms.Transform getTransform() {
                     return transform;
                 }
@@ -1414,7 +1414,7 @@ public class Signature
                  *     {@link Signature.SignedInfo.Reference.Transforms.Transform }
                  *     
                  */
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public void setTransform(Signature.SignedInfo.Reference.Transforms.Transform value) {
                     this.transform = value;
                 }
@@ -1439,16 +1439,16 @@ public class Signature
                  */
                 @XmlAccessorType(XmlAccessType.FIELD)
                 @XmlType(name = "")
-                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                 public static class Transform
                     implements Serializable
                 {
 
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                     private final static long serialVersionUID = -1L;
                     @XmlAttribute(name = "Algorithm", required = true)
                     @XmlSchemaType(name = "anyURI")
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                     protected String algorithm;
 
                     /**
@@ -1459,7 +1459,7 @@ public class Signature
                      *     {@link String }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                     public String getAlgorithm() {
                         return algorithm;
                     }
@@ -1472,7 +1472,7 @@ public class Signature
                      *     {@link String }
                      *     
                      */
-                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+                    @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
                     public void setAlgorithm(String value) {
                         this.algorithm = value;
                     }
@@ -1510,15 +1510,15 @@ public class Signature
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "")
-        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+        @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
         public static class SignatureMethod
             implements Serializable
         {
 
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             private final static long serialVersionUID = -1L;
             @XmlAttribute(name = "Algorithm", required = true)
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             protected String algorithm;
 
             /**
@@ -1529,7 +1529,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public String getAlgorithm() {
                 return algorithm;
             }
@@ -1542,7 +1542,7 @@ public class Signature
              *     {@link String }
              *     
              */
-            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-11-29T11:10:48-03:00")
+            @Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
             public void setAlgorithm(String value) {
                 this.algorithm = value;
             }

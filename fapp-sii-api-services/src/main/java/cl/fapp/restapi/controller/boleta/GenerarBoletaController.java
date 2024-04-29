@@ -2,6 +2,7 @@ package cl.fapp.restapi.controller.boleta;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -13,8 +14,11 @@ import java.util.regex.Pattern;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +31,8 @@ import cl.fapp.common.domain.ConstantesTipoDocumento;
 import cl.fapp.common.domain.statuses.EntityDTEStatuses;
 import cl.fapp.common.jsend.JSend;
 import cl.fapp.docs.DocumentoBOLETADefType;
+import cl.fapp.foliomanager.exception.FoliosNotAvailableException;
+import cl.fapp.foliomanager.exception.FoliosNotExistException;
 import cl.fapp.repository.model.Dte;
 import cl.fapp.repository.model.Emisores;
 import cl.fapp.repository.repos.DteRepository;
@@ -39,6 +45,7 @@ import cl.fapp.restapi.controller.boleta.dto.GenerarBoletaResponse;
 import cl.fapp.restapi.controller.boleta.mapper.GenerarBoletaControllerMapper;
 import cl.fapp.restapi.controller.repos.dto.KeyinfoFindResponse;
 import cl.fapp.restapi.controller.utils.KeystoreFirmanteUtils;
+import cl.fapp.sii.factory.SIIAbstractFactory;
 import cl.fapp.sii.jaxb.BOLETADefType;
 import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -126,6 +133,7 @@ public class GenerarBoletaController {
 
 			// obtiene los documentos jaxb a partir del request a la api
 			List<BOLETADefTypeAndVerbatimCAF> documentos = mapperToBOLETADefType.toBOLETADefTypeDocumento(payload);
+    
 			if (documentos == null) {
 				log.error("No fue posible generar documentos.");
 				return ResponseEntity.badRequest().body(JSend.error("No fue posible generar documentos."));
@@ -153,7 +161,7 @@ public class GenerarBoletaController {
 		        // busca coincidencias del tag <TED></TED>
 				Matcher matcher = tedPattern.matcher(newdte.getDocumentoXml());
 				if (matcher.find()) {
-					log.debug("¡¡ Match <TED> !!");
+					log.debug("!! Match <TED> !!");
 					// log.debug( "!! Match TED = [" + matcher.group() + "]" );
 					item.setTed(Base64.getEncoder().encodeToString(matcher.group().getBytes()));
 				}
@@ -165,6 +173,18 @@ public class GenerarBoletaController {
 			
 			return ResponseEntity.ok().body(JSend.success(response));
 
+		} catch (FoliosNotExistException ex) {
+			log.error("No existen rangos de folios disponibles para el tipo de documento solicitado. Error: " + ex.getMessage());
+			// Devuelve una respuesta indicando que no hay folios disponibles
+			return ResponseEntity
+				.status(HttpStatus.NOT_FOUND) // Puedes utilizar el código de estado que consideres más adecuado
+				.body(JSend.error("No existen folios disponibles."));
+		} catch (FoliosNotAvailableException ex) {
+			log.error("No hay folios disponibles. Error: " + ex.getMessage());
+			// Devuelve una respuesta indicando que no hay folios disponibles
+			return ResponseEntity
+				.status(HttpStatus.NOT_FOUND) // Puedes utilizar el código de estado que consideres más adecuado
+				.body(JSend.error("No hay folios disponibles."));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().body(JSend.error(e.getMessage()));
@@ -230,7 +250,7 @@ public class GenerarBoletaController {
 			String replaceByCAF = jaxbDTEAndVerbatimCAF.getVerbatimcaf();
 			xmlcontent = xmlcontent.replace(emptyTagCAF, replaceByCAF);
 			log.debug("xmlcontent despues de agregar CAF a la boleta...");
-			//-->log.debug("xmlcontent despues de agregar CAF a la boleta=" + xmlcontent);
+			log.debug("xmlcontent despues de agregar CAF a la boleta=" + xmlcontent);
 
 			// si es posible, lo firma. En caso contrario lo guarda no firmado
 			KeyinfoFindResponse kinfo;
@@ -251,10 +271,8 @@ public class GenerarBoletaController {
 				} else {
 					log.info("Se firma el documento. Se almacena xml firmado");
 					newdte.setEstado(EntityDTEStatuses.CREADOFIRMADO.toString());
-
 					// firma la boleta
-					String xmlboletaSigned = docxml.sign(new ByteArrayInputStream(xmlcontent.getBytes(SiiDocumentFactoryConfiguration.DEFAULT_ENCODING)), "BOLETADefType", "Documento", jaxbDTE.getDocumento().getID(), kinfo.getCertificate(), kinfo.getPrivatekey());
-
+					String xmlboletaSigned = docxml.sign(new ByteArrayInputStream(xmlcontent.getBytes(StandardCharsets.ISO_8859_1)), "BOLETADefType", "Documento", jaxbDTE.getDocumento().getID(), kinfo.getCertificate(), kinfo.getPrivatekey());
 					// se establece en la instancia de la entidad
 					newdte.setDocumentoXml(xmlboletaSigned);
 					
@@ -279,7 +297,9 @@ public class GenerarBoletaController {
 			Dte newrecord = repoDte.save(newdte);
 
 			// recupera y muestra el id
-			log.info("Dte creado con id=" + newrecord.getIdDte());
+			if (newrecord == null) {
+				log.info("Dte creado con id=" + newrecord.getIdDte());
+			}
 
 			// retorna el registro recien insertado
 			return newrecord;
@@ -287,6 +307,25 @@ public class GenerarBoletaController {
 		} catch (Exception ex) {
 			log.error("No fue posible crear el registro en DTE. Error=" + ex.getMessage());
 			return null;
+		}
+	}
+	@ControllerAdvice
+	public class GlobalExceptionHandler {
+
+		@ExceptionHandler(FoliosNotExistException.class)
+		public ResponseEntity<JSend> handleFoliosNotExistException(FoliosNotExistException ex) {
+			JSend errorResponse = JSend.error("No hay folios disponibles.");
+			return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(errorResponse);
+		}
+
+		@ExceptionHandler(FoliosNotAvailableException.class)
+		public ResponseEntity<JSend> handleFoliosNotAvailableException(FoliosNotAvailableException ex) {
+			JSend errorResponse = JSend.error("No hay folios disponibles.");
+			return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(errorResponse);
 		}
 	}
 }

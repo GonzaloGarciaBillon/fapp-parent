@@ -31,7 +31,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 	@ExceptionHandler(value = { MaxUploadSizeExceededException.class })
 	protected ResponseEntity<Object> handleMaxUploadSizeExceeded(RuntimeException ex, WebRequest request) {
-		String bodyOfResponse = "El archivo supera el tamaño maximo";
+		String bodyOfResponse = "El archivo supera el tamañoo maximo";
 		log.error(bodyOfResponse);
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}

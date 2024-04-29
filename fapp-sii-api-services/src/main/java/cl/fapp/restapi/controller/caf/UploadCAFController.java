@@ -78,7 +78,7 @@ public class UploadCAFController {
 			// verifica que el rango de folios indicado en el CAF sean enteros. Si la conversion no es posible, gatillara una excepcion
 			Long DESDE = Long.parseLong(XMLUtils.getText(cafdocument, tag_RNG_D));
 			Long HASTA = Long.parseLong(XMLUtils.getText(cafdocument, tag_RNG_H));
-			if( DESDE == null || HASTA == null || (DESDE >= HASTA) ) {
+			if( DESDE == null || HASTA == null || (DESDE > HASTA) ) {
 				log.error("El rango de folios no es valido. DESDE=" + DESDE + ", HASTA=" + HASTA);
 				throw new Exception("El rango de folios no es valido");
 			}

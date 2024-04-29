@@ -51,6 +51,6 @@ public class DTEDetalle { // detalle por dte
 	private BigDecimal recargoPct;
 	
 	@Schema(description = "Rut de la empresa mandante de la boleta")
-	private String rutMandante;;
+	private String rutMandante;
 	
 }

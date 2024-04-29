@@ -29,7 +29,7 @@ public class BoletaStatusRequest {
 	Integer tipo;
 	
 	@NotNull(message = "El [folio] es obligatorio")
-	@Min(value=1, message="El [folio] debe ser un nÃºmero")
+	@Min(value=1, message="El [folio] debe ser un número")
 	Long folio;
 	
 	
@@ -42,7 +42,7 @@ public class BoletaStatusRequest {
 	String dv_receptor;
 	
 	@NotNull(message = "El [monto] es obligatorio")
-	@Min(value=1, message="El [monto] debe ser un nÃºmero")
+	@Min(value=1, message="El [monto] debe ser un número")
 	BigInteger monto;
 	
 	@NotBlank(message = "El [fechaEmision] es obligatorio")

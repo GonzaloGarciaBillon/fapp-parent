@@ -463,7 +463,7 @@
 
 
 			<fo:block font-size="8pt" font-family="sans-serif" text-align="center">
-				Timbre ElectrÃ³nico SII
+				Timbre Electrónico SII
 			</fo:block>
 			<fo:block font-size="8pt" font-family="sans-serif" text-align="center">
 				Res.
@@ -498,7 +498,7 @@
 				Pago a Cta. Corriente
 			</xsl:when>
 			<xsl:when test="$medioPago='TC'">
-				Tarjeta de CrÃ©dito
+				Tarjeta de Crédito
 			</xsl:when>
 			<xsl:when test="$medioPago='CF'">
 				Cheque a Fecha
@@ -513,7 +513,7 @@
 				(Contado)
 			</xsl:when>
 			<xsl:when test="$formaPago=2">
-				(CrÃ©dito)
+				(Crédito)
 			</xsl:when>
 			<xsl:when test="$formaPago=3">
 				(Sin Valor)

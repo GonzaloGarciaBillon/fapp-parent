@@ -69,12 +69,6 @@ public abstract class SIIAbstractFactory<T> {
 
 		try {
 			XmlSigner signer = new XmlSigner();
-			logger.debug(sourceXml.toString());
-			logger.debug(domIdElement);
-			logger.debug(elementWithID);
-			logger.debug(referenceID);
-			logger.debug(cert.toString());
-			logger.debug(pk.toString());
 			SignedXml signedXml = signer.sign(sourceXml, domIdElement, elementWithID, referenceID, cert, pk);
 
 			return signedXml.getContent();

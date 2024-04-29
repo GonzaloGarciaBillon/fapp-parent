@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //import org.hibernate.mapping.Map;
+import cl.fapp.restapi.controller.impresoras.dto.ImpresorasResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -17,10 +17,10 @@ import lombok.ToString;
 @ToString
 @Schema(description = "Descuentos y/o Recargos que afectan al total del Documento")
 public class DTEDescuentoRecargo {
-	@Schema(description = "Numero secuencial de linea", example = "1", required = false, accessMode = AccessMode.READ_ONLY )
+	@Schema(description = "Numero secuencial de linea", example = "1", required = false, accessMode = AccessMode.READ_ONLY)
 	private Integer nrolinDR;
 
-	@Schema(description = "Tipo de Movimiento (D)escuento (R)ecargo", example = "1", required = true)
+	@Schema(description = "Tipo de Movimiento (D)escuento (R)ecargo", example = "D", required = true)
 	@Size(max = 1)
 	private String tpomov;
 
@@ -35,7 +35,8 @@ public class DTEDescuentoRecargo {
 	@Schema(description = "Valor del Descuento o Recargo", example = "1", required = true)
 	private BigDecimal valorDR = BigDecimal.ZERO;
 
-	@Schema(description = "Indica si el Descuento o Recargo Afecta a Itemes Exentos (1) o No Facturables (2)", example = "1", required = false, allowableValues = {"1", "2"})	
+	@Schema(description = "Indica si el Descuento o Recargo Afecta a Itemes Exentos (1) o No Facturables (2)", example = "1", required = false, allowableValues = {
+			"1", "2" })
 	private Integer indicadorExencionDR;
 
 }

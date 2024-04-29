@@ -20,7 +20,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * ExtensiÃ³n XSLT para generaciÃ³n de timbre a partir del TED de un DTE
+ * Extensión XSLT para generación de timbre a partir del TED de un DTE
  * 
  */
 public class TimbreExtension extends BarcodeExt {
