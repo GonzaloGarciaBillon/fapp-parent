@@ -39,12 +39,15 @@ public class EmailServiceImpl implements IEmailService {
 
 	@Autowired
 	private JavaMailSender emailSender;
-	
+
 	@Autowired
 	private SimpleMailMessage template;
 
 	@Value("classpath:/mail-fapp-logo.png")
 	private Resource logoFile;
+
+	@Value("${app.sendgrid.key}")
+	private String sendGridApiKey;
 
 	@Override
 	public void sendSimpleMessage(String to, String subject, String text) {
@@ -60,15 +63,16 @@ public class EmailServiceImpl implements IEmailService {
 			exception.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void sendSimpleMessageUsingTemplate(String to, String subject, String... templateModel) {
-		String text = String.format(template.getText(), (Object[])templateModel);
+		String text = String.format(template.getText(), (Object[]) templateModel);
 		sendSimpleMessage(to, subject, text);
 	}
 
 	@Override
-	public void sendMessageWithAttachment(String to, String subject, String text, String filename, String pathToAttachment) {
+	public void sendMessageWithAttachment(String to, String subject, String text, String filename,
+			String pathToAttachment) {
 		try {
 			MimeMessage message = emailSender.createMimeMessage();
 
@@ -101,43 +105,44 @@ public class EmailServiceImpl implements IEmailService {
 		helper.addInline("attachment.png", logoFile);
 		emailSender.send(message);
 	}
-	
+
 	public void monitorInbox(String email) {
 		try {
 
-		}catch(Exception ex) {
-			log.error("Se produjo un error accediendo a [" + email +"]. Error=" + ex.getMessage());
+		} catch (Exception ex) {
+			log.error("Se produjo un error accediendo a [" + email + "]. Error=" + ex.getMessage());
 			return;
 		}
 	}
+
 	private void readInbox(String email) {
 		try {
 
-		}catch(Exception ex) {
-			log.error("Se produjo un error accediendo a [" + email +"]. Error=" + ex.getMessage());
+		} catch (Exception ex) {
+			log.error("Se produjo un error accediendo a [" + email + "]. Error=" + ex.getMessage());
 			return;
 		}
 	}
 
 	@Override
-	public boolean sendHtmlMessageWithSendGrid(String to, String subject, String htmlBody, String attachmentFilename, byte[] attachmentContent, Dte dte, Emisores emisor) {
+	public boolean sendHtmlMessageWithSendGrid(String to, String subject, String htmlBody, String attachmentFilename,
+			byte[] attachmentContent, Dte dte, Emisores emisor) {
 		try {
 			// Validación de entradas
-			if (to == null || subject == null || htmlBody == null || attachmentFilename == null || attachmentContent == null) {
+			if (to == null || subject == null || htmlBody == null || attachmentFilename == null
+					|| attachmentContent == null) {
 				log.error("Parámetros de entrada no válidos.");
 				return false;
 			}
 			// Contacto: 2020-04-09
 			Email from = new Email("contacto@billonapp.cl");
-			String templateId = "d-0984fad3478c48c09d14241b65e1fd48"; 
-			String sendGridApiKey = "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";
+			String templateId = "d-0984fad3478c48c09d14241b65e1fd48";
 			// Matias 2020-04-09
 			// Email from = new Email("maguilar@transformapp.cl");
-			// String templateId = "d-9c6c044281e64b92a2c30ce8b73883e2"; 
-			// String sendGridApiKey = "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";
+			// String templateId = "d-9c6c044281e64b92a2c30ce8b73883e2"; -
 
 			Email toEmail = new Email(to);
-			
+
 			// Crear un nuevo objeto Mail sin contenido
 			Mail mail = new Mail();
 			mail.setFrom(from);
@@ -147,47 +152,48 @@ public class EmailServiceImpl implements IEmailService {
 			String tipoDoc = "";
 			switch (dte.getTipoDocumento()) {
 				case 33:
-				tipoDoc = "Factura Electrónica";
+					tipoDoc = "Factura Electrónica";
 					break;
 				case 34:
-				tipoDoc = "Factura Exenta Electrónica";
+					tipoDoc = "Factura Exenta Electrónica";
 					break;
 				case 39:
-				tipoDoc = "Boleta Electrónica";
+					tipoDoc = "Boleta Electrónica";
 					break;
 				case 41:
-				tipoDoc = "Boleta Exenta Electrónica";
+					tipoDoc = "Boleta Exenta Electrónica";
 					break;
 				case 46:
-				tipoDoc = "Factura de Compra Electrónica";
+					tipoDoc = "Factura de Compra Electrónica";
 					break;
 				case 52:
-				tipoDoc = "Guía de Despacho Electrónica";
+					tipoDoc = "Guía de Despacho Electrónica";
 					break;
 				case 56:
-				tipoDoc = "Nota de Débito Electrónica";
+					tipoDoc = "Nota de Débito Electrónica";
 					break;
 				case 61:
-				tipoDoc = "Nota de Crédito Electrónica";
+					tipoDoc = "Nota de Crédito Electrónica";
 					break;
 				case 110:
-				tipoDoc = "Factura de Exportación Electrónica";
+					tipoDoc = "Factura de Exportación Electrónica";
 					break;
 				case 111:
-				tipoDoc = "Nota de Débito de Exportación Electrónica";
+					tipoDoc = "Nota de Débito de Exportación Electrónica";
 					break;
 				case 112:
-				tipoDoc = "Nota de Crédito de Exportación Electrónica";
+					tipoDoc = "Nota de Crédito de Exportación Electrónica";
 					break;
 				default:
 					break;
 			}
 			personalization.addDynamicTemplateData("tipoDocumento", tipoDoc);
-			personalization.addDynamicTemplateData("subject", tipoDoc+" adjunta N°"+dte.getFolioAsignado());
+			personalization.addDynamicTemplateData("subject", tipoDoc + " adjunta N°" + dte.getFolioAsignado());
 			personalization.addDynamicTemplateData("folio", dte.getFolioAsignado());
 			mail.addPersonalization(personalization);
 
-			// Establecer el ID del Template de SendGrid// Reemplaza con el ID real de tu template
+			// Establecer el ID del Template de SendGrid// Reemplaza con el ID real de tu
+			// template
 			mail.setTemplateId(templateId);
 
 			// Agregar adjuntos si es necesario
@@ -228,9 +234,11 @@ public class EmailServiceImpl implements IEmailService {
 	}
 
 	// @Override
-	// public boolean sendHtmlMessageWithSendGrid(String to, String subject, String htmlBody, String attachmentFilename,
-	// 		byte[] attachmentContent, Dte dte, Emisores emisor) {
-	// 	// TODO Auto-generated method stub
-	// 	throw new UnsupportedOperationException("Unimplemented method 'sendHtmlMessageWithSendGrid'");
+	// public boolean sendHtmlMessageWithSendGrid(String to, String subject, String
+	// htmlBody, String attachmentFilename,
+	// byte[] attachmentContent, Dte dte, Emisores emisor) {
+	// // TODO Auto-generated method stub
+	// throw new UnsupportedOperationException("Unimplemented method
+	// 'sendHtmlMessageWithSendGrid'");
 	// }
 }
