@@ -10,36 +10,39 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class RUTUtils {
-	
+
 	/**
 	 * Formatea un rut sin separador de miles
+	 * 
 	 * @param rut rut a formatear
 	 * @return rut formateado
 	 */
 	public static String format(String rut) {
 		return format(rut, "");
 	}
-	
+
 	/**
 	 * Retorna digito verificador del rut ingresado despues de formatearlo
+	 * 
 	 * @param rut rut
 	 * @return digito verificador despues de formatear el rut
 	 */
 	public static String getDV(String rut) {
 		String formattedrut = format(rut);
-		return formattedrut.substring(formattedrut.length()-1);
+		return formattedrut.substring(formattedrut.length() - 1);
 	}
 
 	/**
 	 * Retorna parte numerica del rut
+	 * 
 	 * @param rut rut. Antes de extraer su parte numerica, sera formateado
 	 * @return parte numerica del rut, despues de ser formateado
 	 */
 	public static String getNumber(String rut) {
 		String formattedrut = format(rut);
-		return formattedrut.substring(0, formattedrut.length()-2);
+		return formattedrut.substring(0, formattedrut.length() - 2);
 	}
-	
+
 	/**
 	 * Estandariza formato de un rut para ser utilizado en el sistema.
 	 * El formato estandarizado corresponde a: 99999999-DV
@@ -71,7 +74,8 @@ public class RUTUtils {
 	}
 
 	/**
-	 * Valida un rut. Quita el formato, realiza el calculo del DV y compara con el indicado por parametro. 
+	 * Valida un rut. Quita el formato, realiza el calculo del DV y compara con el
+	 * indicado por parametro.
 	 * Acepta rut con mantisa de largo 1.
 	 * Si no se indica '-', se considera el ultimo digito como el digito verificador
 	 * 
@@ -87,7 +91,7 @@ public class RUTUtils {
 				return false;
 			}
 
-			rut =  rut.toUpperCase();
+			rut = rut.toUpperCase();
 			rut = rut.replace(".", "");
 			rut = rut.replace("-", "");
 			rut = rut.trim();
@@ -111,17 +115,17 @@ public class RUTUtils {
 			if (dvR == (char) (s != 0 ? s + 47 : 75)) {
 				validacion = true;
 			}
-			
+
 		} catch (java.lang.NumberFormatException e) {
 			log.error("Ocurrio un error NumberFormatException validando el rut. Error=" + e.getMessage());
 			System.out.println("Ocurrio un error NumberFormatException validando el rut. Error=" + e.getMessage());
 			validacion = false;
-			
+
 		} catch (Exception e) {
 			log.error("Ocurrio un error Exception validando el rut. Error=" + e.getMessage());
 			System.out.println("Ocurrio un error Exception validando el rut. Error=" + e.getMessage());
 			validacion = false;
-			
+
 		}
 
 		return validacion;

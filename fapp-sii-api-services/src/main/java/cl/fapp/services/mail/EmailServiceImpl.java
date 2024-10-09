@@ -46,9 +46,6 @@ public class EmailServiceImpl implements IEmailService {
 	@Value("classpath:/mail-fapp-logo.png")
 	private Resource logoFile;
 
-	@Value("${app.sendgrid.key}")
-	private String sendGridApiKey;
-
 	@Override
 	public void sendSimpleMessage(String to, String subject, String text) {
 		try {
@@ -137,9 +134,7 @@ public class EmailServiceImpl implements IEmailService {
 			// Contacto: 2020-04-09
 			Email from = new Email("contacto@billonapp.cl");
 			String templateId = "d-0984fad3478c48c09d14241b65e1fd48";
-			// Matias 2020-04-09
-			// Email from = new Email("maguilar@transformapp.cl");
-			// String templateId = "d-9c6c044281e64b92a2c30ce8b73883e2"; -
+			String sendGridApiKey = "";
 
 			Email toEmail = new Email(to);
 

@@ -11,11 +11,14 @@ import java.util.List;
 public class EntityStatuses {
 
 	/**
-	 * Lista de nombres que pueden ser utilizados para cada subclase de tipo EntityStatuses.
-	 * En definitiva, retorna la lista de estados disponibles para una determinada clase
+	 * Lista de nombres que pueden ser utilizados para cada subclase de tipo
+	 * EntityStatuses.
+	 * En definitiva, retorna la lista de estados disponibles para una determinada
+	 * clase
 	 * 
 	 * @param clazz nombre de la clase
-	 * @return lista de nombres ({@link List}) de los atributos declarados en la clase
+	 * @return lista de nombres ({@link List}) de los atributos declarados en la
+	 *         clase
 	 */
 	public static List<String> getStatuses(Class<?> clazz) {
 		List<Field> fields = new ArrayList<Field>();

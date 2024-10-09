@@ -16,8 +16,8 @@ import cl.fapp.restapi.controller.libros.RegistroCompraVentaCSVPositionBean;
 
 @SpringBootApplication
 @EnableCaching
-//@EnableJpaRepositories("cl.fapp.repository.repos")
-//@EntityScan("cl.fapp.repository.model")
+// @EnableJpaRepositories("cl.fapp.repository.repos")
+// @EntityScan("cl.fapp.repository.model")
 public class SiiDocumentFactoryApplication {
 
 	private static final String TWO_COLUMN_CSV = "csv/twoColumn.csv";

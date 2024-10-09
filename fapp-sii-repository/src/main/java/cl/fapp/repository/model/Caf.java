@@ -2,6 +2,9 @@ package cl.fapp.repository.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class Caf implements Serializable {
 	private Date updatedat;
 	private Emisores emisore;
 	private List<FoliosNoutilizado> foliosNoutilizados;
+	private Long ultimoFolioAsignado;
 
 	public Caf() {
 	}
@@ -147,7 +151,8 @@ public class Caf implements Serializable {
 
 
 	//bi-directional many-to-one association to Emisores
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonIgnore
 	@JoinColumn(name="rutemisor", nullable=false)
 	public Emisores getEmisore() {
 		return this.emisore;
@@ -180,6 +185,15 @@ public class Caf implements Serializable {
 		foliosNoutilizado.setCaf(null);
 
 		return foliosNoutilizado;
+	}
+
+	@Column(name="ultimo_folio_asignado")
+	public Long getUltimoFolioAsignado() {
+		return this.ultimoFolioAsignado;
+	}
+	
+	public void setUltimoFolioAsignado(Long ultimoFolioAsignado) {
+		this.ultimoFolioAsignado = ultimoFolioAsignado;
 	}
 
 }

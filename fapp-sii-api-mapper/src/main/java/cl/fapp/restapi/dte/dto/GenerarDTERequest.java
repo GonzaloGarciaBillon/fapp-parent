@@ -30,13 +30,13 @@ public class GenerarDTERequest extends DTEDocumento {
 	 */
 	@Schema(description = "Rut del emisor.", required = true)
 	private String rutEmisor = null;
-
+	
 	/**
 	 * Codigos de actividad economica
 	 */
 	@Schema(description = "Codigos actividad economica", required = true)
-	@ArraySchema(minItems = 1, maxItems = 4)
-	@Size(min = 1, max = 4, message = "Debe indicar entre 1 y 4 codigos de actividad economica")
+	@ArraySchema(minItems = 1, maxItems = 4 )
+	@Size(min = 1 , max = 4, message = "Debe indicar entre 1 y 4 codigos de actividad economica")
 	private List<Integer> actividadEconomica = new ArrayList<Integer>();
 
 	/**
@@ -44,7 +44,7 @@ public class GenerarDTERequest extends DTEDocumento {
 	 */
 	@Schema(description = "Rut del firmante. Si no se indica, se intenta rut del Emisor")
 	private String rutFirmante = null;
-
+	
 	/**
 	 * Emisor de las boletas
 	 */
@@ -56,4 +56,10 @@ public class GenerarDTERequest extends DTEDocumento {
 	 */
 	@Schema(description = "Lista de dtes a generar", required = true)
 	private List<DTEDocumento> dtes = new ArrayList<DTEDocumento>();
+	
+	/**
+     * Usuario que genera el DTE. Campo opcional.
+     */
+    @Schema(description = "Usuario que genera el DTE. Campo opcional.")
+    private String usuario;
 }

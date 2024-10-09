@@ -12,5 +12,7 @@ import lombok.ToString;
 public class EstadoUploadRequest {
 	private String dvCompania;
 	private String rutCompania;
+	private String dvFirmante;
+	private String rutFirmante;
 	private String trackId;
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.classic.Logger;
 import cl.fapp.SIIDocumentFactoryProvider;
 import cl.fapp.SiiDocumentFactoryConfiguration;
 import cl.fapp.common.domain.ConstantesTipoDocumento;
@@ -26,8 +25,10 @@ import cl.fapp.common.domain.statuses.EntitySetDTEStatuses;
 import cl.fapp.common.jsend.JSend;
 import cl.fapp.docs.DocumentoEnvioBOLETA;
 import cl.fapp.domain.mapper.ConvertRequestToEnvioBOLETAResponse;
+import cl.fapp.repository.model.Bitacora;
 import cl.fapp.repository.model.Emisores;
 import cl.fapp.repository.model.Setdte;
+import cl.fapp.repository.repos.BitacoraRepository;
 import cl.fapp.repository.repos.DteRepository;
 import cl.fapp.repository.repos.EmisoresRepository;
 import cl.fapp.repository.repos.SetDTERepository;
@@ -60,8 +61,12 @@ public class GenerarBoletasSetDTEController {
 	@Autowired
 	GenerarBoletasSetDTEControllerMapper mapperToBOLETASetDTE;
 
+	@Autowired
+	BitacoraRepository bitacoraRepository;
+	
 	/**
-	 * Capa REST para la generacion de un set de boletas jaxb a partir de los datos de boleta almacenados en la base de datos.
+	 * Capa REST para la generacion de un set de boletas jaxb a partir de los datos
+	 * de boleta almacenados en la base de datos.
 	 * Utiliza datos del emisor y firmante indicados en el payload.
 	 * 
 	 * @param payload request para generar el set
@@ -69,67 +74,82 @@ public class GenerarBoletasSetDTEController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/generarboletassetdte", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSend> generarBoletasSetDTE(@RequestBody GenerarSetDTERequest payload) {
-		
+
 		try {
 			GenerarSetDTEResponse resp = internalGenerarBoletasSetDte(payload);
 			if (resp.getIdSetBoletas() != null) {
-				log.debug("[Invocacion rest endpoint]-Se ha generado el set de boletas correctamente. IdSetDte=" + resp.getIdSetBoletas());
+				log.debug("[Invocacion rest endpoint]-Se ha generado el set de boletas correctamente. IdSetDte="
+						+ resp.getIdSetBoletas());
 				return ResponseEntity.ok().body(JSend.success("Id setDTE generado con id=" + resp.getIdSetBoletas()));
 
 			} else {
-				log.debug("[Invocacion rest endpoint]-No se ha generado el set de boletas. Message=" + resp.getErrorMessage());
-				return ResponseEntity.ok().body(JSend.error("Ocurrio un error durante el proceso de generacion." + resp.getErrorMessage()));
+				log.debug("[Invocacion rest endpoint]-No se ha generado el set de boletas. Message="
+						+ resp.getErrorMessage());
+				return ResponseEntity.ok().body(
+						JSend.error("Ocurrio un error durante el proceso de generacion." + resp.getErrorMessage()));
 			}
 			/*
-						
-						// completo la parte emisor del mensaje
-						String rutemisor = payload.getRutEmisor();
-						String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
-			
-						Optional<Emisores> emisor = repoEmisores.findById(rutemisor);
-						if (!emisor.isPresent()) {
-							log.error("El Emisor rut=" + rutemisor + " no existe en la base de datos");
-							throw new Exception("El Emisor no existe");
-			
-						} else {
-							log.debug("El emisor rut=" + rutemisor + " existe");
-						}
-			
-						// obtiene los documentos jaxb a partir del request a la api
-						List<Integer> tiposDocumentoEnSet = new ArrayList<Integer>();
-						tiposDocumentoEnSet.add(ConstantesTipoDocumento.BOLETA_AFECTA.getValue());
-						tiposDocumentoEnSet.add(ConstantesTipoDocumento.BOLETA_EXENTA.getValue());
-						
-						// numero maximo de dte a incluir en el set en null, para que las incluya todas
-						ConvertRequestToEnvioBOLETAResponse response = mapperToBOLETASetDTE.toEnvioBOLETASetDTE(emisor.get(), rutfirmante, payload, tiposDocumentoEnSet);
-						if (response == null) {
-							log.error("No fue posible realizar el mapping entre request-api y EnvioBOLETA.SetDTE");
-							throw new Exception("No fue posible mapear datos de entrada");
-						}
-			/*
-						// la lista de dte incluidos en el set esta vacia
-						if (response.getDteList().size() <= 0) {
-							log.error("No hay boletas para crear el set");
-							throw new Exception("No hay boletas para crear el set");
-						}
-			
-						// recupera el objeto jaxb resultante del mapeo
-						EnvioBOLETA.SetDTE documento = response.getJaxbsetdte();
-						if (documento == null) {
-							log.error("No fue posible generar documento setDTE.");
-							return ResponseEntity.badRequest().body(JSend.error("No fue posible generar documentos."));
-						}
-			
-						// firma y guarda el set de documentos en la base de datos
-						Setdte newsetdte = generateEntityFromJaxbEnvioBOLETASetDTE(response.getXmlboletas(), documento, rutemisor, rutfirmante, response.getDteList());
-			
-						log.debug("Se crea el setdte en la base de datos con id=" + newsetdte.getIdSetdte());
-						log.debug("Request procesado correctamente");
-			
-						return ResponseEntity.ok().body(JSend.success("Id setDTE generado con id=" + newsetdte.getIdSetdte()));
-			* /
-			*/
-			//-->			return ResponseEntity.ok().body(JSend.success("Id setDTE generado con id=XXXXX"));
+			 * 
+			 * // completo la parte emisor del mensaje
+			 * String rutemisor = payload.getRutEmisor();
+			 * String rutfirmante = payload.getRutFirmante() == null ? rutemisor :
+			 * payload.getRutFirmante();
+			 * 
+			 * Optional<Emisores> emisor = repoEmisores.findById(rutemisor);
+			 * if (!emisor.isPresent()) {
+			 * log.error("El Emisor rut=" + rutemisor + " no existe en la base de datos");
+			 * throw new Exception("El Emisor no existe");
+			 * 
+			 * } else {
+			 * log.debug("El emisor rut=" + rutemisor + " existe");
+			 * }
+			 * 
+			 * // obtiene los documentos jaxb a partir del request a la api
+			 * List<Integer> tiposDocumentoEnSet = new ArrayList<Integer>();
+			 * tiposDocumentoEnSet.add(ConstantesTipoDocumento.BOLETA_AFECTA.getValue());
+			 * tiposDocumentoEnSet.add(ConstantesTipoDocumento.BOLETA_EXENTA.getValue());
+			 * 
+			 * // numero maximo de dte a incluir en el set en null, para que las incluya
+			 * todas
+			 * ConvertRequestToEnvioBOLETAResponse response =
+			 * mapperToBOLETASetDTE.toEnvioBOLETASetDTE(emisor.get(), rutfirmante, payload,
+			 * tiposDocumentoEnSet);
+			 * if (response == null) {
+			 * log.
+			 * error("No fue posible realizar el mapping entre request-api y EnvioBOLETA.SetDTE"
+			 * );
+			 * throw new Exception("No fue posible mapear datos de entrada");
+			 * }
+			 * /*
+			 * // la lista de dte incluidos en el set esta vacia
+			 * if (response.getDteList().size() <= 0) {
+			 * log.error("No hay boletas para crear el set");
+			 * throw new Exception("No hay boletas para crear el set");
+			 * }
+			 * 
+			 * // recupera el objeto jaxb resultante del mapeo
+			 * EnvioBOLETA.SetDTE documento = response.getJaxbsetdte();
+			 * if (documento == null) {
+			 * log.error("No fue posible generar documento setDTE.");
+			 * return ResponseEntity.badRequest().body(JSend.
+			 * error("No fue posible generar documentos."));
+			 * }
+			 * 
+			 * // firma y guarda el set de documentos en la base de datos
+			 * Setdte newsetdte =
+			 * generateEntityFromJaxbEnvioBOLETASetDTE(response.getXmlboletas(), documento,
+			 * rutemisor, rutfirmante, response.getDteList());
+			 * 
+			 * log.debug("Se crea el setdte en la base de datos con id=" +
+			 * newsetdte.getIdSetdte());
+			 * log.debug("Request procesado correctamente");
+			 * 
+			 * return ResponseEntity.ok().body(JSend.success("Id setDTE generado con id=" +
+			 * newsetdte.getIdSetdte()));
+			 * /
+			 */
+			// --> return ResponseEntity.ok().body(JSend.success("Id setDTE generado con
+			// id=XXXXX"));
 		} catch (Exception ex) {
 			log.error("Ocurrio un error mientras se generaba el setDTE. Error=" + ex.getMessage());
 			return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
@@ -145,7 +165,8 @@ public class GenerarBoletasSetDTEController {
 	public GenerarSetDTEResponse internalGenerarBoletasSetDte(GenerarSetDTERequest payload) {
 
 		try {
-			// completo la parte emisor del mensaje. Si no se indica firmante, se intenta con el rut del emisor
+			// completo la parte emisor del mensaje. Si no se indica firmante, se intenta
+			// con el rut del emisor
 			String rutemisor = payload.getRutEmisor();
 			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
 
@@ -159,12 +180,12 @@ public class GenerarBoletasSetDTEController {
 			}
 
 			// obtiene los documentos jaxb a partir del request a la api
-			List<Integer> tiposDocumentoEnSet = new ArrayList<Integer>();
-			tiposDocumentoEnSet.add(ConstantesTipoDocumento.BOLETA_AFECTA.getValue());
-			tiposDocumentoEnSet.add(ConstantesTipoDocumento.BOLETA_EXENTA.getValue());
+			Integer tipoDocumentoEnSet = null;
+			tipoDocumentoEnSet = payload.getTipoDocumento();
 
 			// numero maximo de dte a incluir en el set en null, para que las incluya todas
-			ConvertRequestToEnvioBOLETAResponse mapperResponse = mapperToBOLETASetDTE.toEnvioBOLETASetDTE(emisor.get(), rutfirmante, payload, tiposDocumentoEnSet);
+			ConvertRequestToEnvioBOLETAResponse mapperResponse = mapperToBOLETASetDTE.toEnvioBOLETASetDTE(emisor.get(),
+					rutfirmante, payload, tipoDocumentoEnSet);
 			if (mapperResponse == null) {
 				log.error("No fue posible realizar el mapping entre request-api y EnvioBOLETA.SetDTE");
 				throw new Exception("No fue posible mapear datos de entrada");
@@ -184,7 +205,8 @@ public class GenerarBoletasSetDTEController {
 			}
 
 			// firma y guarda el set de documentos en la base de datos
-			Setdte newsetdte = generateEntityFromJaxbEnvioBOLETASetDTE(mapperResponse.getXmlboletas(), documento, rutemisor, rutfirmante, mapperResponse.getDteList());
+			Setdte newsetdte = generateEntityFromJaxbEnvioBOLETASetDTE(mapperResponse.getXmlboletas(), documento,
+					rutemisor, rutfirmante, mapperResponse.getDteList());
 			log.debug("Se crea el setdte en la base de datos con id=" + newsetdte.getIdSetdte());
 			log.debug("Request procesado correctamente");
 
@@ -202,7 +224,7 @@ public class GenerarBoletasSetDTEController {
 			GenerarSetDTEResponse response = new GenerarSetDTEResponse();
 			response.setErrorMessage("Se produjo un error creando el set de boletas. Error=" + ex.getMessage());
 			response.setIdSetBoletas(null);
-			
+
 			// responde al caller
 			return response;
 		}
@@ -218,7 +240,8 @@ public class GenerarBoletasSetDTEController {
 	 * @return
 	 */
 	@Transactional
-	private Setdte generateEntityFromJaxbEnvioBOLETASetDTE(String xmlboletas, EnvioBOLETA.SetDTE documento, String rutemisor, String rutfirmante, List<Long> dteList) {
+	private Setdte generateEntityFromJaxbEnvioBOLETASetDTE(String xmlboletas, EnvioBOLETA.SetDTE documento,
+			String rutemisor, String rutfirmante, List<Long> dteList) {
 		try {
 			if (rutemisor == null) {
 				// no se indica el rut del emisor => no es posible construir una boleta
@@ -254,17 +277,24 @@ public class GenerarBoletasSetDTEController {
 
 			// se pasa a xml todo el set
 			String xmlcontent = docxml.toXml(envBoleta, "http://www.sii.cl/SiiDte EnvioBOLETA_v11.xsd");
-			//log.debug("xmlcontent (inicial)=" + xmlcontent);
+			// log.debug("xmlcontent (inicial)=" + xmlcontent);
 
-			String encabezadoReemplazarPor = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "<EnvioBOLETA version=\"1.0\" xmlns=\"http://www.sii.cl/SiiDte\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sii.cl/SiiDte EnvioBOLETA_v11.xsd\">" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN;
-			xmlcontent = xmlcontent.replaceFirst(".*?" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, encabezadoReemplazarPor);
+			String encabezadoReemplazarPor = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
+					+ SiiDocumentFactoryConfiguration.CARRIAGE_RETURN
+					+ "<EnvioBOLETA version=\"1.0\" xmlns=\"http://www.sii.cl/SiiDte\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sii.cl/SiiDte EnvioBOLETA_v11.xsd\">"
+					+ SiiDocumentFactoryConfiguration.CARRIAGE_RETURN;
+			xmlcontent = xmlcontent.replaceFirst(".*?" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN,
+					encabezadoReemplazarPor);
 
 			String startString = "<\\/Caratula>";
 			String endString = "<\\/SetDTE>";
-			xmlcontent = xmlcontent.replaceAll(startString + "[\\s\\S]*" + endString, startString + xmlboletas + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + endString);
+			xmlcontent = xmlcontent.replaceAll(startString + "[\\s\\S]*" + endString,
+					startString + xmlboletas + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + endString);
 
-			// TODO: parche para regularizar las firmas de los documentos (cuando se lee desde el jaxb)
-			// xmlcontent = xmlcontent.replace("<ns2:Signature>", "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">").replace("ns2:", "");
+			// TODO: parche para regularizar las firmas de los documentos (cuando se lee
+			// desde el jaxb)
+			// xmlcontent = xmlcontent.replace("<ns2:Signature>", "<Signature
+			// xmlns=\"http://www.w3.org/2000/09/xmldsig#\">").replace("ns2:", "");
 
 			// si es posible, lo firma
 			KeyinfoFindResponse kinfo;
@@ -285,26 +315,29 @@ public class GenerarBoletasSetDTEController {
 
 				} else {
 					/*
-					// La siguiente, es otra forma de crear el documento setdte, pero no fue comprendida por los servicios del SII.
-					// recorre la lista de boletas del set y firma cada una
-					NodeList nodelistDTE = xmlcontent2.getElementsByTagName("DTE");
-					log.debug("Numero de elementos: " + String.valueOf(nodelistDTE.getLength()));
-					
-					XPath xPath = XPathFactory.newInstance().newXPath();
-					
-					for(int i=0; i<nodelistDTE.getLength();i++) {
-						Node currentDTE = nodelistDTE.item(i);
-					    String ID = (String)xPath.evaluate("//Documento/@ID", currentDTE, XPathConstants.STRING);
-						String documentUri = "#" + ID;
-					    log.debug("Generando datos para firmar URI=" + documentUri);
-						String xmlboletaSigned = XmlEmbeddedSigner.signBoletaEmbeded(currentDTE, documentUri, kinfo.getPrivatekey(), kinfo.getCertificate());
-						if( xmlboletaSigned == null ) {
-							log.error("Ocurrio un error firmando URI=" + documentUri);
-							throw new Exception("No fue posible generar boleta ID=" + ID);
-						}
-						log.debug("[SIGNED]-XML Boleta ID=" + ID + "=" + xmlboletaSigned);
-					}
-					*/
+					 * // La siguiente, es otra forma de crear el documento setdte, pero no fue
+					 * comprendida por los servicios del SII.
+					 * // recorre la lista de boletas del set y firma cada una
+					 * NodeList nodelistDTE = xmlcontent2.getElementsByTagName("DTE");
+					 * log.debug("Numero de elementos: " + String.valueOf(nodelistDTE.getLength()));
+					 * 
+					 * XPath xPath = XPathFactory.newInstance().newXPath();
+					 * 
+					 * for(int i=0; i<nodelistDTE.getLength();i++) {
+					 * Node currentDTE = nodelistDTE.item(i);
+					 * String ID = (String)xPath.evaluate("//Documento/@ID", currentDTE,
+					 * XPathConstants.STRING);
+					 * String documentUri = "#" + ID;
+					 * log.debug("Generando datos para firmar URI=" + documentUri);
+					 * String xmlboletaSigned = XmlEmbeddedSigner.signBoletaEmbeded(currentDTE,
+					 * documentUri, kinfo.getPrivatekey(), kinfo.getCertificate());
+					 * if( xmlboletaSigned == null ) {
+					 * log.error("Ocurrio un error firmando URI=" + documentUri);
+					 * throw new Exception("No fue posible generar boleta ID=" + ID);
+					 * }
+					 * log.debug("[SIGNED]-XML Boleta ID=" + ID + "=" + xmlboletaSigned);
+					 * }
+					 */
 
 					// @formatter:off
 					log.info("Se firma SetDTE...");
@@ -346,6 +379,20 @@ public class GenerarBoletasSetDTEController {
 			// actualiza lista de dtes que forman parte de este set
 			repoDte.updateByIds(newrecord.getIdSetdte(), dteList, EntityDTEStatuses.SETDTEASIGNADO.toString());
 
+			log.debug("Se crea el registro en SetDTE con id=" + newrecord.getIdSetdte());
+			// genera registros en bitacora
+			dteList.forEach(dteid -> {
+				log.debug("Se actualiza DTE con id=" + dteid + " a estado SETDTEASIGNADO");
+				// Se guarda registro en bitacora
+				Bitacora bitacora = new Bitacora();
+				bitacora.setEstado(EntityDTEStatuses.SETDTEASIGNADO.toString());
+				bitacora.setProceso("generateEntityFromJaxbEnvioBOLETASetDTE");
+				bitacora.setFechaActualizacion(ahora);
+				bitacora.setModelo("DTE");
+				bitacora.setIdModelo(dteid.toString());
+				bitacoraRepository.save(bitacora);
+				log.debug("Se crea registro en bitacora para DTE con id=" + dteid);
+			});
 			// recupera y muestra el id
 			log.info("Set Dte creado con id=" + newrecord.getIdSetdte());
 

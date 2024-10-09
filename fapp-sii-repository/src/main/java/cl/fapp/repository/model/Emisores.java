@@ -3,21 +3,21 @@ package cl.fapp.repository.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
 
 /**
  * The persistent class for the emisores database table.
  * 
  */
 @Entity
-@Table(name="emisores")
-@NamedQuery(name="Emisores.findAll", query="SELECT e FROM Emisores e")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "emisores")
+@NamedQuery(name = "Emisores.findAll", query = "SELECT e FROM Emisores e")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Emisores implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String rutemisor;
@@ -36,19 +36,28 @@ public class Emisores implements Serializable {
 	private String metadata;
 	private String razonSocial;
 	private String telefono;
+	private Integer id_template;
 	private Date updatedat;
 	private List<Apikey> apikeys;
 	private List<Caf> cafs;
 	private List<Dte> dtes;
 	private List<Firmantes> firmantes;
 	private List<Impresoras> impresoras;
+	private List<Productos> productos;
+	private List<Proveedores> proveedores;
+	private List<Clientes> clientes;
+	private List<Recepcion> recepciones;
+	private List<RecepcionDte> dtesRecepcion;
+	
+	@OneToMany(mappedBy = "emisor")
+	private List<EmisorActividad> emisorActividades;
 
 	public Emisores() {
+		// Constructor vacio
 	}
 
-
 	@Id
-	@Column(unique=true, nullable=false, length=20)
+	@Column(unique = true, nullable = false, length = 20)
 	public String getRutemisor() {
 		return this.rutemisor;
 	}
@@ -57,8 +66,7 @@ public class Emisores implements Serializable {
 		this.rutemisor = rutemisor;
 	}
 
-
-	@Column(length=128)
+	@Column(length = 128)
 	public String getCiudad() {
 		return this.ciudad;
 	}
@@ -67,8 +75,7 @@ public class Emisores implements Serializable {
 		this.ciudad = ciudad;
 	}
 
-
-	@Column(name="codigo_resolucion", length=128)
+	@Column(name = "codigo_resolucion", length = 128)
 	public String getCodigoResolucion() {
 		return this.codigoResolucion;
 	}
@@ -77,8 +84,7 @@ public class Emisores implements Serializable {
 		this.codigoResolucion = codigoResolucion;
 	}
 
-
-	@Column(name="codigo_sii", length=128)
+	@Column(name = "codigo_sii", length = 128)
 	public String getCodigoSii() {
 		return this.codigoSii;
 	}
@@ -87,8 +93,7 @@ public class Emisores implements Serializable {
 		this.codigoSii = codigoSii;
 	}
 
-
-	@Column(name="codigo_sucursal", length=64)
+	@Column(name = "codigo_sucursal", length = 64)
 	public String getCodigoSucursal() {
 		return this.codigoSucursal;
 	}
@@ -97,8 +102,7 @@ public class Emisores implements Serializable {
 		this.codigoSucursal = codigoSucursal;
 	}
 
-
-	@Column(length=128)
+	@Column(length = 128)
 	public String getComuna() {
 		return this.comuna;
 	}
@@ -107,9 +111,8 @@ public class Emisores implements Serializable {
 		this.comuna = comuna;
 	}
 
-
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
+	@Column(nullable = false)
 	public Date getCreatedat() {
 		return this.createdat;
 	}
@@ -118,8 +121,7 @@ public class Emisores implements Serializable {
 		this.createdat = createdat;
 	}
 
-
-	@Column(length=256)
+	@Column(length = 256)
 	public String getDireccion() {
 		return this.direccion;
 	}
@@ -128,8 +130,7 @@ public class Emisores implements Serializable {
 		this.direccion = direccion;
 	}
 
-
-	@Column(length=256)
+	@Column(length = 256)
 	public String getEmail() {
 		return this.email;
 	}
@@ -138,8 +139,7 @@ public class Emisores implements Serializable {
 		this.email = email;
 	}
 
-
-	@Column(nullable=false, length=16)
+	@Column(nullable = false, length = 16)
 	public String getEstado() {
 		return this.estado;
 	}
@@ -148,9 +148,8 @@ public class Emisores implements Serializable {
 		this.estado = estado;
 	}
 
-
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="fecha_resolucion")
+	@Column(name = "fecha_resolucion")
 	public Date getFechaResolucion() {
 		return this.fechaResolucion;
 	}
@@ -159,8 +158,7 @@ public class Emisores implements Serializable {
 		this.fechaResolucion = fechaResolucion;
 	}
 
-
-	@Column(nullable=false, length=256)
+	@Column(nullable = false, length = 256)
 	public String getGiro() {
 		return this.giro;
 	}
@@ -168,7 +166,6 @@ public class Emisores implements Serializable {
 	public void setGiro(String giro) {
 		this.giro = giro;
 	}
-
 
 	public byte[] getLogo() {
 		return this.logo;
@@ -178,8 +175,7 @@ public class Emisores implements Serializable {
 		this.logo = logo;
 	}
 
-
-	@Column(length=2147483647)
+	@Column(length = 2147483647)
 	public String getMetadata() {
 		return this.metadata;
 	}
@@ -188,8 +184,7 @@ public class Emisores implements Serializable {
 		this.metadata = metadata;
 	}
 
-
-	@Column(name="razon_social", length=256)
+	@Column(name = "razon_social", length = 256)
 	public String getRazonSocial() {
 		return this.razonSocial;
 	}
@@ -198,8 +193,7 @@ public class Emisores implements Serializable {
 		this.razonSocial = razonSocial;
 	}
 
-
-	@Column(length=24)
+	@Column(length = 24)
 	public String getTelefono() {
 		return this.telefono;
 	}
@@ -208,6 +202,15 @@ public class Emisores implements Serializable {
 		this.telefono = telefono;
 	}
 
+	@Column(name = "id_template")
+	@ColumnDefault("1")
+	public Integer getIdTemplate() {
+		return this.id_template;
+	}
+
+	public void setIdTemplate(Integer idTemplate) {
+		this.id_template = idTemplate;
+	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getUpdatedat() {
@@ -218,9 +221,8 @@ public class Emisores implements Serializable {
 		this.updatedat = updatedat;
 	}
 
-
-	//bi-directional many-to-one association to Apikey
-	@OneToMany(mappedBy="emisore")
+	// bi-directional many-to-one association to Apikey
+	@OneToMany(mappedBy = "emisore")
 	public List<Apikey> getApikeys() {
 		return this.apikeys;
 	}
@@ -243,9 +245,8 @@ public class Emisores implements Serializable {
 		return apikey;
 	}
 
-
-	//bi-directional many-to-one association to Caf
-	@OneToMany(mappedBy="emisore")
+	// bi-directional many-to-one association to Caf
+	@OneToMany(mappedBy = "emisore")
 	public List<Caf> getCafs() {
 		return this.cafs;
 	}
@@ -268,9 +269,8 @@ public class Emisores implements Serializable {
 		return caf;
 	}
 
-
-	//bi-directional many-to-one association to Dte
-	@OneToMany(mappedBy="emisore")
+	// bi-directional many-to-one association to Dte
+	@OneToMany(mappedBy = "emisore")
 	public List<Dte> getDtes() {
 		return this.dtes;
 	}
@@ -286,8 +286,6 @@ public class Emisores implements Serializable {
 		return dte;
 	}
 
-	
-
 	public Dte removeDte(Dte dte) {
 		getDtes().remove(dte);
 		dte.setEmisore(null);
@@ -295,9 +293,8 @@ public class Emisores implements Serializable {
 		return dte;
 	}
 
-
-	//bi-directional many-to-one association to Firmantes
-	@OneToMany(mappedBy="emisore")
+	// bi-directional many-to-one association to Firmantes
+	@OneToMany(mappedBy = "emisore")
 	public List<Firmantes> getFirmantes() {
 		return this.firmantes;
 	}
@@ -320,8 +317,8 @@ public class Emisores implements Serializable {
 		return firmante;
 	}
 
-	//bi-directional many-to-one association to Impresoras
-	@OneToMany(mappedBy="cliente")
+	// bi-directional many-to-one association to Impresoras
+	@OneToMany(mappedBy = "cliente")
 	public List<Impresoras> getImpresoras() {
 		return this.impresoras;
 	}
@@ -329,7 +326,7 @@ public class Emisores implements Serializable {
 	public void setImpresoras(List<Impresoras> impresoras) {
 		this.impresoras = impresoras;
 	}
-	
+
 	public Impresoras addImpresoras(Impresoras impresora) {
 		getImpresoras().add(impresora);
 		impresora.setCliente(this);
@@ -342,6 +339,125 @@ public class Emisores implements Serializable {
 		impresora.setCliente(null);
 
 		return impresora;
-	}	
-	
+	}
+
+	// bi-directional many-to-one association to Productos
+	@OneToMany(mappedBy = "emisor")
+	public List<Productos> getProductos() {
+		return this.productos;
+	}
+
+	public void setProductos(List<Productos> productos) {
+		this.productos = productos;
+	}
+
+	public Productos addProductos(Productos producto) {
+		getProductos().add(producto);
+		producto.setEmisor(this);
+
+		return producto;
+	}
+
+	public Productos removeProductos(Productos producto) {
+		getProductos().remove(producto);
+		producto.setEmisor(null);
+
+		return producto;
+	}
+
+	// bi-directional many-to-one association to Proveedores
+	@OneToMany(mappedBy = "emisor")
+	public List<Proveedores> getProveedores() {
+		return this.proveedores;
+	}
+
+	public void setProveedores(List<Proveedores> proveedores) {
+		this.proveedores = proveedores;
+	}
+
+	public Proveedores addProveedores(Proveedores proveedor) {
+		getProveedores().add(proveedor);
+		proveedor.setEmisor(this);
+
+		return proveedor;
+	}
+
+	public Proveedores removeProveedores(Proveedores proveedor) {
+		getProveedores().remove(proveedor);
+		proveedor.setEmisor(null);
+
+		return proveedor;
+	}
+
+	// bi-directional many-to-one association to Clientes
+	@OneToMany(mappedBy = "emisor")
+	public List<Clientes> getClientes() {
+		return this.clientes;
+	}
+
+	public void setClientes(List<Clientes> clientes) {
+		this.clientes = clientes;
+	}
+
+	public Clientes addCliente(Clientes cliente) {
+		getClientes().add(cliente);
+		cliente.setEmisor(this);
+
+		return cliente;
+	}
+
+	public Clientes removeCliente(Clientes cliente) {
+		getClientes().remove(cliente);
+		cliente.setEmisor(null);
+
+		return cliente;
+	}
+
+	// bi-directional many-to-one association to Recepcion
+	@OneToMany(mappedBy = "rutReceptor")
+	public List<Recepcion> getRecepciones() {
+		return this.recepciones;
+	}
+
+	public void setRecepciones(List<Recepcion> recepciones) {
+		this.recepciones = recepciones;
+	}
+
+	public Recepcion addRecepcion(Recepcion recepcion) {
+		getRecepciones().add(recepcion);
+		recepcion.setRutReceptor(this);
+
+		return recepcion;
+	}
+
+	public Recepcion removeRecepcion(Recepcion recepcion) {
+		getRecepciones().remove(recepcion);
+		recepcion.setRutReceptor(null);
+
+		return recepcion;
+	}
+
+	@OneToMany(mappedBy = "rutReceptor")
+	public List<RecepcionDte> getDtesRecepcion() {
+		return this.dtesRecepcion;
+	}
+
+	public void setDtesRecepcion(List<RecepcionDte> dtesRecepcion) {
+		this.dtesRecepcion = dtesRecepcion;
+	}
+
+	public RecepcionDte addDtesRecepcion(RecepcionDte dtesRecepcion) {
+		getDtesRecepcion().add(dtesRecepcion);
+		dtesRecepcion.setRutReceptor(this);
+
+		return dtesRecepcion;
+	}
+
+	public RecepcionDte removeDtesRecepcion(RecepcionDte dtesRecepcion) {
+		getDtesRecepcion().remove(dtesRecepcion);
+		dtesRecepcion.setRutReceptor(null);
+
+		return dtesRecepcion;
+	}
+
 }

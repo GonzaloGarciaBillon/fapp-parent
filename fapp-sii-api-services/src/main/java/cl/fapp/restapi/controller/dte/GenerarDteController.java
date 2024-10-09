@@ -2,10 +2,12 @@ package cl.fapp.restapi.controller.dte;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,16 @@ import cl.fapp.common.domain.statuses.EntityDTEStatuses;
 import cl.fapp.common.jsend.JSend;
 import cl.fapp.common.jsend.JSendStatus;
 import cl.fapp.docs.DTERoot;
+import cl.fapp.repository.model.ActividadEconomica;
+import cl.fapp.repository.model.Bitacora;
 import cl.fapp.repository.model.Dte;
+import cl.fapp.repository.model.DteActividad;
+import cl.fapp.repository.model.EmisorActividad;
 import cl.fapp.repository.model.Emisores;
+import cl.fapp.repository.repos.ActividadEconomicaRepository;
+import cl.fapp.repository.repos.EmisorActividadRepository;
+import cl.fapp.repository.repos.BitacoraRepository;
+import cl.fapp.repository.repos.DteActividadRepository;
 import cl.fapp.repository.repos.DteRepository;
 import cl.fapp.repository.repos.EmisoresRepository;
 import cl.fapp.restapi.controller.dte.dto.DTEAndVerbatimCAF;
@@ -34,18 +44,14 @@ import cl.fapp.restapi.controller.dte.mapper.GenerarDTEControllerMapper;
 import cl.fapp.restapi.controller.repos.dto.KeyinfoFindResponse;
 import cl.fapp.restapi.controller.utils.KeystoreFirmanteUtils;
 import cl.fapp.restapi.dte.domain.DTEEmisor;
-import cl.fapp.restapi.dte.domain.DTEReferencia;
 import cl.fapp.restapi.dte.dto.GenerarDTERequest;
 import cl.fapp.restapi.dte.dto.GenerarNotaCreditoRequest;
 import cl.fapp.restapi.dte.dto.GenerarNotaDebitoRequest;
 import cl.fapp.restapi.dte.mapper.NotaCreditoMapper;
 import cl.fapp.restapi.dte.mapper.NotaDebitoMapper;
 import cl.fapp.sii.jaxb.DTE;
-import cl.fapp.sii.jaxb.DTE.Documento.Detalle;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import cl.fapp.restapi.dte.domain.DTEDescuentoRecargo;
-import cl.fapp.restapi.dte.domain.DTEDetalle;
 
 @Slf4j
 @RestController
@@ -64,6 +70,18 @@ public class GenerarDteController {
 
 	@Autowired
 	KeystoreFirmanteUtils ksfirmanteUtils;
+
+	@Autowired
+	BitacoraRepository bitacoraRepository;
+
+	@Autowired
+	ActividadEconomicaRepository actividadEconomicaRepository;
+
+	@Autowired
+	DteActividadRepository dteActividadRepository;
+
+	@Autowired
+	EmisorActividadRepository emisorActRepository;
 
 	/**
 	 * Genera nota de credito a partir del request a la api y la escribe en la base de datos.
@@ -197,6 +215,9 @@ public class GenerarDteController {
 			// completo la parte emisor del mensaje
 			String rutemisor = payload.getRutEmisor();
 			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
+			String usuario = payload.getUsuario(); // Obtener el usuario del payload
+			List<Integer> actCodes = payload.getActividadEconomica(); // Obtener la actividad economica del payload
+			List<Optional<ActividadEconomica>> actividadEconomica = new ArrayList<Optional<ActividadEconomica>>();
 
 			Optional<Emisores> emisor = repoEmisores.findById(rutemisor);
 			if (!emisor.isPresent()) {
@@ -204,6 +225,7 @@ public class GenerarDteController {
 				throw new Exception("El Emisor no existe");
 
 			} else {
+
 				log.debug("El emisor rut=" + rutemisor + " existe");
 				Emisores record = emisor.get();
 				DTEEmisor emisorDTE = new DTEEmisor();
@@ -214,11 +236,50 @@ public class GenerarDteController {
 				emisorDTE.setCodigoSucursalEmisor(record.getCodigoSucursal());
 				emisorDTE.setTelefonoEmisor(record.getTelefono());
 
+				// Log para ver los códigos de actividades económicas en el input
+				log.debug("Códigos de actividad económica en el payload: " + actCodes);
+
+				// Set para rastrear códigos de actividad económica agregados
+				Set<Integer> actEcoAgregados = new HashSet<>();
+
+				List<EmisorActividad> emisorAct = emisorActRepository.findByEmisor(emisor.get());
 				// codigos de actividad economica indicados en el input
-				for (Integer acteco : payload.getActividadEconomica()) {
-					emisorDTE.getActecos().add(BigInteger.valueOf(acteco));
+				for (Integer actEco : actCodes) {
+					log.debug("Procesando código de actividad económica: " + actEco);
+
+					// Solo agregar si no ha sido agregado previamente
+					if (!actEcoAgregados.contains(actEco)) {
+						// Validar que pertenezca al emisor
+						boolean perteneceAlEmisor = false;
+
+						// Recorrer la lista de relaciones Emisor-Actividad
+						for (EmisorActividad emisorActividad : emisorAct) {
+							log.debug("Revisando si el código " + actEco + " pertenece a la actividad económica: " + emisorActividad.getActividadEconomica().getCodigo());
+							if (emisorActividad.getActividadEconomica().getCodigo().equals(actEco.toString())) {
+								perteneceAlEmisor = true;
+								log.debug("El código " + actEco + " pertenece al emisor.");
+								break;
+							}
+						}
+
+						if (perteneceAlEmisor) {
+							log.debug("Código de actividad económica pertenece al emisor: " + actEco);
+							emisorDTE.getActecos().add(BigInteger.valueOf(actEco));
+							actividadEconomica.add(actividadEconomicaRepository.findByCodigo(actEco.toString()));
+							actEcoAgregados.add(actEco); // Marcar este código como agregado
+							log.debug("Código de actividad económica agregado: " + actEco);
+						} else {
+							log.warn("El código de actividad económica " + actEco + " no pertenece al emisor.");
+						}
+					} else {
+						log.warn("Código de actividad económica duplicado: " + actEco);
+					}
 				}
 
+				if (actividadEconomica.isEmpty()) {
+					log.error("No se encontraron códigos de actividad económica válidos para el emisor.");
+					throw new Exception("No se encontraron códigos de actividad económica válidos para el emisor.");
+				}
 				//emisorBoleta.setCodigoResolucion(record.getCodigoResolucion());
 				//emisorBoleta.setFechaResolucion(record.getFechaResolucion());
 				emisorDTE.setCodigoSii(record.getCodigoSii());
@@ -315,7 +376,7 @@ public class GenerarDteController {
 			// guarda los documentos jaxb en la base de datos
 			for (DTEAndVerbatimCAF jaxbDTEtype : documentos) {
 				String xmlDTESigned = signJaxbDTE(jaxbDTEtype, rutemisor, rutfirmante);
-				newdte = saveNewDteEntity(emisor.get(), rutfirmante, jaxbDTEtype, xmlDTESigned);
+				newdte = saveNewDteEntity(emisor.get(), rutfirmante, jaxbDTEtype, xmlDTESigned, usuario, actividadEconomica);
 				log.debug("Se crea el dte en la base de datos con uuid=" + newdte.getDteUuid());
 			}
 			
@@ -404,7 +465,7 @@ public class GenerarDteController {
 	 * @param xmlDTESigned          string xml del DTE firmado
 	 * @return la nueva instancia del DTE almacenada en la base de datos
 	 */
-	private Dte saveNewDteEntity(Emisores emisor, String rutfirmante, DTEAndVerbatimCAF jaxbDTEAndVerbatimCAF, String xmlDTESigned) {
+	private Dte saveNewDteEntity(Emisores emisor, String rutfirmante, DTEAndVerbatimCAF jaxbDTEAndVerbatimCAF, String xmlDTESigned, String usuario, List<Optional<ActividadEconomica>> actividadEconomica) {
 		try {
 			// recupera el dte sobre el que se trabajara
 			DTE jaxbDTE = jaxbDTEAndVerbatimCAF.getDte();
@@ -422,6 +483,9 @@ public class GenerarDteController {
 			newdte.setMonto(jaxbDTE.getDocumento().getEncabezado().getTotales().getMntTotal());
 			newdte.setDteUuid(BuilderXmlID.genDTEUUIDv4());
 
+			// Establecer el usuario
+			newdte.setUsuario(usuario);
+
 			// obtiene el folio
 			newdte.setFolioAsignado(jaxbDTE.getDocumento().getEncabezado().getIdDoc().getFolio().longValue());
 
@@ -435,6 +499,23 @@ public class GenerarDteController {
 
 			// escribe la nueva instancia en la base de datos
 			Dte newrecord = repoDte.save(newdte);
+
+			// Guardamos Actividad Economica Asociada
+			for (Optional<ActividadEconomica> acteco : actividadEconomica) {
+				DteActividad dteAct = new DteActividad();
+				dteAct.setDte(newrecord);
+				dteAct.setActividadEconomica(acteco.get());
+				dteActividadRepository.save(dteAct);
+			}
+
+			// Se guarda registro en bitacora
+            Bitacora bitacora = new Bitacora();
+            bitacora.setEstado(newrecord.getEstado());
+            bitacora.setProceso("/saveNewDteEntity");
+            bitacora.setFechaActualizacion(ahora);
+			bitacora.setModelo("DTE");
+			bitacora.setIdModelo(newrecord.getIdDte().toString());
+			bitacoraRepository.save(bitacora);
 
 			// recupera y muestra el id
 			log.info("DTE creado con idDte=" + newrecord.getIdDte());

@@ -15,14 +15,16 @@ public enum EntityEmisoresStatuses {
 		this.text = text;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override
 	public String toString() {
 		return text;
 	}
-	
+
 	public String getValue() {
 		return text;
 	}

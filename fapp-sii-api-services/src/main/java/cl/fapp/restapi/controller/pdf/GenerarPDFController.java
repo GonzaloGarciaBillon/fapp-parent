@@ -18,16 +18,20 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+// import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +44,7 @@ import cl.fapp.pdfmanager.PDFBuilder;
 import cl.fapp.pdfmanager.domain.PdfRequest;
 import cl.fapp.repository.model.Dte;
 import cl.fapp.repository.model.Emisores;
+import cl.fapp.repository.repos.DteRepository;
 import cl.fapp.restapi.controller.impresoras.Print;
 import cl.fapp.services.dtelocator.ServiceDTELocatorSimple;
 import cl.fapp.services.dtelocator.dto.ServiceDTELocatorSimpleRequest;
@@ -53,7 +58,7 @@ import jakarta.xml.bind.JAXBContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@CrossOrigin
+// @CrossOrigin
 @RestController
 @RequestMapping(value = "${fapp.api.controller.base-path}")
 @Tag(name = "GENERAR-PDF-FROM-DTE", description = "API para generacion de documentos PDF a partir de datos de un DTE")
@@ -70,6 +75,9 @@ public class GenerarPDFController {
 
 	@Autowired
 	RateLimitingService rateLimitingService;
+
+	@Autowired
+	DteRepository dteRepository;
 	// @formatter:off
 
 	/**
@@ -205,11 +213,6 @@ public class GenerarPDFController {
 	@PostMapping(value = "/datosboleta", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSend> getDataFromDTE(@RequestBody GetDataFromDTERequest payload,
 			HttpServletRequest request) {
-		String clientIp = request.getRemoteAddr();
-		String requestPath = request.getRequestURI();
-		if (!rateLimitingService.isAllowed(clientIp, requestPath)) {
-			return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(JSend.error("Demasiadas solicitudes"));
-		}
 		try {
 			ServiceDTELocatorSimpleRequest newRequest = new ServiceDTELocatorSimpleRequest();
 			newRequest.setEmailReceptor(null);
@@ -303,6 +306,138 @@ public class GenerarPDFController {
 		}
 	}
 
+	@PostMapping(value = "/XMLJsonFromDte", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSend> XMLJsonFromDte(@RequestBody GetDataFromDTERequest request) {
+		GetDataFromDTEResponse response = new GetDataFromDTEResponse();
+        try {
+            Dte dte = null;
+
+            // Buscamos el DTE a cancelar
+            if (request.getIdDte() != null) {
+                Optional<Dte> dteOptional = dteRepository.findById(request.getIdDte());
+                if (dteOptional.isPresent()) {
+                    dte = dteOptional.get();
+                } else {
+                    log.error("No se ha encontrado el DTE");
+                    throw new Exception("No se ha encontrado el DTE");
+                }
+            } else if (request.getDteUUID() != null) {
+                dte = dteRepository.findByDteUuid(request.getDteUUID());
+            } else if (request.getIdDocumento() != null) {
+                dte = dteRepository.findByIdDocumento(request.getIdDocumento());
+            } else if (request.getDteFolioAsignado() != null && request.getDteRutEmisor() != null
+                    && request.getDteTipoDocumento() != null) {
+				dte = dteRepository.findByFolioAsignadoAndTipoDocumentoAndEmisoreRutemisor(request.getDteFolioAsignado(),
+					request.getDteTipoDocumento(), request.getDteRutEmisor()).orElse(null);
+            } else {
+                log.error("No se ha encontrado el DTE");
+                throw new Exception("No se ha encontrado el DTE");
+            }
+
+            // Validamos que se encontro el DTE
+            if (dte == null) {
+                log.error("No se ha encontrado el DTE");
+                throw new Exception("No se ha encontrado el DTE");
+            }
+
+            // Obtenemos el XML del DTE
+            String xmlDte = dte.getDocumentoXml();
+
+            response.setXml(xmlDte);
+            return ResponseEntity.ok().body(JSend.success(response));
+        } catch (Exception e) {
+            log.error("Error al obtener XML del DTE", e);
+            return ResponseEntity.badRequest().body(JSend.error(e.getMessage()));
+        }
+	}
+
+	@PostMapping(value = "XMLFromDte", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Resource> XMLFromDte(@RequestBody GetDataFromDTERequest request) {
+        try {
+            Dte dte = null;
+            // Buscamos el DTE a cancelar
+            if (request.getIdDte() != null) {
+                Optional<Dte> dteOptional = dteRepository.findById(request.getIdDte());
+                if (dteOptional.isPresent()) {
+                    dte = dteOptional.get();
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"error.xml\"")
+                            .body(new ByteArrayResource("<error>No se ha encontrado el DTE</error>".getBytes()));
+                }
+            } else if (request.getDteUUID() != null) {
+                dte = dteRepository.findByDteUuid(request.getDteUUID());
+            } else if (request.getIdDocumento() != null) {
+                dte = dteRepository.findByIdDocumento(request.getIdDocumento());
+            } else if (request.getDteFolioAsignado() != null && request.getDteRutEmisor() != null
+                    && request.getDteTipoDocumento() != null) {
+				dte = dteRepository.findByFolioAsignadoAndTipoDocumentoAndEmisoreRutemisor(request.getDteFolioAsignado(),request.getDteTipoDocumento(), request.getDteRutEmisor()).orElse(null);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"error.xml\"")
+                        .body(new ByteArrayResource("<error>No se ha encontrado el DTE</error>".getBytes()));
+            }
+
+            // Validamos que se encontró el DTE
+            if (dte == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"error.xml\"")
+                        .body(new ByteArrayResource("<error>No se ha encontrado el DTE</error>".getBytes()));
+            }
+
+            // Obtenemos el XML del DTE
+            String xmlDte = dte.getDocumentoXml();
+            ByteArrayResource resource = new ByteArrayResource(xmlDte.getBytes());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"dte.xml\"")
+                    .contentType(MediaType.APPLICATION_XML)
+                    .body(resource);
+        } catch (Exception e) {
+            log.error("Error al obtener XML del DTE", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"error.xml\"")
+                    .body(new ByteArrayResource("<error>Error al obtener XML del DTE</error>".getBytes()));
+        }
+    }
+
+	@PostMapping(value = "/PDF417FromDte", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<JSend> PDF417FromDte(@RequestBody GetDataFromDTERequest request) {
+        GetDataFromDTEResponse response = new GetDataFromDTEResponse();
+        try {
+            Dte dte = new Dte();
+            String pdf417 = "";
+            
+            if (request.getIdDte() != null) {
+                dte = dteRepository.findById(request.getIdDte()).get();
+            } else if (request.getDteUUID() != null) {
+                dte = dteRepository.findByDteUuid(request.getDteUUID());
+            } else if (request.getIdDocumento() != null) {
+                dte = dteRepository.findByIdDocumento(request.getIdDocumento());
+            } else if (request.getDteFolioAsignado() != null && request.getDteRutEmisor() != null && request.getDteTipoDocumento() != null) {
+				dte = dteRepository.findByFolioAsignadoAndTipoDocumentoAndEmisoreRutemisor(request.getDteFolioAsignado(), request.getDteTipoDocumento(), request.getDteRutEmisor()).orElse(null);
+            }
+            
+            if (dte.getDocumentoXml() == "") {
+				log.error("No se ha encontrado el DTE");
+				throw new Exception("No se ha encontrado el DTE");
+            }
+
+            Pattern tedPattern = Pattern.compile("<TED version=\"1.0\">(.*?)<\\/TED>", Pattern.DOTALL);
+            Matcher matcher = tedPattern.matcher(dte.getDocumentoXml());
+            if (matcher.find()) {
+                log.debug("!! Match <TED> !!");
+                pdf417 = Base64.getEncoder().encodeToString(matcher.group().getBytes());
+            }
+            log.debug("PDF417 generado correctamente");
+            response.setTed(pdf417);
+            return ResponseEntity.ok().body(JSend.success(response));
+        } catch (Exception e) {
+            log.debug("Error al generar PDF417", e);
+            return ResponseEntity.badRequest().body(JSend.error(e.getMessage()));
+        }
+    }
+
 	/**
 	 * Modifica el tamano de una imagen
 	 * 
@@ -311,7 +446,6 @@ public class GenerarPDFController {
 	 * @param areaHeight nuevo alto
 	 * @return imagen original escalada al nuevo tamano
 	 */
-	@SuppressWarnings("unused")
 	public BufferedImage resizeImage2(BufferedImage originalImage, int targetWidth, int targetHeight)
 			throws IOException {
 		Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);

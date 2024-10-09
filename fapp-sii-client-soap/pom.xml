@@ -20,6 +20,12 @@
 
 		<dependency>
 			<groupId>cl.fapp</groupId>
+			<artifactId>fapp-common-utils</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>cl.fapp</groupId>
 			<artifactId>fapp-sii-api-mapper</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
@@ -238,4 +244,30 @@
 			-->
 		</plugins>
 	</build>
+	<profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profiles.active>cert</spring.profiles.active>
+                <spring.config.import>optional:classpath:soap-siiclient-cert.properties</spring.config.import>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>cert</id>
+            <properties>
+                <spring.profiles.active>cert</spring.profiles.active>
+                <spring.config.import>optional:classpath:soap-siiclient-cert.properties</spring.config.import>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
+                <spring.config.import>optional:classpath:soap-siiclient-prod.properties</spring.config.import>
+            </properties>
+        </profile>
+    </profiles>
 </project>

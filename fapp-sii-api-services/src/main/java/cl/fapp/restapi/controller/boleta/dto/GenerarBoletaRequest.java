@@ -47,6 +47,12 @@ public class GenerarBoletaRequest {
 	 * Datos de las boletas a generar
 	 */
 	@Schema(description = "Lista de Boletas a generar", required = true)
-	private List<BoletaDocumento> dtes = new ArrayList<BoletaDocumento>();	
+	private List<BoletaDocumento> dtes = new ArrayList<BoletaDocumento>();
+
+	 /**
+     * Usuario que genera la boleta. Campo opcional.
+     */
+    @Schema(description = "Usuario que genera la boleta. Campo opcional.")
+    private String usuario;
 
 }

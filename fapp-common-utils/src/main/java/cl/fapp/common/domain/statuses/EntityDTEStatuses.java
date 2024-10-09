@@ -29,16 +29,19 @@ public enum EntityDTEStatuses {
 		this.text = text;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override
 	public String toString() {
 		return text;
 	}
-	
+
 	/**
-	 * Retorna el valor de la enumeracion dado su nombre (forma: ENUM_NOMBRE.getValue())
+	 * Retorna el valor de la enumeracion dado su nombre (forma:
+	 * ENUM_NOMBRE.getValue())
 	 * 
 	 * @return el valor asignado al nombre de la enumeracion
 	 */

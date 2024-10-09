@@ -56,4 +56,10 @@ public class GenerarNotaCreditoRequest extends DTEDocumento {
 	 */
 	@Schema(description = "Lista de dtes a generar", required = true)
 	private List<DTEDocumento> dtes = new ArrayList<DTEDocumento>();	
+
+	/**
+     * Usuario que genera la nota de crédito. Campo opcional.
+     */
+    @Schema(description = "Usuario que genera la nota de crédito. Campo opcional.")
+    private String usuario;
 }

@@ -20,7 +20,7 @@ public class BoletaDetalle { // detalle por dte
 	private String nombreproducto;
 
 	@Schema(description = "Cantidad de producto", example = "1")
-	private Integer cantidadproducto = 0;
+	private BigDecimal cantidadproducto = BigDecimal.ZERO;
 	
 	@Schema(description = "Unidad de medida", example = "kg")
 	private String umproducto;

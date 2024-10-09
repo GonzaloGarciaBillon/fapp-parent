@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -35,5 +34,5 @@ public class GenerarSetDTERequest {
 
 
 	@Schema(description = "Tipo de documentos a incluir en el set. Si no se indica, los incluye todos")
-	private List<Integer> tipoDocumentos = null;
+	private Integer tipoDocumento = null;
 }

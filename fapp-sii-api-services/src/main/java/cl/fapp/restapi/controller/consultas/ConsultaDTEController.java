@@ -6,9 +6,11 @@ import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import java.awt.Transparency;
+import java.awt.RenderingHints;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -287,7 +292,7 @@ public class ConsultaDTEController {
 				try {
 					GetDataFromDTEResponse response = new GetDataFromDTEResponse();
 					String xml = dtelocatorResponse.getDte().getDocumentoXml();
-					// se retornan los datos de la boleta
+					// se retornan los datos del documento
 					// response.setDte(dtelocatorResponse.getDte());
 					response.setXml(xml);
 					String idSetDte = dtelocatorResponse.getDte().getSetdte() == null ? null
@@ -323,26 +328,54 @@ public class ConsultaDTEController {
 	 * @return la api retornara los datos del DTE que se encuentran en el xml
 	 */
 	@PostMapping(value = "/consulta-folio", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSend> getDataFromDTE(@RequestBody GetDataFromDTERequest payload,
-			HttpServletRequest request) {
-		String clientIp = request.getRemoteAddr();
-		String requestPath = request.getRequestURI();
-		if (!rateLimitingService.isAllowed(clientIp, requestPath)) {
-			return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(JSend.error("Demasiadas solicitudes"));
-		}
+	public ResponseEntity<JSend> getDataFromDTEByFolio(@RequestBody GetDataFromDTERequest payload) {
 		try {
 			ServiceDTELocatorSimpleRequest newRequest = new ServiceDTELocatorSimpleRequest();
 			newRequest.setDteFolioAsignado(payload.getDteFolioAsignado());
 			newRequest.setDteRutEmisor(payload.getDteRutEmisor());
 			newRequest.setDteTipoDocumento(payload.getDteTipoDocumento());
+			newRequest.setDteUUID(payload.getDteUUID());
 			// ubica un dte en base al request
 			String logo = null;
+			log.debug("antes de dte locator");
 			ServiceDTELocatorSimpleResponse dtelocatorResponse = dteLocator.locatorSimple(newRequest);
+			log.debug("despues de dte locator");
 			if (dtelocatorResponse == null) {
 				log.error("No fue posible localizar DTE utilizando los filtros indicados. Payload=" + payload);
-				throw new Exception("No se localiza Boleta");
+				throw new Exception("No se localiza documento");
 			} else {
 				try {
+					byte[] logoArray = dtelocatorResponse.getEmisor().getLogo();
+					if (logoArray != null && logoArray.length > 0) {
+						// obtiene y cambia el tamano al logo
+						BufferedImage originalImage = ImageIO
+								.read(new ByteArrayInputStream(dtelocatorResponse.getEmisor().getLogo()));
+						if (originalImage != null) {
+							BufferedImage resizedImage = resizeImage(originalImage, 350, 350);
+
+							ByteArrayOutputStream bos = new ByteArrayOutputStream();
+							ImageIO.write(resizedImage, "png", bos);
+							byte[] encoded = Base64.getEncoder().encode(bos.toByteArray());
+							logo = new String(encoded);
+						} else {
+							logo = "";
+						}
+					} else {
+						logo = "";
+					}
+					// obtiene el ted
+					// patron de busqueda que se aplica en el string xml para obtener el ted
+					Pattern tedPattern = Pattern.compile("<TED version=\"1.0\">(.*?)<\\/TED>", Pattern.DOTALL);
+
+					// busca coincidencias del tag <TED></TED>
+					String ted = null;
+					Matcher matcher = tedPattern.matcher(dtelocatorResponse.getDte().getDocumentoXml());
+
+					if (matcher.find()) {
+						ted = Base64.getEncoder().encodeToString(matcher.group().getBytes());
+					} else {
+						log.error("No se encontro TED en el xml");
+					}
 					GetDataFromDTEResponse response = new GetDataFromDTEResponse();
 					int tipoDocumento = payload.getDteTipoDocumento();
 					Object unmarshalledType = null;
@@ -355,22 +388,25 @@ public class ConsultaDTEController {
 						unmarshallDbDte.getDocumento().setTED(null);
 						unmarshalledType = unmarshallDbDte;
 
+					} else if (tipoDocumento == ConstantesTipoDocumento.FACTURA_AFECTA.getValue()
+							|| tipoDocumento == ConstantesTipoDocumento.FACTURA_EXENTA.getValue()
+							|| tipoDocumento == ConstantesTipoDocumento.NOTA_CREDITO.getValue()
+							|| tipoDocumento == ConstantesTipoDocumento.NOTA_DEBITO.getValue()) {
+						// hace el unmarshall del xml contenido en la entidad dte
+						JAXBContext context = JAXBContext.newInstance(DTE.class);
+						DTE unmarshallDbDte = (DTE) context.createUnmarshaller()
+								.unmarshal(new StringReader(dtelocatorResponse.getDte().getDocumentoXml()));
+						unmarshallDbDte.getDocumento().setTED(null);
+						unmarshalledType = unmarshallDbDte;
 					} else {
-						if (tipoDocumento == ConstantesTipoDocumento.NOTA_CREDITO.getValue()) {
-							// hace el unmarshall del xml contenido en la entidad dte
-							JAXBContext context = JAXBContext.newInstance(DTE.class);
-							DTE unmarshallDbDte = (DTE) context.createUnmarshaller()
-									.unmarshal(new StringReader(dtelocatorResponse.getDte().getDocumentoXml()));
-							unmarshallDbDte.getDocumento().setTED(null);
-							unmarshalledType = unmarshallDbDte;
-						} else {
-							log.error("Tipo de documento no soportado. Tipo=" + tipoDocumento);
-							throw new Exception("Tipo de documento no soportado");
-						}
+						log.error("Tipo de documento no soportado. Tipo=" + tipoDocumento);
+						throw new Exception("Tipo de documento no soportado");
 					}
 
-					// se retornan los datos de la boleta
+					// se retornan los datos del documento
 					response.setDte(unmarshalledType);
+					response.setTed(ted);
+					response.setLogo((logo == null ? "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" : logo));
 
 					return ResponseEntity.ok().body(JSend.success(response));
 
@@ -382,6 +418,57 @@ public class ConsultaDTEController {
 		} catch (Exception ex) {
 			log.error("Ocurrio un error extrayendo data del xml. Error=" + ex.getMessage());
 			return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
+		}
+	}
+
+	/**
+	 * Modifica el tamano de una imagen
+	 * 
+	 * @param image      imagen
+	 * @param areaWidth  nuevo ancho
+	 * @param areaHeight nuevo alto
+	 * @return imagen original escalada al nuevo tamano
+	 */
+	public static BufferedImage resizeImage(BufferedImage image, int areaWidth, int areaHeight) {
+		float scaleX = (float) areaWidth / image.getWidth();
+		float scaleY = (float) areaHeight / image.getHeight();
+		float scale = Math.min(scaleX, scaleY);
+		int w = Math.round(image.getWidth() * scale);
+		int h = Math.round(image.getHeight() * scale);
+
+		int type = image.getTransparency() == Transparency.OPAQUE ? BufferedImage.TYPE_INT_RGB
+				: BufferedImage.TYPE_INT_ARGB;
+
+		boolean scaleDown = scale < 1;
+
+		if (scaleDown) {
+			// multi-pass bilinear div 2
+			int currentW = image.getWidth();
+			int currentH = image.getHeight();
+			BufferedImage resized = image;
+			while (currentW > w || currentH > h) {
+				currentW = Math.max(w, currentW / 2);
+				currentH = Math.max(h, currentH / 2);
+
+				BufferedImage temp = new BufferedImage(currentW, currentH, type);
+				Graphics2D g2 = temp.createGraphics();
+				g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				g2.drawImage(resized, 0, 0, currentW, currentH, null);
+				g2.dispose();
+				resized = temp;
+			}
+			return resized;
+
+		} else {
+			Object hint = scale > 2 ? RenderingHints.VALUE_INTERPOLATION_BICUBIC
+					: RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+
+			BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = resized.createGraphics();
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
+			g2.drawImage(image, 0, 0, w, h, null);
+			g2.dispose();
+			return resized;
 		}
 	}
 }

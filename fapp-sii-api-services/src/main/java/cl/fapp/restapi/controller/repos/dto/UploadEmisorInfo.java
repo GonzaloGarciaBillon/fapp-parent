@@ -1,5 +1,7 @@
 package cl.fapp.restapi.controller.repos.dto;
 
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +20,5 @@ public class UploadEmisorInfo {
 	private String direccion;
 	private String codigoResolucion;
 	private String fechaResolucion;
+	private List<String> actividades;
 }

@@ -60,9 +60,9 @@ import jakarta.xml.bind.annotation.XmlType;
  * </pre>
  * 
  */
-@XmlType(name = "TipMonType"/*, namespace = "http://www.sii.cl/SiiDte"*/)
+@XmlType(name = "TipMonType", namespace = "http://www.sii.cl/SiiDte")
 @XmlEnum
-@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2023-01-23T03:15:17-03:00")
+@Generated(value = "com.sun.tools.xjc.Driver", comments = "JAXB RI v3.0.0", date = "2024-08-21T03:38:52-04:00")
 public enum TipMonType {
 
     BOLIVAR("BOLIVAR"),

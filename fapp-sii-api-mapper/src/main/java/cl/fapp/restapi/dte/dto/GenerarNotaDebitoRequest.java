@@ -55,5 +55,11 @@ public class GenerarNotaDebitoRequest extends DTEDocumento {
 	 * Datos de las boletas a generar
 	 */
 	@Schema(description = "Lista de dtes a generar", required = true)
-	private List<DTEDocumento> dtes = new ArrayList<DTEDocumento>();	
+	private List<DTEDocumento> dtes = new ArrayList<DTEDocumento>();
+
+	/**
+     * Usuario que genera el DTE. Campo opcional.
+     */
+    @Schema(description = "Usuario que genera el DTE. Campo opcional.")
+    private String usuario;
 }

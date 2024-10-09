@@ -16,12 +16,14 @@ public enum EntityTicketTypes {
 	EntityTicketTypes(final String text) {
 		this.text = text;
 	}
-	
+
 	public String getValue() {
 		return text;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override

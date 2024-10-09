@@ -60,33 +60,36 @@ public class NoNamespaceWriter extends DelegatingXMLStreamWriter {
 	}
 
 	/*
-	private static final NamespaceContext emptyNamespaceContext = new NamespaceContext() {
-	
-	  @Override
-	  public String getNamespaceURI(String prefix) {
-	    return "";
-	  }
-	
-	  @Override
-	  public String getPrefix(String namespaceURI) {
-	    return "";
-	  }
-	
-	  @Override
-	  public Iterator<String> getPrefixes(String namespaceURI) {
-	    return null;
-	  }
-	
-	};
-	
-	public static XMLStreamWriter filter(Writer writer) throws XMLStreamException {
-	  return new NoNamesWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
-	}
-	
-	@Override
-	public NamespaceContext getNamespaceContext() {
-	  return emptyNamespaceContext;
-	}
-	*/
+	 * private static final NamespaceContext emptyNamespaceContext = new
+	 * NamespaceContext() {
+	 * 
+	 * @Override
+	 * public String getNamespaceURI(String prefix) {
+	 * return "";
+	 * }
+	 * 
+	 * @Override
+	 * public String getPrefix(String namespaceURI) {
+	 * return "";
+	 * }
+	 * 
+	 * @Override
+	 * public Iterator<String> getPrefixes(String namespaceURI) {
+	 * return null;
+	 * }
+	 * 
+	 * };
+	 * 
+	 * public static XMLStreamWriter filter(Writer writer) throws XMLStreamException
+	 * {
+	 * return new
+	 * NoNamesWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
+	 * }
+	 * 
+	 * @Override
+	 * public NamespaceContext getNamespaceContext() {
+	 * return emptyNamespaceContext;
+	 * }
+	 */
 
 }

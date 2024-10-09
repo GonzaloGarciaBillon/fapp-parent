@@ -12,7 +12,8 @@ public class BuilderXmlID {
 	private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	/**
-	 * Retorna el ID de un setdte. Este ID es utilizado como identificador del SETDTE en el archivo xml
+	 * Retorna el ID de un setdte. Este ID es utilizado como identificador del
+	 * SETDTE en el archivo xml
 	 * 
 	 * @return id basado en la hora
 	 */
@@ -23,7 +24,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID de un dte. Este ID es utilizado como identificador del DTE en el archivo xml
+	 * Retorna el ID de un dte. Este ID es utilizado como identificador del DTE en
+	 * el archivo xml
 	 * 
 	 * @param folio numero de folio del documento
 	 * @return
@@ -35,7 +37,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID de una boleta. Este ID es utilizado como identificador de la boleta en el archivo xml
+	 * Retorna el ID de una boleta. Este ID es utilizado como identificador de la
+	 * boleta en el archivo xml
 	 * 
 	 * @param folio numero de folio del documento
 	 * @return
@@ -47,7 +50,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID para un RVD. Este ID es utilizado como identificador del RVD en el archivo xml
+	 * Retorna el ID para un RVD. Este ID es utilizado como identificador del RVD en
+	 * el archivo xml
 	 * 
 	 * @return
 	 */
@@ -58,7 +62,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID para una factura afecta. Este ID es utilizado como identificador de la factura afecta en el archivo xml
+	 * Retorna el ID para una factura afecta. Este ID es utilizado como
+	 * identificador de la factura afecta en el archivo xml
 	 * 
 	 * @param folio numero de folio del documento
 	 * @return
@@ -70,7 +75,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID para una factura exenta. Este ID es utilizado como identificador de la factura exenta en el archivo xml
+	 * Retorna el ID para una factura exenta. Este ID es utilizado como
+	 * identificador de la factura exenta en el archivo xml
 	 * 
 	 * @param folio numero de folio del documento
 	 * @return
@@ -82,7 +88,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID para una nota de credito. Este ID es utilizado como identificador de la nota de credito en el archivo xml
+	 * Retorna el ID para una nota de credito. Este ID es utilizado como
+	 * identificador de la nota de credito en el archivo xml
 	 * 
 	 * @param folio numero de folio del documento
 	 * @return
@@ -94,7 +101,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID para una nota de debito. Este ID es utilizado como identificador de la nota de debito en el archivo xml
+	 * Retorna el ID para una nota de debito. Este ID es utilizado como
+	 * identificador de la nota de debito en el archivo xml
 	 * 
 	 * @param folio numero de folio del documento
 	 * @return
@@ -106,7 +114,9 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Retorna el ID para un libro de compra/venta. Este ID es utilizado como identificador del libro de compra/venta en el archivo xml
+	 * Retorna el ID para un libro de compra/venta. Este ID es utilizado como
+	 * identificador del libro de compra/venta en el archivo xml
+	 * 
 	 * @return
 	 */
 	public static String getIDforLibroCompraVenta() {
@@ -116,7 +126,8 @@ public class BuilderXmlID {
 	}
 
 	/**
-	 * Genera un UUID v4, para ser asignado a un DTE. Utiliza SHA-256 y un random UUID
+	 * Genera un UUID v4, para ser asignado a un DTE. Utiliza SHA-256 y un random
+	 * UUID
 	 * 
 	 * @return
 	 */

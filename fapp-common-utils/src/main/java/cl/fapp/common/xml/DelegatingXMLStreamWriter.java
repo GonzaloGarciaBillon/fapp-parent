@@ -5,7 +5,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Implementacion propia de XMLStreamWriter. Extraida del codigo de Apache CXF. 
+ * Implementacion propia de XMLStreamWriter. Extraida del codigo de Apache CXF.
  */
 public class DelegatingXMLStreamWriter implements XMLStreamWriter {
 	protected final XMLStreamWriter delegate;

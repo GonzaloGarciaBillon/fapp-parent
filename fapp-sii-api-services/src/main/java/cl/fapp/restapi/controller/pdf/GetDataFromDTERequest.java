@@ -21,4 +21,6 @@ public class GetDataFromDTERequest {
 	private BigInteger dteMonto;
 	private Integer dteTipoDocumento;
 	private String dteUUID;
+	private Long idDte;
+	private String idDocumento;
 }

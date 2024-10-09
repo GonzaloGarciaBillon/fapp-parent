@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class XMLUtils {
-	
+
 	/**
 	 * Tabla de caracteres especiales definidos por el SII
 	 */
@@ -47,26 +47,28 @@ public class XMLUtils {
 	}
 
 	/**
-	 * Reemplaza caracteres especiales definidos por el SII por su representacion xml
+	 * Reemplaza caracteres especiales definidos por el SII por su representacion
+	 * xml
 	 * 
 	 * @param s String con caracteres especiales
 	 * @return String con caracteres especiales convertidos
 	 */
 	public static String replaceSiiEspecialChars(String s) {
-		if( s==null ) {
+		if (s == null) {
 			return null;
 		}
-		
+
 		for (Map.Entry<String, String> entry : siiEspecialChars.entrySet()) {
 			s = s.replace(entry.getKey(), entry.getValue());
 		}
 		return s;
 	}
-	
+
 	/**
 	 * Procesa cada nodo de un documento resuelto por una expresion xpath
-	 * @param doc documento
-	 * @param xpath expresion xpath
+	 * 
+	 * @param doc     documento
+	 * @param xpath   expresion xpath
 	 * @param process consumidor de los nodos
 	 */
 	public static void processFilteredXml(Document doc, String xpath, Consumer<Node> process) {
@@ -79,6 +81,7 @@ public class XMLUtils {
 
 	/**
 	 * Crea un documento xml a partir de un stream
+	 * 
 	 * @param xmlin stream con contendio xml
 	 * @return un documento xml
 	 */
@@ -97,7 +100,8 @@ public class XMLUtils {
 
 	/**
 	 * Filtra nodos indicados en la expresion xpath
-	 * @param doc documento xml
+	 * 
+	 * @param doc       documento xml
 	 * @param xpathExpr expresion xpath
 	 * @return lista de nodos hijos resueltos por la expresion xpath
 	 */
@@ -115,8 +119,10 @@ public class XMLUtils {
 	}
 
 	/**
-	 * Acumula en el writer el contenido de un nodo. Se utiliza para recolectar el contenido de todos los nodos hijos de un nodo padre.
-	 * @param node nodo
+	 * Acumula en el writer el contenido de un nodo. Se utiliza para recolectar el
+	 * contenido de todos los nodos hijos de un nodo padre.
+	 * 
+	 * @param node      nodo
 	 * @param strwriter en donde acumular
 	 */
 	public static void getContent(Node node, StringWriter strwriter) {
@@ -125,34 +131,37 @@ public class XMLUtils {
 			transformer.setOutputProperty(OutputKeys.INDENT, "no");
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "0");
-			
+
 			StreamResult result = new StreamResult(strwriter);
 			DOMSource source = new DOMSource(node);
 			transformer.transform(source, result);
-			
+
 			strwriter = (StringWriter) result.getWriter();
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/**
-	 * Obtiene el valor (text) encerrado entre dos tags. Comunmente tag abierto/tag cerrado
-	 * @param doc documento
+	 * Obtiene el valor (text) encerrado entre dos tags. Comunmente tag abierto/tag
+	 * cerrado
+	 * 
+	 * @param doc       documento
 	 * @param xpathExpr expresion xpath
-	 * @return un string con el texto contenido entre tag abierto/tag cerrado. Null en caso de no encontrar el tag
+	 * @return un string con el texto contenido entre tag abierto/tag cerrado. Null
+	 *         en caso de no encontrar el tag
 	 */
-    public static String getText(Document doc, String xpathExpr) {
+	public static String getText(Document doc, String xpathExpr) {
 		try {
-	        XPathFactory xpf = XPathFactory.newInstance();
-	        XPath xp = xpf.newXPath();
-	        String text;
+			XPathFactory xpf = XPathFactory.newInstance();
+			XPath xp = xpf.newXPath();
+			String text;
 			text = xp.evaluate(xpathExpr, doc.getDocumentElement());
-	        return text;
+			return text;
 		} catch (XPathExpressionException e) {
 			log.error(e.getMessage());
 			return null;
 		}
-    }
+	}
 }

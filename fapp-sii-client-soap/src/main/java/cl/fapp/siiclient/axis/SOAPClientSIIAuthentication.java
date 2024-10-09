@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @Configuration
-@PropertySource("classpath:soap-siiclient.properties")
+@PropertySource("classpath:soap-siiclient-${spring.profiles.active:cert}.properties")
 public class SOAPClientSIIAuthentication {
 
 	@Value("${soap.semilla.url}")

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class SIITokenServiceUtils {
-	
+
 	@Autowired
 	KeystoreFirmanteUtils ksfirmanteUtils;
 
@@ -26,12 +26,13 @@ public class SIITokenServiceUtils {
 
 	@Autowired
 	EmisoresRepository repoEmisores;
-	
+
 	/**
 	 * Obtiene un token para poder utilizar los servicios
 	 * 
 	 * @param rutemisor   rut + dv del emisor
-	 * @param rutfirmante rut + dv del certificado a utilizar para firmar solicitu de token
+	 * @param rutfirmante rut + dv del certificado a utilizar para firmar solicitu
+	 *                    de token
 	 * @return un token entregado por el sii
 	 * @throws Exception
 	 */
@@ -55,7 +56,7 @@ public class SIITokenServiceUtils {
 		}
 
 		// recupera instancia de la entidad emisor
-		//-->Emisores emisor = optEmisor.get();
+		// -->Emisores emisor = optEmisor.get();
 
 		// recupera los datos para firmas
 		KeyinfoFindResponse kinfo = ksfirmanteUtils.getKeystoreInfo(rutemisor, rutfirmante);

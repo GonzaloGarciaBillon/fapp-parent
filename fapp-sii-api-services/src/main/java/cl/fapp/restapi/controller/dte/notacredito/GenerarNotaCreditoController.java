@@ -20,8 +20,10 @@ import cl.fapp.common.domain.ConstantesTipoDocumento;
 import cl.fapp.common.domain.statuses.EntityDTEStatuses;
 import cl.fapp.common.jsend.JSend;
 import cl.fapp.docs.DTERoot;
+import cl.fapp.repository.model.Bitacora;
 import cl.fapp.repository.model.Dte;
 import cl.fapp.repository.model.Emisores;
+import cl.fapp.repository.repos.BitacoraRepository;
 import cl.fapp.repository.repos.DteRepository;
 import cl.fapp.repository.repos.EmisoresRepository;
 import cl.fapp.restapi.controller.dte.dto.DTEAndVerbatimCAF;
@@ -51,6 +53,9 @@ public class GenerarNotaCreditoController {
 
 	@Autowired
 	KeystoreFirmanteUtils ksfirmanteUtils;
+
+	@Autowired
+	BitacoraRepository bitacoraRepository;
 
 	/**
 	 * Genera notas de credito jaxb a partir del request a la api, y las escribe en la base de datos.
@@ -212,6 +217,15 @@ public class GenerarNotaCreditoController {
 			// escribe la nueva instancia en la base de datos
 			Dte newrecord = repoDte.save(newdte);
 
+			// Se guarda registro en bitacora
+            Bitacora bitacora = new Bitacora();
+            bitacora.setEstado(newrecord.getEstado());
+            bitacora.setProceso("/generarboleta");
+            bitacora.setFechaActualizacion(ahora);
+            bitacora.setModelo("DTE");
+			bitacora.setIdModelo(newrecord.getIdDte().toString());
+			bitacoraRepository.save(bitacora);
+
 			// recupera y muestra el id
 			log.info("DTE creado con id=" + newrecord.getIdDte());
 
@@ -298,7 +312,7 @@ public class GenerarNotaCreditoController {
 	 * @param xmlDteSigned string xml del DTE firmado
 	 * @return la nueva instancia del Dte almacenada en la base de datos
 	 */
-	private Dte saveNewDteEntity(Emisores emisor, DTEAndVerbatimCAF jaxbDTEAndVerbatimCAF, String xmlDteSigned) {
+	private Dte saveNewDteEntity(Emisores emisor, DTEAndVerbatimCAF jaxbDTEAndVerbatimCAF, String xmlDteSigned, String usuario) {
 		try {
 			// recupera el dte sobre el que se trabajara
 			DTE jaxbDTE = jaxbDTEAndVerbatimCAF.getDte();
@@ -315,6 +329,9 @@ public class GenerarNotaCreditoController {
 			newdte.setMonto(jaxbDTE.getDocumento().getEncabezado().getTotales().getMntTotal());
 			newdte.setDteUuid(BuilderXmlID.genDTEUUIDv4());
 
+			// Establecer el usuario
+			newdte.setUsuario(usuario);
+
 			// obtiene el folio
 			newdte.setFolioAsignado(jaxbDTE.getDocumento().getEncabezado().getIdDoc().getFolio().longValue());
 
@@ -328,6 +345,15 @@ public class GenerarNotaCreditoController {
 
 			// escribe la nueva instancia en la base de datos
 			Dte newrecord = repoDte.save(newdte);
+
+			// Se guarda registro en bitacora
+            Bitacora bitacora = new Bitacora();
+            bitacora.setEstado(newrecord.getEstado());
+            bitacora.setProceso("saveNewDteEntity");
+            bitacora.setFechaActualizacion(ahora);
+            bitacora.setModelo("DTE");
+			bitacora.setIdModelo(newrecord.getIdDte().toString());
+			bitacoraRepository.save(bitacora);
 
 			// recupera y muestra el id
 			log.info("DTE creado con idDte=" + newrecord.getIdDte());

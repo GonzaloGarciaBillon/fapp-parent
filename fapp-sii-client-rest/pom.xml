@@ -96,4 +96,31 @@
 		</plugins>
 
 	</build>
+
+	<profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+                <spring.config.import>classpath:siiclient-cert.properties</spring.config.import>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>cert</id>
+            <properties>
+                <spring.profiles.active>cert</spring.profiles.active>
+                <spring.config.import>classpath:siiclient-cert.properties</spring.config.import>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
+                <spring.config.import>classpath:siiclient-prod.properties</spring.config.import>
+            </properties>
+        </profile>
+    </profiles>
 </project>

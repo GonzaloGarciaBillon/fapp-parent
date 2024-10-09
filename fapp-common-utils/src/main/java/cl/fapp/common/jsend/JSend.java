@@ -12,10 +12,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class JSend {
 	@JsonInclude(Include.NON_NULL)
 	private JSendStatus status;
-	
+
 	@JsonInclude(Include.NON_NULL)
 	private Integer code;
-	
+
 	@JsonInclude(Include.NON_NULL)
 	private String message;
 
@@ -58,7 +58,8 @@ public class JSend {
 	 */
 	@Override
 	public String toString() {
-		return new StringJoiner(", ", JSend.class.getSimpleName() + "[", "]").add("status=" + status).add("code=" + code).add("message='" + message + "'").add("data='" + data + "'").toString();
+		return new StringJoiner(", ", JSend.class.getSimpleName() + "[", "]").add("status=" + status)
+				.add("code=" + code).add("message='" + message + "'").add("data='" + data + "'").toString();
 	}
 
 	/**
@@ -112,7 +113,7 @@ public class JSend {
 	public static JSend error(String message) {
 		return error(null, message, null);
 	}
-	
+
 	/**
 	 * un fallo con datos
 	 *
@@ -122,7 +123,7 @@ public class JSend {
 	public static JSend fail(Object data) {
 		return new JSend(JSendStatus.fail, null, null, data);
 	}
-	
+
 	public JSendStatus getStatus() {
 		return status;
 	}

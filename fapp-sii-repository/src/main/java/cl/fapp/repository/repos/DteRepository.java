@@ -36,7 +36,7 @@ public interface DteRepository extends JpaRepository<Dte, Long> {
 	 * @param tipoDocumento    tipo de documento
 	 * @return lista de dte
 	 */
-	List<Dte> findByEmisoreRutemisorAndEstadoAndTipoDocumentoIn(String emisoreRutemisor, String estado, List<Integer> tipoDocumento);
+	List<Dte> findByEmisoreRutemisorAndEstadoAndTipoDocumento(String emisoreRutemisor, String estado, Integer tipoDocumento);
 
 	/**
 	 * Busca por estado
@@ -45,6 +45,16 @@ public interface DteRepository extends JpaRepository<Dte, Long> {
 	 * @return lista de dte
 	 */
 	List<Dte> findByEstado(String estado);
+
+	/**
+	 * Busca por usuario y estado
+	 * 
+	 * @param usuario usuario que genero el dte
+	 * @param estado  estado segun {@link EntityDTEStatuses}
+	 * @return lista de dte
+	 */
+
+	List<Dte> findByUsuarioAndEstado(String usuario, String estado);
 
 	/**
 	 * Busca por id y estado
@@ -161,6 +171,35 @@ public interface DteRepository extends JpaRepository<Dte, Long> {
 	 * @return lista de DTE que cumplen los criterios de búsqueda
 	 */
 	List<Dte> findByFolioAsignadoAndEmisoreRutemisorAndTipoDocumento(Long folioAsignado, String rutEmisor, Integer tipoDocumento);
+	
+
+	/**
+	 * Busca por Uuid del documento
+	 * 
+	 * @param dteUuid   UUID del DTE
+	 * @return DTE que cumplen los criterios de búsqueda
+	 */
+
+	Dte findByDteUuid(String dteUuid);
+
+	/**
+	 * Busca por id del documento
+	 * 
+	 * @param dteUuid   UUID del DTE
+	 * @return DTE que cumplen los criterios de búsqueda
+	 */
+
+	Dte findByIdDocumento(String idDocumento);
+
+	/**
+	 * Busca por folio, rut emisor y tipo de documento.
+	 * 
+	 * @param folioAsignado   número de folio del DTE
+	 * @param rutEmisor       rut del emisor del DTE
+	 * @param tipoDocumento   tipo de documento del DTE
+	 * @return lista de DTE que cumplen los criterios de búsqueda
+	 */
+	Optional<Dte> findByFolioAsignadoAndTipoDocumentoAndEmisoreRutemisor(Long folioAsignado, Integer tipoDocumento, String rutEmisor);
 	
 	/**
 	 * Reporta numero de dtes en estadoDte, por emisor en estadoEmisor

@@ -1543,7 +1543,9 @@ public class QueryEstUpServiceStub extends org.apache.axis2.client.Stub {
     try {
       org.apache.axis2.client.OperationClient _operationClient =
           _serviceClient.createClient(_operations[5].getName());
-      _operationClient.getOptions().setAction("http://DefaultNamespace/QueryEstUp/getEstUpRequest");
+      _operationClient
+          .getOptions()
+          .setAction("https://DefaultNamespace/QueryEstUp/getEstUpRequest");
       _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
       addPropertyToOperationClient(

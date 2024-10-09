@@ -1,11 +1,15 @@
 package cl.fapp.pdfmanager;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Base64;
 
 import javax.xml.transform.Result;
@@ -27,25 +31,34 @@ import org.xml.sax.SAXException;
 
 import cl.fapp.common.domain.ConstantesTipoDocumento;
 import cl.fapp.pdfmanager.domain.PdfRequest;
+import cl.fapp.common.os.OsController;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PDFBuilder {
 	FopFactory fopFactory;
 	TransformerFactory transformerFactory;
-	{
+	OsController osController;
+
+	public PDFBuilder() {
+		this.osController = new OsController();
+		log.debug("Sistema operativo: " + osController.getOperatingSystem());
+		initializeFactories();
+	}
+
+	private void initializeFactories() {
 		DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
 		Configuration cfg;
 		try {
 			cfg = cfgBuilder.build(getFileFromResourceAsStream("fop/fop-config.xml"));
 			FopFactoryBuilder builder = new FopFactoryBuilder(new File(".").toURI(), new ClasspathResolverURIAdapter());
-			builder = builder.setConfiguration(cfg);
+			builder.setConfiguration(cfg);
 
 			fopFactory = builder.build();
 			transformerFactory = TransformerFactory.newInstance();
 		} catch (IllegalArgumentException | ConfigurationException e) {
-			e.printStackTrace();
-		} 
+			log.error("Error inicializando fábricas de FOP", e);
+		}
 	}
 
 	/**
@@ -71,7 +84,7 @@ public class PDFBuilder {
 				// Setup XSLT
 				InputStream is = getFoXsl(request.getTipoDte());
 				StreamSource xslt = new StreamSource(is);
-				
+
 				// crea un transformer de tipo xslt
 				Transformer transformer = transformerFactory.newTransformer(xslt);
 
@@ -86,11 +99,11 @@ public class PDFBuilder {
 				transformer.setParameter("resoldate", request.getResolucionFecha());
 
 				// Setup input for XSLT transformation
-				
+
 				// --------- agregada el 18072023 ---------------
-				 // la codificacion en la base es utf-8 (para manejar tildes en el caf)
+				// la codificacion en la base es utf-8 (para manejar tildes en el caf)
 				log.debug("request.getDte()=" + request.getDte());
-				String str = new String(request.getDte().getBytes(StandardCharsets.ISO_8859_1));
+				String str = new String(request.getDte().getBytes(StandardCharsets.UTF_8));
 				Source src = new StreamSource(new StringReader(str));
 				// ----------------------------------------------
 
@@ -119,37 +132,38 @@ public class PDFBuilder {
 	 * @throws IOException
 	 */
 	private InputStream getFoXsl(Integer tipo) throws IOException {
+		String osName = osController.getOperatingSystem().toLowerCase();
+		String xslFileName = getTemplateFileName(ConstantesTipoDocumento.valueOf(tipo)); // Obtiene el nombre del
+																							// archivo XSLT
 
-		String foXml = "";
-		ConstantesTipoDocumento tipoDocumento = ConstantesTipoDocumento.valueOf(tipo);
-
-		switch (tipoDocumento) {
-
-		case BOLETA_AFECTA:
-			foXml = "xml/xslt/boleta_termica_2fo.xsl";
-			break;
-
-		case NOTA_CREDITO:
-			foXml = "xml/xslt/notaCredito2fo.xsl";
-			break;
-		// Se agrega factura afecta 29-11-23
-		case FACTURA_AFECTA:
-			//foXml = "xml/xslt/factura_estandar_2fo.xsl";
-			//foXml = "xml/xslt/factura_termica_2fo.xsl";
-			// foXml = "xml/xslt/factura_termica_2fo_test.xsl";
-			foXml = "xml/xslt/notaCredito2fo.xsl";
-			break;
-
-		default:
-			System.out.println("No existe definición de FO para el tipo de documento: " + tipo);
-			foXml = "xml/xslt/sinDefinicion2fo.xsl";
-			break;
-
+		if (osName.contains("windows")) {
+			// En Windows, usa ClassLoader para acceder al archivo dentro del classpath
+			return getFileFromResourceAsStream("xml/xslt/" + xslFileName);
+		} else {
+			// En Linux, usa el sistema de archivos para acceder al archivo directamente
+			String basePath = "/home/billon/workspace/templates-xslt/"; // Ruta para Linux
+			Path xslFilePath = Paths.get(basePath, xslFileName); // Construye la ruta completa del archivo
+			if (!Files.exists(xslFilePath)) {
+				throw new IOException("Archivo XSLT no encontrado: " + xslFilePath.toString());
+			}
+			return Files.newInputStream(xslFilePath); // Abre un InputStream para el archivo
 		}
+	}
 
-		//-->Resource testFoFileResource = this.resourceLoader.getResource(foXml);
-		//-->return testFoFileResource.getInputStream();
-		return getFileFromResourceAsStream(foXml);
+	private String getTemplateFileName(ConstantesTipoDocumento tipoDocumento) {
+		switch (tipoDocumento) {
+			case BOLETA_AFECTA:
+				return "boleta_termica_2fo.xsl";
+			case NOTA_CREDITO:
+				return "notaCredito2fo.xsl";
+			case NOTA_DEBITO:
+				return "notaCredito2fo.xsl";
+			case FACTURA_AFECTA:
+				return "factura_estandar_2fo.xsl";
+			default:
+				log.error("No existe definición de FO para el tipo de documento: " + tipoDocumento);
+				return "sinDefinicion2fo.xsl";
+		}
 	}
 
 	/**
@@ -160,7 +174,7 @@ public class PDFBuilder {
 	 * @throws SAXException
 	 */
 	private String logoPrepared(byte[] logoBinario) throws SAXException {
-		//-->String str = new String(logoBinario, StandardCharsets.UTF_8);
+		// -->String str = new String(logoBinario, StandardCharsets.UTF_8);
 		String encodedString = Base64.getEncoder().encodeToString(logoBinario);
 		return "data:image/png;base64," + encodedString;
 	}

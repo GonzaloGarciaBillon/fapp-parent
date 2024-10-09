@@ -2,17 +2,13 @@ package cl.fapp.restapi.controller.impresoras.dto;
 
 import java.util.Date;
 
-import cl.fapp.repository.model.Emisores;
+// import cl.fapp.repository.model.Emisores;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * Estructura de datos para realizar la busqueda de un DTE.
- *
- */
 @Getter
 @Setter
 @NoArgsConstructor

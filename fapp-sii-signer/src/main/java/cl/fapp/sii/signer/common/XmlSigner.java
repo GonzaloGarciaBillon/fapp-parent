@@ -43,12 +43,15 @@ import javax.xml.xpath.XPathFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import lombok.extern.slf4j.Slf4j;
+
+import cl.fapp.common.os.OsController;
 
 
 
@@ -57,18 +60,34 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class XmlSigner {
-    static {
+	
+	@Autowired
+	OsController osController;
+ 
+	static {
     	System.setProperty("com.sun.org.apache.xml.internal.security.ignoreLineBreaks", "true");
 	}
 	private static final String C14N_INC = CanonicalizationMethod.INCLUSIVE;
 
 	static final Logger logger = LoggerFactory.getLogger(XmlSigner.class);
 	
-	// windows
-	// public static final String CARRIAGE_RETURN = "\r\n";
-	
-	// linux
-	public static final String CARRIAGE_RETURN = "\n";
+
+	public static final String CARRIAGE_RETURN;
+
+    static {
+        // Inicializar CARRIAGE_RETURN en un bloque estático
+        CARRIAGE_RETURN = initializeCarriageReturn();
+    }
+
+    private static String initializeCarriageReturn() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("windows")) {
+            return "\r\n";
+        } else {
+            return "\n";
+        }
+    }
+
 
 	/**
 	 * Firma sourceXml, a partir del tag domIdElement, utilizando certificate y pkey

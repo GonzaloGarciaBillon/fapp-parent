@@ -2,18 +2,23 @@ package cl.fapp.repository.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 import java.math.BigInteger;
 import java.util.List;
-
 
 /**
  * The persistent class for the dte database table.
  * 
  */
+@Getter
+@Setter
 @Entity
-@Table(name="dte")
-@NamedQuery(name="Dte.findAll", query="SELECT d FROM Dte d")
+@Table(name = "dte")
+@NamedQuery(name = "Dte.findAll", query = "SELECT d FROM Dte d")
 public class Dte implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long idDte;
@@ -30,14 +35,17 @@ public class Dte implements Serializable {
 	private Emisores emisore;
 	private Setdte setdte;
 	private String signatureValue;
+	private String usuario;
 	private List<Referencia> referencias;
-
+    private Estados estados;
+	private List<DteActividad> dteActividadList;
+	
 	public Dte() {
 	}
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_dte", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_dte", unique = true, nullable = false)
 	public Long getIdDte() {
 		return this.idDte;
 	}
@@ -46,9 +54,8 @@ public class Dte implements Serializable {
 		this.idDte = idDte;
 	}
 
-
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
+	@Column(nullable = false)
 	public Date getCreatedat() {
 		return this.createdat;
 	}
@@ -57,8 +64,7 @@ public class Dte implements Serializable {
 		this.createdat = createdat;
 	}
 
-
-	@Column(name="documento_xml", nullable=false, length=2147483647)
+	@Column(name = "documento_xml", nullable = false, length = 2147483647)
 	public String getDocumentoXml() {
 		return this.documentoXml;
 	}
@@ -67,8 +73,7 @@ public class Dte implements Serializable {
 		this.documentoXml = documentoXml;
 	}
 
-
-	@Column(name="dte_uuid", nullable=false, length=96)
+	@Column(name = "dte_uuid", nullable = false, length = 96)
 	public String getDteUuid() {
 		return this.dteUuid;
 	}
@@ -77,8 +82,7 @@ public class Dte implements Serializable {
 		this.dteUuid = dteUuid;
 	}
 
-
-	@Column(nullable=false, length=16)
+	@Column(nullable = false, length = 16)
 	public String getEstado() {
 		return this.estado;
 	}
@@ -87,8 +91,7 @@ public class Dte implements Serializable {
 		this.estado = estado;
 	}
 
-
-	@Column(name="folio_asignado")
+	@Column(name = "folio_asignado")
 	public Long getFolioAsignado() {
 		return this.folioAsignado;
 	}
@@ -97,8 +100,7 @@ public class Dte implements Serializable {
 		this.folioAsignado = folioAsignado;
 	}
 
-
-	@Column(name="id_documento", nullable=false, length=128)
+	@Column(name = "id_documento", nullable = false, length = 128)
 	public String getIdDocumento() {
 		return this.idDocumento;
 	}
@@ -107,8 +109,7 @@ public class Dte implements Serializable {
 		this.idDocumento = idDocumento;
 	}
 
-
-	@Column(nullable=false)
+	@Column(nullable = false)
 	public BigInteger getMonto() {
 		return this.monto;
 	}
@@ -117,8 +118,7 @@ public class Dte implements Serializable {
 		this.monto = monto;
 	}
 
-	
-	@Column(length=20)
+	@Column(length = 20)
 	public String getRutfirmante() {
 		return this.rutfirmante;
 	}
@@ -126,9 +126,8 @@ public class Dte implements Serializable {
 	public void setRutfirmante(String rutfirmante) {
 		this.rutfirmante = rutfirmante;
 	}
-	
-	
-	@Column(name="tipo_documento", nullable=false)
+
+	@Column(name = "tipo_documento", nullable = false)
 	public Integer getTipoDocumento() {
 		return this.tipoDocumento;
 	}
@@ -136,7 +135,6 @@ public class Dte implements Serializable {
 	public void setTipoDocumento(Integer tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
-
 
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getUpdatedat() {
@@ -147,10 +145,9 @@ public class Dte implements Serializable {
 		this.updatedat = updatedat;
 	}
 
-
-	//bi-directional many-to-one association to Emisores
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="rutemisor", nullable=false)
+	// bi-directional many-to-one association to Emisores
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "rutemisor", nullable = false)
 	public Emisores getEmisore() {
 		return this.emisore;
 	}
@@ -159,10 +156,9 @@ public class Dte implements Serializable {
 		this.emisore = emisore;
 	}
 
-
-	//bi-directional many-to-one association to Setdte
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_setdte")
+	// bi-directional many-to-one association to Setdte
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_setdte")
 	public Setdte getSetdte() {
 		return this.setdte;
 	}
@@ -171,7 +167,7 @@ public class Dte implements Serializable {
 		this.setdte = setdte;
 	}
 
-	@Column(name="signature_value", nullable=true, length=1024)
+	@Column(name = "signature_value", nullable = true, length = 1024)
 	public String getSignatureValue() {
 		return this.signatureValue;
 	}
@@ -179,9 +175,18 @@ public class Dte implements Serializable {
 	public void setSignatureValue(String signatureValue) {
 		this.signatureValue = signatureValue;
 	}
+	
+	@Column(nullable = true, length = 128)
+	public String getUsuario() {
+		return this.usuario;
+	}
 
-	//bi-directional many-to-one association to Referencia
-	@OneToMany(mappedBy="dte")
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	// bi-directional many-to-one association to Referencia
+	@OneToMany(mappedBy = "dte")
 	public List<Referencia> getReferencias() {
 		return this.referencias;
 	}
@@ -204,4 +209,39 @@ public class Dte implements Serializable {
 		return referencia;
 	}
 
+	// bi-directional many-to-one association to Estados
+	@ManyToOne
+	@JoinColumn(name = "ID_ESTADO")
+	public Estados getEstados() {
+		return this.estados;
+	}
+
+	public void setEstados(Estados estados) {
+		this.estados = estados;
+	}
+
+	
+	// bi-directional one-to-many association to DteActividad
+	@OneToMany(mappedBy = "dte")
+	public List<DteActividad> getDteActividadList() {
+		return this.dteActividadList;
+	}
+
+	public void setDteActividadList(List<DteActividad> dteActividadList) {
+		this.dteActividadList = dteActividadList;
+	}
+
+	public DteActividad addDteActividad(DteActividad dteActividad) {
+		getDteActividadList().add(dteActividad);
+		dteActividad.setDte(this);
+
+		return dteActividad;
+	}
+
+	public DteActividad removeDteActividad(DteActividad dteActividad) {
+		getDteActividadList().remove(dteActividad);
+		dteActividad.setDte(null);
+
+		return dteActividad;
+	}
 }

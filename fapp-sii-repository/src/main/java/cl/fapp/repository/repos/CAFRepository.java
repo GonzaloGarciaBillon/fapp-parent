@@ -3,7 +3,10 @@ package cl.fapp.repository.repos;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -22,6 +25,7 @@ public interface CAFRepository extends JpaRepository<Caf, Long> {
 	 * @param tipoDocumento tipo de doumento (39 => boletas)
 	 * @return caf asociado al emisor
 	 */
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	Optional<Caf> findByEmisoreRutemisorAndTipoDocumentoAndEstado(String rutemisor, Integer tipoDocumento, String estado);
 
 	/**

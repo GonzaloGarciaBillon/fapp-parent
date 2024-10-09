@@ -15,7 +15,9 @@ public enum EntityFirmantesStatuses {
 		this.text = text;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override

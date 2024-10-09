@@ -3,7 +3,7 @@ package cl.fapp.common.domain.statuses;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true, description = "Estados de los envíos de Boleta")
-public enum  EntityEnvioDTEStatuses {
+public enum EntityEnvioDTEStatuses {
     RECIBIDO("REC"),
     ESQUEMA_VALIDADO("SOK"),
     FIRMA_ENVIO_VALIDADA("FOK"),
@@ -36,8 +36,8 @@ public enum  EntityEnvioDTEStatuses {
     }
 
     public boolean esRechazado() {
-        return this == RECHAZADO_POR_SCHEMA || this == RECHAZADO_POR_ERROR_FIRMA || 
-        this == RECHAZADO_POR_ERROR_CARATULA || this == ERROR_INTERNO_SII;
+        return this == RECHAZADO_POR_SCHEMA || this == RECHAZADO_POR_ERROR_FIRMA ||
+                this == RECHAZADO_POR_ERROR_CARATULA || this == ERROR_INTERNO_SII;
     }
 
     public boolean esErrorSii() {

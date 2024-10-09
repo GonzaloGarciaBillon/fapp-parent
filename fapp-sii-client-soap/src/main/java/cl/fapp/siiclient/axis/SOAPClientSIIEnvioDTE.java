@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Configuration
-@PropertySource("classpath:soap-siiclient.properties")
+@PropertySource("classpath:soap-siiclient-${spring.profiles.active:cert}.properties")
 @Service
 public class SOAPClientSIIEnvioDTE {
 

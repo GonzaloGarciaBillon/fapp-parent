@@ -535,13 +535,6 @@
 					<xsl:with-param name="rut">
 						<xsl:value-of select="RUTRecep"/>
 					</xsl:with-param></xsl:call-template></fo:block>
-			<fo:block font-weight="normal" font-size="7pt" font-family="sans-serif" language="es" hyphenate="true" color="black" text-align="left">GIRO:
-				<xsl:call-template name="MayusFormat">
-					<xsl:with-param name="palabra">
-						<xsl:value-of select="GiroRecep"/>
-					</xsl:with-param>
-				</xsl:call-template>
-			</fo:block>
 			<fo:block font-weight="regular" font-size="7pt" font-family="sans-serif" language="es" hyphenate="true" color="black" text-align="left">DIRECCIÓN:
 				<xsl:call-template name="MayusFormat">
 					<xsl:with-param name="palabra">
@@ -563,14 +556,11 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</fo:block>
-			<fo:block font-weight="normal" font-size="7pt" font-family="sans-serif" language="es" hyphenate="true" color="black" text-align="left">TELÉFONO: <xsl:value-of select="Contacto"/></fo:block>
-			<fo:block font-weight="normal" font-size="7pt" font-family="sans-serif" language="es" hyphenate="true" color="black" text-align="left">CORREO:
-				<xsl:call-template name="MayusFormat">
-					<xsl:with-param name="palabra">
-						<xsl:value-of select="CorreoRecep"/>
-					</xsl:with-param>
-				</xsl:call-template>
-			</fo:block>
+			<xsl:if test="Contacto">
+				<fo:block margin-bottom="2pt" font-weight="normal" font-size="8pt" font-family="sans-serif" language="es" hyphenate="true" color="black" text-align="left">
+					<xsl:value-of select="Contacto"/>
+				</fo:block>
+			</xsl:if>
 		</fo:block-container>
 	</xsl:template>
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -630,7 +620,7 @@
 	<!-- Función para convertir fechas a fechas con meses -->
 	<xsl:template name="FechaFormat">
 		<xsl:param name="fecha"/>
-		<xsl:value-of select="substring($fecha,string-length($fecha)-1,2)"/>de <xsl:choose>
+		<xsl:value-of select="substring($fecha,string-length($fecha)-1,2)"/>&#xA0;de <xsl:choose>
 			<xsl:when test="substring($fecha,string-length($fecha)-4,2)=01">Enero</xsl:when>
 			<xsl:when test="substring($fecha,string-length($fecha)-4,2)=02">Febrero</xsl:when>
 			<xsl:when test="substring($fecha,string-length($fecha)-4,2)=03">Marzo</xsl:when>
@@ -690,6 +680,7 @@
 			<xsl:when test="$numero = 100">cien</xsl:when>
 			<xsl:when test="$numero = 1000">mil</xsl:when>
 			<xsl:when test="$numero = 1000000">un millon de</xsl:when>
+			<xsl:when test="$numero = 1000000000">mil millones de</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
 					<xsl:when test="$numero &lt; 30">
@@ -701,6 +692,7 @@
 							<xsl:when test="$numero = 14">catorce</xsl:when>
 							<xsl:when test="$numero = 15">quince</xsl:when>
 							<xsl:when test="$numero &lt; 20">dieci<xsl:call-template name="unidad"><xsl:with-param name="numero" select="$numero mod 10"/></xsl:call-template></xsl:when>
+							<xsl:when test="$numero &lt; 30">veinti<xsl:call-template name="unidad"><xsl:with-param name="numero" select="$numero mod 10"/></xsl:call-template></xsl:when>
 							<xsl:otherwise>
 								<xsl:call-template name="decena">
 									<xsl:with-param name="numero" select="floor($numero div 10)"/>
@@ -734,6 +726,30 @@
 							<xsl:with-param name="numero" select="floor($numero div 1000)"/>
 						</xsl:call-template>
 						<xsl:if test="$numero mod 1000 &gt;= 0">&#x20;mil <xsl:call-template name="miles"><xsl:with-param name="numero" select="$numero mod 1000"/></xsl:call-template></xsl:if>
+					</xsl:when>
+					<xsl:when test="$numero &lt; 1000000000">
+						<xsl:call-template name="millones">
+							<xsl:with-param name="numero" select="floor($numero div 1000000)"/>
+						</xsl:call-template>
+
+						<xsl:if test="$numero mod 1000 = 0">&#x20;millones de <xsl:call-template name="miles"><xsl:with-param name="numero" select="$numero mod 1000"/></xsl:call-template></xsl:if>
+						<xsl:if test="$numero mod 1000000 &gt; 0">
+							<xsl:text> millones </xsl:text>
+							<xsl:call-template name="numero-a-palabras">
+								<xsl:with-param name="numero" select="$numero mod 1000000"/>
+							</xsl:call-template>
+						</xsl:if>
+					</xsl:when>
+					<xsl:when test="$numero &gt;= 1000000000">
+						<xsl:call-template name="mil-millones">
+							<xsl:with-param name="numero" select="floor($numero div 1000000000)"/>
+						</xsl:call-template>
+						<xsl:if test="$numero mod 1000000000 &gt; 0">
+							<xsl:text> mil </xsl:text>
+							<xsl:call-template name="numero-a-palabras">
+								<xsl:with-param name="numero" select="$numero mod 1000000000"/>
+							</xsl:call-template>
+						</xsl:if>
 					</xsl:when>
 					<xsl:otherwise>
 					</xsl:otherwise>
@@ -805,7 +821,7 @@
 		<xsl:param name="numero"/>
 		<xsl:choose>
 			<xsl:when test="$numero = 0"></xsl:when>
-			<xsl:when test="$numero = 1">un</xsl:when>
+			<xsl:when test="$numero = 1">ún</xsl:when>
 			<xsl:when test="$numero = 2">dos</xsl:when>
 			<xsl:when test="$numero = 3">tres</xsl:when>
 			<xsl:when test="$numero = 4">cuatro</xsl:when>
@@ -861,69 +877,23 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-
-
-	<xsl:template match="NewTemplate">
+	<xsl:template name="millones">
+		<xsl:param name="numero"/>
+		<xsl:if test="$numero &gt; 1">
+			<xsl:call-template name="numero-a-palabras">
+				<xsl:with-param name="numero" select="$numero"/>
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
-
-	<xsl:template match="@xmlns">
+	<xsl:template name="mil-millones">
+		<xsl:param name="numero"/>
+		<xsl:choose>
+			<xsl:when test="$numero = 1">un</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="numero-a-palabras">
+					<xsl:with-param name="numero" select="$numero"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
-
-	<xsl:template match="SignedInfo">
-	</xsl:template>
-
-	<xsl:template match="Signature">
-	</xsl:template>
-
-	<xsl:template match="@version">
-	</xsl:template>
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
-
-<metaInformation>
-	<scenarios>
-		<scenario default="no" name="Scenario1" userelativepaths="yes" externalpreview="no" url="..\..\..\..\Plantilla billon\segundoXML_33.xml" htmlbaseurl="" outputurl="" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
-		          profilelength="" urlprofilexml="" commandline="" additionalpath="" additionalclasspath="" postprocessortype="fop_2" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal"
-		          customvalidator="">
-			<advancedProp name="bSchemaAware" value="true"/>
-			<advancedProp name="xsltVersion" value="2.0"/>
-			<advancedProp name="schemaCache" value="||"/>
-			<advancedProp name="iWhitespace" value="0"/>
-			<advancedProp name="bWarnings" value="true"/>
-			<advancedProp name="bXml11" value="false"/>
-			<advancedProp name="bUseDTD" value="false"/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bGenerateByteCode" value="true"/>
-			<advancedProp name="bExtensions" value="true"/>
-			<advancedProp name="iValidation" value="0"/>
-			<advancedProp name="iErrorHandling" value="fatal"/>
-			<advancedProp name="sInitialTemplate" value=""/>
-			<advancedProp name="sInitialMode" value=""/>
-		</scenario>
-		<scenario default="yes" name="Boleta" userelativepaths="yes" externalpreview="no" url="boleta_prueba.xml" htmlbaseurl="" outputurl="" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml=""
-		          commandline="" additionalpath="" additionalclasspath="" postprocessortype="fop_2" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
-			<advancedProp name="bSchemaAware" value="true"/>
-			<advancedProp name="xsltVersion" value="2.0"/>
-			<advancedProp name="schemaCache" value="||"/>
-			<advancedProp name="iWhitespace" value="0"/>
-			<advancedProp name="bWarnings" value="true"/>
-			<advancedProp name="bXml11" value="false"/>
-			<advancedProp name="bUseDTD" value="false"/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bGenerateByteCode" value="true"/>
-			<advancedProp name="bExtensions" value="true"/>
-			<advancedProp name="iValidation" value="0"/>
-			<advancedProp name="iErrorHandling" value="fatal"/>
-			<advancedProp name="sInitialTemplate" value=""/>
-			<advancedProp name="sInitialMode" value=""/>
-		</scenario>
-	</scenarios>
-	<MapperMetaTag>
-		<MapperInfo srcSchemaPathIsRelative="yes" srcSchemaInterpretAsXML="no" destSchemaPath="" destSchemaRoot="" destSchemaPathIsRelative="yes" destSchemaInterpretAsXML="no"/>
-		<MapperBlockPosition></MapperBlockPosition>
-		<TemplateContext></TemplateContext>
-		<MapperFilter side="source"></MapperFilter>
-	</MapperMetaTag>
-</metaInformation>
--->
+</xsl:stylesheet>

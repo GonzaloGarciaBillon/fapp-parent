@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @Configuration
-@PropertySource("classpath:soap-siiclient.properties")
+@PropertySource("classpath:soap-siiclient-${spring.profiles.active:cert}.properties")
 public class SOAPClientSIIRegistroReclamoDTE {
 
 	@Value("${soap.dte.registro.reclamo.url}")
@@ -39,7 +39,8 @@ public class SOAPClientSIIRegistroReclamoDTE {
 	public String invokeIngresarAceptacionReclamoDocService(String token, DteIngresarAceptacionReclamoRequest params) {
 		log.debug("Parametros para SOAP-DTE-IngresarAceptacionReclamo=" + params);
 		try {
-			RegistroReclamoDteServiceEndpointServiceStub stub = new RegistroReclamoDteServiceEndpointServiceStub(soapDteRegistroReclamoUrl);
+			RegistroReclamoDteServiceEndpointServiceStub stub = new RegistroReclamoDteServiceEndpointServiceStub(
+					soapDteRegistroReclamoUrl);
 
 			// se configura el cliente soap
 			ServiceClient client = stub._getServiceClient();
@@ -53,7 +54,8 @@ public class SOAPClientSIIRegistroReclamoDTE {
 			request.setRutEmisor(params.getRutEmisor());
 			request.setTipoDoc(params.getTipoDoc());
 
-			RegistroReclamoDteServiceEndpointServiceStub.IngresarAceptacionReclamoDocResponse response = stub.ingresarAceptacionReclamoDoc(request);
+			RegistroReclamoDteServiceEndpointServiceStub.IngresarAceptacionReclamoDocResponse response = stub
+					.ingresarAceptacionReclamoDoc(request);
 			log.debug("Response=" + response);
 			RespuestaTo yy = response.get_return();
 
@@ -94,7 +96,8 @@ public class SOAPClientSIIRegistroReclamoDTE {
 		log.debug("Parametros para SOAP-DTE-ListarEventosHistDoc=" + params);
 		try {
 			// instancia del stub a utilizar
-			RegistroReclamoDteServiceEndpointServiceStub stub = new RegistroReclamoDteServiceEndpointServiceStub(soapDteRegistroReclamoUrl);
+			RegistroReclamoDteServiceEndpointServiceStub stub = new RegistroReclamoDteServiceEndpointServiceStub(
+					soapDteRegistroReclamoUrl);
 
 			// se configura el cliente soap
 			ServiceClient client = stub._getServiceClient();
@@ -108,7 +111,8 @@ public class SOAPClientSIIRegistroReclamoDTE {
 			request.setTipoDoc(params.getTipoDoc());
 
 			// utiliza el servicio
-			RegistroReclamoDteServiceEndpointServiceStub.ListarEventosHistDocResponse response = stub.listarEventosHistDoc(request);
+			RegistroReclamoDteServiceEndpointServiceStub.ListarEventosHistDocResponse response = stub
+					.listarEventosHistDoc(request);
 			log.debug("Response=" + response);
 
 			RespuestaTo yy = response.get_return();

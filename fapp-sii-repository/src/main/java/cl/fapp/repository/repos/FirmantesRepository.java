@@ -2,6 +2,7 @@ package cl.fapp.repository.repos;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -21,4 +22,5 @@ public interface FirmantesRepository extends JpaRepository<Firmantes, Long> {
 	//Optional<Firmantes> findFirstByEmisoreRutemisorAndEstadoAndKeystoreFirmantesCertificateExpiryDateGreaterThanEqualOrderByCreatedatDesc(String rutemisor, String estado, Date ahora);
 	Optional<Firmantes> findFirstByEmisoreRutemisorAndEstadoAndKeystoreFirmantesCertificateExpiryDateGreaterThanEqualOrderByKeystoreFirmantesCertificateExpiryDateDesc(String rutemisor, String estado, Date ahora);
 
+	List<Firmantes> findByEmisoreRutemisor(String rutemisor);
 }

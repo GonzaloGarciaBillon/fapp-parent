@@ -20,7 +20,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  */
 public class EncryptDecrypt {
-	
+
 	private static String cipherTransformation = "AES/CBC/PKCS5Padding";
 	private static String rngAlgorithm = "SHA1PRNG"; // (RNG=RandomNumberGenerator)
 	private static String secretKeyAlgorithm = "PBKDF2WithHmacSHA256";
@@ -29,8 +29,9 @@ public class EncryptDecrypt {
 
 	/**
 	 * Encripta con AES/CBC/PKCS5Padding
-	 * @param key {@link SecretKey}
-	 * @param iv {@link IvParameterSpec}
+	 * 
+	 * @param key  {@link SecretKey}
+	 * @param iv   {@link IvParameterSpec}
 	 * @param data datos a encriptar
 	 * @return la data encriptada
 	 * @throws GeneralSecurityException
@@ -43,13 +44,15 @@ public class EncryptDecrypt {
 
 	/**
 	 * Desencripta con AES/CBC/PKCS5Padding
-	 * @param key {@link SecretKey}
-	 * @param iv {@link IvParameterSpec}
+	 * 
+	 * @param key        {@link SecretKey}
+	 * @param iv         {@link IvParameterSpec}
 	 * @param cipherText datos encriptados
 	 * @return datos desencriptados
 	 * @throws GeneralSecurityException
 	 */
-	public static byte[] cbcDecrypt(SecretKey key, IvParameterSpec iv, byte[] cipherText) throws GeneralSecurityException {
+	public static byte[] cbcDecrypt(SecretKey key, IvParameterSpec iv, byte[] cipherText)
+			throws GeneralSecurityException {
 		Cipher cipher = Cipher.getInstance(cipherTransformation);
 		cipher.init(Cipher.DECRYPT_MODE, key, iv);
 		return cipher.doFinal(cipherText);
@@ -57,13 +60,15 @@ public class EncryptDecrypt {
 
 	/**
 	 * Genera un SecretKey utilizando un password y un salt
+	 * 
 	 * @param password password
-	 * @param salt bytes aleatorios
+	 * @param salt     bytes aleatorios
 	 * @return un {@link SecretKey}
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeySpecException
 	 */
-	public static SecretKey getKeyFromPassword(String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static SecretKey getKeyFromPassword(String password, String salt)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		SecretKeyFactory factory = SecretKeyFactory.getInstance(secretKeyAlgorithm);
 		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterationCount, keyLength);
 		SecretKey originalKey = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
@@ -71,7 +76,9 @@ public class EncryptDecrypt {
 	}
 
 	/**
-	 * Crea un {@link IvParameterSpec} utilizando SHA1 como algoritmo para generar un numero random 
+	 * Crea un {@link IvParameterSpec} utilizando SHA1 como algoritmo para generar
+	 * un numero random
+	 * 
 	 * @return un {@link IvParameterSpec}
 	 * @throws NoSuchAlgorithmException
 	 */
@@ -84,7 +91,9 @@ public class EncryptDecrypt {
 	}
 
 	/**
-	 * Crea un {@link IvParameterSpec} utilizando un algoritmo fuerte (definido en jdk) para generar un numero random (RNG=RandomNumberGenerator)
+	 * Crea un {@link IvParameterSpec} utilizando un algoritmo fuerte (definido en
+	 * jdk) para generar un numero random (RNG=RandomNumberGenerator)
+	 * 
 	 * @param algorithm transformacion a emplear en el cifrador
 	 * @return un {@link IvParameterSpec}
 	 * @throws NoSuchAlgorithmException

@@ -24,30 +24,36 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "GENERAR-RESPUESTA-DTE", description = "API para generacion de DTE de tipo: GenerarRespuestaDTE")
 public class GenerarRespuestaDTEController {
 	/*
-	@RequestMapping(method = RequestMethod.POST, value = "/generarrespuestadte", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSend> generarRespuestaDTE(@Validated @RequestBody GenerarRespuestaDTERequest payload) {
-		try {
-			// establece tipo de documento a generar
-			Integer tipoDocumento = ConstantesTipoDocumento.NOTA_CREDITO.getValue();
-			
-			// transforma el payload particular para nota de debito al general de documento dte
-			NotaCreditoMapper mapper = Mappers.getMapper(NotaCreditoMapper.class);
-			GenerarDTERequest dtePayload = mapper.toGenerarDTERequest(payload);
-			
-			// utiliza el metodo generico de construccion de DTE indicando el tipo de documento a generar
-			JSend result = internalGenerarDTE(dtePayload, tipoDocumento);
-			if (result.getStatus() == JSendStatus.error) {
-				log.debug("Error generando tipoDocumento=" + tipoDocumento + ". Message=" + result.getMessage());
-				return ResponseEntity.badRequest().body(result);
-
-			} else {
-				log.debug("Request procesado correctamente");
-				return ResponseEntity.ok().body(result);
-			}
-		} catch (Exception ex) {
-			log.error("Se produjo un error generando DTE tipo=" + ConstantesTipoDocumento.NOTA_CREDITO + ". Error=" + ex.getMessage());
-			return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
-		}
-	}
-	*/
+	 * @RequestMapping(method = RequestMethod.POST, value = "/generarrespuestadte",
+	 * produces = MediaType.APPLICATION_JSON_VALUE)
+	 * public ResponseEntity<JSend> generarRespuestaDTE(@Validated @RequestBody
+	 * GenerarRespuestaDTERequest payload) {
+	 * try {
+	 * // establece tipo de documento a generar
+	 * Integer tipoDocumento = ConstantesTipoDocumento.NOTA_CREDITO.getValue();
+	 * 
+	 * // transforma el payload particular para nota de debito al general de
+	 * documento dte
+	 * NotaCreditoMapper mapper = Mappers.getMapper(NotaCreditoMapper.class);
+	 * GenerarDTERequest dtePayload = mapper.toGenerarDTERequest(payload);
+	 * 
+	 * // utiliza el metodo generico de construccion de DTE indicando el tipo de
+	 * documento a generar
+	 * JSend result = internalGenerarDTE(dtePayload, tipoDocumento);
+	 * if (result.getStatus() == JSendStatus.error) {
+	 * log.debug("Error generando tipoDocumento=" + tipoDocumento + ". Message=" +
+	 * result.getMessage());
+	 * return ResponseEntity.badRequest().body(result);
+	 * 
+	 * } else {
+	 * log.debug("Request procesado correctamente");
+	 * return ResponseEntity.ok().body(result);
+	 * }
+	 * } catch (Exception ex) {
+	 * log.error("Se produjo un error generando DTE tipo=" +
+	 * ConstantesTipoDocumento.NOTA_CREDITO + ". Error=" + ex.getMessage());
+	 * return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));
+	 * }
+	 * }
+	 */
 }

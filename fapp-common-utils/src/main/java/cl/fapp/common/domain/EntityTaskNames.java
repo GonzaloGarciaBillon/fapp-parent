@@ -22,8 +22,10 @@ public enum EntityTaskNames {
 	public String getValue() {
 		return text;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override

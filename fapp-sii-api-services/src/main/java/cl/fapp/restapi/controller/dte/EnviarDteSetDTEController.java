@@ -67,7 +67,7 @@ public class EnviarDteSetDTEController {
 	 * @param payload request para enviar el dte
 	 * @return objeto {@link JSend} simple
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/enviarncsetdte", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, value = "/enviarsetdte", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSend> enviarNotaCreditoSetDTE(@RequestBody EnviarDTERequest payload) {
 		try {
 			// completo la parte emisor del mensaje

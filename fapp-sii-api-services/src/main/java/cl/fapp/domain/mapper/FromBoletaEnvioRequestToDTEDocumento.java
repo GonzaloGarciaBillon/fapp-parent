@@ -272,7 +272,7 @@ public class FromBoletaEnvioRequestToDTEDocumento {
 				jaxbDetalle.setNmbItem(detalle.getNombreproducto());
 				//-->jaxbDetalle.setInfoTicket(null);
 				jaxbDetalle.setDscItem(detalle.getDescripcionItem());
-				jaxbDetalle.setQtyItem(new BigDecimal(detalle.getCantidadproducto()));
+				jaxbDetalle.setQtyItem(detalle.getCantidadproducto());
 				jaxbDetalle.setUnmdItem(detalle.getUmproducto());
 				jaxbDetalle.setPrcItem(detalle.getPrecioItem());
 				jaxbDetalle.setDescuentoPct(detalle.getDescuentoPct());

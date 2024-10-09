@@ -32,17 +32,21 @@ public class IngresarAceptacionReclamo {
 	/**
 	 * Registra la aceptacion o rechazo de un DTE.
 	 * 
-	 * @param payload mensaje de entrada {@link DteIngresarAceptacionReclamoRequest}. Entre otros, se indica accion a registrar sobre el documento
+	 * @param payload mensaje de entrada
+	 *                {@link DteIngresarAceptacionReclamoRequest}. Entre otros, se
+	 *                indica accion a registrar sobre el documento
 	 * @return codigo y mensaje de respuesta indicando resultado de la accion
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/ingresaraceptacionreclamo", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSend> ingresarAceptacionReclamo(@Validated @RequestBody DteIngresarAceptacionReclamoRequest payload) {
+	public ResponseEntity<JSend> ingresarAceptacionReclamo(
+			@Validated @RequestBody DteIngresarAceptacionReclamoRequest payload) {
 		try {
 			String rutemisor = RUTUtils.format(payload.getRutEmisor());
 			payload.setRutEmisor(RUTUtils.getNumber(rutemisor));
 			payload.setDvEmisor(RUTUtils.getDV(rutemisor));
 
-			String rutfirmante = RUTUtils.format(payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante());
+			String rutfirmante = RUTUtils
+					.format(payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante());
 			payload.setRutFirmante(rutfirmante);
 
 			// solicita un token para utilizar el servicio
@@ -65,7 +69,8 @@ public class IngresarAceptacionReclamo {
 	 * Lista los eventos historicos asociados a un DTE
 	 * 
 	 * @param payload mensaje de entrada con datos que identifican al DTE
-	 * @return codigo y mensaje de respuesta indicando resultado de la accion. Lista los eventos {@link DteList
+	 * @return codigo y mensaje de respuesta indicando resultado de la accion. Lista
+	 *         los eventos {@link DteList
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/listareventoshistdoc", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSend> listarEventosHistDoc(@RequestBody DteListarEventosHistDocRequest payload) {
@@ -74,7 +79,8 @@ public class IngresarAceptacionReclamo {
 			payload.setRutEmisor(RUTUtils.getNumber(rutemisor));
 			payload.setDvEmisor(RUTUtils.getDV(rutemisor));
 
-			String rutfirmante = RUTUtils.format(payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante());
+			String rutfirmante = RUTUtils
+					.format(payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante());
 			payload.setRutFirmante(rutfirmante);
 
 			// solicita un token para utilizar el servicio

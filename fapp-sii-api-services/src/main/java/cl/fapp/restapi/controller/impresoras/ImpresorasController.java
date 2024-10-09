@@ -26,18 +26,19 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value="${fapp.api.controller.base-path}")
+@RequestMapping(value = "${fapp.api.controller.base-path}")
 @Service
 public class ImpresorasController {
 
 	final ImpresorasRepository impresorasRepo;
 
-    ImpresorasController(ImpresorasRepository impresorasRepo) {
-        this.impresorasRepo = impresorasRepo;
-    }
+	ImpresorasController(ImpresorasRepository impresorasRepo) {
+		this.impresorasRepo = impresorasRepo;
+	}
 
 	/**
-	 * Agrega impresora a partir del request a la api y la escribe en la base de datos.
+	 * Agrega impresora a partir del request a la api y la escribe en la base de
+	 * datos.
 	 * 
 	 * @param payload request para agregar impresoras
 	 * @return objeto {@link JSend} simple
@@ -54,22 +55,21 @@ public class ImpresorasController {
 
 			newImpresora.setNombre(payload.getNombre());
 			newImpresora.setIp(payload.getIp());
-			//newImpresora.setPuerto(payload.getPuerto());
+			// newImpresora.setPuerto(payload.getPuerto());
 			newImpresora.setTipo(payload.getTipo());
 			newImpresora.setEstado("ACTIVA");
 			newImpresora.setCliente(emisor);
 			newImpresora.setCreateDate(ahora);
 			newImpresora.setUpdateDate(ahora);
-			
+
 			Impresoras savedImpresoras = impresorasRepo.save(newImpresora);
 			Long createdId = savedImpresoras.getIdImpresora();
 
-			log.debug("Impresora agregada con id=" + savedImpresoras.getIdImpresora());
+			log.debug("Impresora agregada con id =" + savedImpresoras.getIdImpresora());
 
-			
 			response.setStatus("success");
 			response.setCreatedId(createdId);
-			response.setMessage("Impresora agregada correctamente con id= " + createdId);
+			response.setMessage("Impresora agregada correctamente con id = " + createdId);
 
 			return ResponseEntity.ok().body(response);
 		} catch (Exception e) {
@@ -78,10 +78,11 @@ public class ImpresorasController {
 			response.setMessage(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
-    }
+	}
 
 	/**
-	 * ELimina impresora a partir del request a la api y las elimina en la base de datos.
+	 * ELimina impresora a partir del request a la api y las elimina en la base de
+	 * datos.
 	 * 
 	 * @param payload request para eliminar impresoras
 	 * @return objeto {@link JSend} simple
@@ -89,9 +90,10 @@ public class ImpresorasController {
 	@PostMapping(value = "/quitarImpresora", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSend> quitarImpresora(@Validated @RequestBody ImpresorasRequest payload) {
 		try {
-			Long idImpresora = payload.getIdImpresora(); // Asegúrate de tener un método getIdImpresora() en ImpresorasRequest
+			Long idImpresora = payload.getIdImpresora(); // Asegúrate de tener un método getIdImpresora() en
+															// ImpresorasRequest
 			impresorasRepo.deleteById(idImpresora);
-			log.debug("Impresora eliminada con id=" + idImpresora);
+			log.debug("Impresora eliminada con id =" + idImpresora);
 			return ResponseEntity.ok().body(JSend.success("Impresora eliminada correctamente"));
 		} catch (Exception e) {
 			log.error("No se pudo eliminar la impresora: ", e.getMessage());
@@ -99,7 +101,7 @@ public class ImpresorasController {
 		}
 	}
 
-    /**
+	/**
 	 * Lista las impresoras a partir del request a la api y las devuelve en un json.
 	 * 
 	 * @param payload request para listar impresoras
@@ -123,9 +125,9 @@ public class ImpresorasController {
 				impresoraMap.put("ip", impresora.getIp());
 				impresoraMap.put("puerto", impresora.getPuerto());
 				impresoraMap.put("tipo", impresora.getTipo());
-				
+
 				impresorasJson.add(impresoraMap);
-        	}
+			}
 
 			if (listaImpresoras != null && !listaImpresoras.isEmpty()) {
 				log.debug("Lista de impresoras recuperada");

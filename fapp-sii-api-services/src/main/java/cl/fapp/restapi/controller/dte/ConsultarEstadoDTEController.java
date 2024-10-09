@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.fapp.common.jsend.JSend;
+import cl.fapp.restapi.controller.repos.dto.KeyinfoFindResponse;
+import cl.fapp.restapi.controller.utils.KeystoreFirmanteUtils;
+import cl.fapp.siiclient.axis.SOAPClientSIIAuthentication;
 import cl.fapp.siiclient.axis.SOAPClientSIIConsultas;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoDteAVRequest;
 import cl.fapp.siiclient.axis.domain.consultas.EstadoDteRequest;
@@ -24,6 +27,12 @@ public class ConsultarEstadoDTEController {
 
 	@Autowired
 	SOAPClientSIIConsultas soapService;
+
+	@Autowired
+	KeystoreFirmanteUtils ksfirmanteUtils;
+
+	@Autowired
+	SOAPClientSIIAuthentication soapAuthClient;
 
 	/**
 	 * Consulta estado del DTE
@@ -77,20 +86,26 @@ public class ConsultarEstadoDTEController {
 	public ResponseEntity<JSend> consultaEstadoEnvioDTE(@RequestBody EstadoUploadRequest payload) {
 		String token = "sin-token";
 		try {
-			/*
-			String rutemisor = payload.getRutEmisor();
-			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
-			// recupera los datos para firmas
+
+			String rutemisor = payload.getRutCompania()+"-"+payload.getDvCompania();
+			String rutfirmante = payload.getRutFirmante()+"-"+payload.getDvFirmante();
+			// recupera los datos para firmass
 			KeyinfoFindResponse kinfo = ksfirmanteUtils.getKeystoreInfo(rutemisor, rutfirmante);
 			if (kinfo == null) {
 				log.error("No fue posible obtener informacion del keystore");
 				throw new Exception("No es posible obtener KeyStoreInfo");
 			}
-			token = soapAuthClient.getToken(kinfo.getCertificate(), kinfo.getPrivatekey());*/
-			String response = soapService.invokeEstadoUploadService(null, payload);
+			token = soapAuthClient.getToken(kinfo.getCertificate(), kinfo.getPrivatekey());
+			log.debug(token);
+			String response = soapService.invokeEstadoUploadService(token, payload);
+			log.debug(response);
 
-			return ResponseEntity.ok().body(JSend.success(response));
-
+			if (response != null) {
+				return ResponseEntity.ok().body(JSend.success(response));
+			} else {
+				log.error("No se pudo obtener respuesta del servicio SOAP");
+				return ResponseEntity.badRequest().body(JSend.error("No se pudo obtener respuesta del servicio SOAP"));
+			}
 		} catch (Exception ex) {
 			log.error("Error mientras se procesaba la peticion de consulta EnvioDte. Error=" + ex.getMessage());
 			return ResponseEntity.badRequest().body(JSend.error(ex.getMessage()));

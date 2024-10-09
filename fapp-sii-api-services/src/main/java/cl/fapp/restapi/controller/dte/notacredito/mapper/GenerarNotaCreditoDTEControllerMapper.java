@@ -52,11 +52,15 @@ public class GenerarNotaCreditoDTEControllerMapper {
 	ObjectFactory jaxbFactory = new ObjectFactory();
 
 	/**
-	 * Mapping del request DTO {@link GenerarNotaCreditoRequest} a JAXB List<{@link DTE}>
+	 * Mapping del request DTO {@link GenerarNotaCreditoRequest} a JAXB
+	 * List<{@link DTE}>
 	 * 
-	 * @param request DTO
-	 * @param tipoDocumento Integer representando el tipo de documento que se debe procesar
-	 * @return tantos List<{@link DTEAndVerbatimCAF}> como documentos se indican en el request, adjuntando el CAF apropiado (segun tipoDocumento) en cada caso
+	 * @param request       DTO
+	 * @param tipoDocumento Integer representando el tipo de documento que se debe
+	 *                      procesar
+	 * @return tantos List<{@link DTEAndVerbatimCAF}> como documentos se indican en
+	 *         el request, adjuntando el CAF apropiado (segun tipoDocumento) en cada
+	 *         caso
 	 */
 	public List<DTEAndVerbatimCAF> toDTEDocumento(GenerarNotaCreditoRequest request, Integer tipoDocumento) {
 		// valores globales
@@ -69,24 +73,27 @@ public class GenerarNotaCreditoDTEControllerMapper {
 		for (DTEDocumento documento : request.getDtes()) {
 			documento.setTipodocumento(tipoDocumento);
 			try {
-				// se crea cada porcion del documento por separado (el folio se establece posteriormente, por eso el ultimo parametro es null)
-				DTE.Documento.Encabezado encabezado = obtenerEncabezado(request.getEmisor(), documento, fechaEmision, null);
+				// se crea cada porcion del documento por separado (el folio se establece
+				// posteriormente, por eso el ultimo parametro es null)
+				DTE.Documento.Encabezado encabezado = obtenerEncabezado(request.getEmisor(), documento, fechaEmision,
+						null);
 				List<DTE.Documento.Detalle> jaxbDetalles = obtenerDetalles(documento);
 				List<DTE.Documento.Referencia> jaxbReferencias = obtenerReferencias(documento);
 				List<DTE.Documento.DscRcgGlobal> jaxbDescuentosRecargos = obtenerDescuentosRecargos(documento);
 				List<DTE.Documento.SubTotInfo> jaxbSubtotinfos = obtenerSubtotInfo(documento);
 
 				// agrega totales al encabezado
-				DTE.Documento.Encabezado.Totales jaxbTotales = obtenerTotales(documento, SiiDocumentFactoryConfiguration.TASA_IVA);
+				DTE.Documento.Encabezado.Totales jaxbTotales = obtenerTotales(documento,
+						SiiDocumentFactoryConfiguration.TASA_IVA);
 				encabezado.setTotales(jaxbTotales);
 
 				// obtiene un folio para asignar al documento
 				try {
 					folio = foliomanager.getFolio(request.getRutEmisor(), tipoDocumento); // BoletaConstantes.Boleta.TipoDocumento.NOTA_CREDITO);
-					
+
 					// actualiza el folio en el encabezado del documento
 					encabezado.getIdDoc().setFolio(BigInteger.valueOf(folio.getCardinal()));
-					log.debug("Se obtuvo folio=" + folio.getCardinal() + ", para tipo_documento=" + tipoDocumento); //BoletaConstantes.Boleta.TipoDocumento.NOTA_CREDITO);
+					log.debug("Se obtuvo folio=" + folio.getCardinal() + ", para tipo_documento=" + tipoDocumento); // BoletaConstantes.Boleta.TipoDocumento.NOTA_CREDITO);
 				} catch (Exception ex) {
 					log.error("No fue posible obtener un folio. Error: " + ex.getMessage());
 					return null;
@@ -103,7 +110,7 @@ public class GenerarNotaCreditoDTEControllerMapper {
 				dd.setCAF(caf);
 				dd.setF(BigInteger.valueOf(folio.getCardinal()));
 				dd.setFE(fechaEmision);
-				dd.setIT1(jaxbDetalles.get(0).getNmbItem()); //.getDscItem());
+				dd.setIT1(jaxbDetalles.get(0).getNmbItem()); // .getDscItem());
 				dd.setMNT(encabezado.getTotales().getMntTotal());
 				dd.setRE(encabezado.getEmisor().getRUTEmisor());
 				dd.setRR(encabezado.getReceptor().getRUTRecep());
@@ -120,8 +127,11 @@ public class GenerarNotaCreditoDTEControllerMapper {
 
 				// - quita encabezados pkcs1 (BEGIN RSA PRIVATE KEY)
 				String rsask = tagRsask;
-				rsask = rsask.replaceAll("<RSASK>-----BEGIN RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, "");
-				rsask = rsask.replaceAll("-----END RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "</RSASK>", "");
+				rsask = rsask.replaceAll(
+						"<RSASK>-----BEGIN RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, "");
+				rsask = rsask.replaceAll(
+						"-----END RSA PRIVATE KEY-----" + SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "</RSASK>",
+						"");
 				rsask = rsask.replaceAll(SiiDocumentFactoryConfiguration.CARRIAGE_RETURN, "");
 
 				// recupera la llave rsask
@@ -142,11 +152,13 @@ public class GenerarNotaCreditoDTEControllerMapper {
 				// crea un writer para acumular el xml resultante
 				StringWriter swxmlDD = new StringWriter();
 
-				// el esquema de DTE incluye declaracion de namespace, pero este no es aceptado por SII cuando se obtiene el TED
-				// por lo que deben eliminarse las declaraciones de namespace, para ello se implementa un XMLWriter que descarta 
+				// el esquema de DTE incluye declaracion de namespace, pero este no es aceptado
+				// por SII cuando se obtiene el TED
+				// por lo que deben eliminarse las declaraciones de namespace, para ello se
+				// implementa un XMLWriter que descarta
 				// la escritura de namespaces del xml resultante
 				XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-				XMLStreamWriter xmlStreamWriter  = outputFactory.createXMLStreamWriter(swxmlDD);
+				XMLStreamWriter xmlStreamWriter = outputFactory.createXMLStreamWriter(swxmlDD);
 
 				NoNamespaceWriter mywriter = new NoNamespaceWriter(xmlStreamWriter);
 				marshallerDD.marshal(dd, mywriter);
@@ -157,7 +169,7 @@ public class GenerarNotaCreditoDTEControllerMapper {
 				String xmlDD = swxmlDD.toString();
 
 				log.debug("DD a firmar: " + xmlDD);
-				//-->log.debug("DD despues: " + marshalledObject);
+				// -->log.debug("DD despues: " + marshalledObject);
 				// -----------------------------------------------
 
 				// se firma el xml del DD
@@ -174,21 +186,23 @@ public class GenerarNotaCreditoDTEControllerMapper {
 				frmt.setAlgoritmo(SiiDocumentFactoryConfiguration.DD.SIGNATURE_ALGORITHM);
 				frmt.setValue(signedDD.getBytes(SiiDocumentFactoryConfiguration.DEFAULT_ENCODING));
 
-				// documento - TED			
+				// documento - TED
 				DTE.Documento.TED ted = jaxbFactory.createDTEDocumentoTED();
-				
+
 				// -----------------------------------------------------------------------------------------------
 				// el caf se reemplaza posteriormente con la porcion de xml entregada por el sii
-				// entonces, en esta fase, solo se crea espacio para el tag CAF, no para DA ni FRMT
+				// entonces, en esta fase, solo se crea espacio para el tag CAF, no para DA ni
+				// FRMT
 				// ese tag servira para reemplazar por el texto del sii
 				DTE.Documento.TED.DD.CAF emptycaf = jaxbFactory.createDTEDocumentoTEDDDCAF();
 				emptycaf.setDA(null);
 				emptycaf.setFRMA(null);
 				emptycaf.setVersion(null);
-				
-				// se limpia la porcion caf de DD para ser reemplazada con el texto del sii, pero se conserva la firma
+
+				// se limpia la porcion caf de DD para ser reemplazada con el texto del sii,
+				// pero se conserva la firma
 				dd.setCAF(emptycaf);
-				
+
 				// -----------------------------------------------------------------------------------------------
 				ted.setDD(dd);
 				ted.setFRMT(frmt);
@@ -218,7 +232,7 @@ public class GenerarNotaCreditoDTEControllerMapper {
 				DTEAndVerbatimCAF element = new DTEAndVerbatimCAF();
 				element.setDte(dte);
 				element.setVerbatimcaf(folio.getTagCaf());
-				
+
 				jaxbBoletas.add(element);
 
 			} catch (Exception ex) {
@@ -231,7 +245,8 @@ public class GenerarNotaCreditoDTEControllerMapper {
 	}
 
 	/**
-	 * Crea un encabezado de tipo {@link BOLETADefType.Documento.Encabezado} para crear la boleta
+	 * Crea un encabezado de tipo {@link BOLETADefType.Documento.Encabezado} para
+	 * crear la boleta
 	 * 
 	 * @param emisor       emisor de la boleta
 	 * @param request      los datos del request al servicio
@@ -239,7 +254,8 @@ public class GenerarNotaCreditoDTEControllerMapper {
 	 * @param folio        numero de folio asignado
 	 * @return un objeto jaxb del encabezado de la boleta, para agregar al documento
 	 */
-	private DTE.Documento.Encabezado obtenerEncabezado(DTEEmisor emisor, DTEDocumento request, Date fechaEmision, BigInteger folio) {
+	private DTE.Documento.Encabezado obtenerEncabezado(DTEEmisor emisor, DTEDocumento request, Date fechaEmision,
+			BigInteger folio) {
 
 		try {
 			DTEReceptor receptor = request.getReceptor();
@@ -249,12 +265,12 @@ public class GenerarNotaCreditoDTEControllerMapper {
 			jaxbEmisor.setGiroEmis(XMLUtils.replaceSiiEspecialChars(emisor.getGiroEmisor()));
 			jaxbEmisor.setRUTEmisor(emisor.getRutEmisor());
 			jaxbEmisor.setRznSoc(XMLUtils.replaceSiiEspecialChars(emisor.getRazonSocialEmisor()));
-			
+
 			jaxbEmisor.setCdgSIISucur(emisor.getCodigoSii() == null ? null : new BigInteger(emisor.getCodigoSii()));
 			jaxbEmisor.setCmnaOrigen(emisor.getComunaEmisor());
 			jaxbEmisor.setCiudadOrigen(emisor.getCiudadEmisor());
 			jaxbEmisor.setDirOrigen(XMLUtils.replaceSiiEspecialChars(emisor.getDireccionEmisor()));
-			
+
 			jaxbEmisor.getActecos().addAll(emisor.getActecos());
 
 			// encabezado - identificador del documento
@@ -262,15 +278,15 @@ public class GenerarNotaCreditoDTEControllerMapper {
 			jaxbIddoc.setFchEmis(fechaEmision);
 			jaxbIddoc.setFolio(folio);
 			jaxbIddoc.setIndServicio(BigInteger.valueOf(request.getIndicadorservicio()));
-			
+
 			// TODO: exponer indicador monto bruto en la api?
-			jaxbIddoc.setMntBruto(BigInteger.valueOf(1));
-			
+			// jaxbIddoc.setMntBruto(BigInteger.valueOf(1));
+
 			// TODO: boleta afecta/exenta
-			jaxbIddoc.setTipoDTE( BigInteger.valueOf(request.getTipodocumento()) ); //-->BigInteger.valueOf(request.getTipodocumento().getValue()));
-			//-->iddoc.setFchVenc(fchvenc);
-			//-->iddoc.setPeriodoDesde(periododesde);
-			//-->iddoc.setPeriodoHasta(periodohasta);
+			jaxbIddoc.setTipoDTE(BigInteger.valueOf(request.getTipodocumento())); // -->BigInteger.valueOf(request.getTipodocumento().getValue()));
+			// -->iddoc.setFchVenc(fchvenc);
+			// -->iddoc.setPeriodoDesde(periododesde);
+			// -->iddoc.setPeriodoHasta(periodohasta);
 
 			// encabezado - receptor
 			DTE.Documento.Encabezado.Receptor jaxbReceptor = jaxbFactory.createDTEDocumentoEncabezadoReceptor();
@@ -319,11 +335,12 @@ public class GenerarNotaCreditoDTEControllerMapper {
 				nrolinea++;
 				DTE.Documento.Detalle jaxbDetalle = new DTE.Documento.Detalle();
 				jaxbDetalle.setNroLinDet(nrolinea);
-				jaxbDetalle.setIndExe(detalle.getIndicadorExencion()==null?null:BigInteger.valueOf(detalle.getIndicadorExencion()));
-				//-->jaxbDetalle.setItemEspectaculo(null);
-				//-->jaxbDetalle.setRUTMandante(detalle.getRutMandante());
+				jaxbDetalle.setIndExe(detalle.getIndicadorExencion() == null ? null
+						: BigInteger.valueOf(detalle.getIndicadorExencion()));
+				// -->jaxbDetalle.setItemEspectaculo(null);
+				// -->jaxbDetalle.setRUTMandante(detalle.getRutMandante());
 				jaxbDetalle.setNmbItem(XMLUtils.replaceSiiEspecialChars(detalle.getNombreproducto()));
-				//-->jaxbDetalle.setInfoTicket(null);
+				// -->jaxbDetalle.setInfoTicket(null);
 				jaxbDetalle.setDscItem(XMLUtils.replaceSiiEspecialChars(detalle.getDescripcionItem()));
 				jaxbDetalle.setQtyItem(new BigDecimal(detalle.getCantidadproducto()));
 				jaxbDetalle.setUnmdItem(detalle.getUmproducto());
@@ -362,29 +379,29 @@ public class GenerarNotaCreditoDTEControllerMapper {
 			for (DTEReferencia referencia : documento.getReferencias()) {
 				nrolinea++;
 				DTE.Documento.Referencia jaxbReferencia = jaxbFactory.createDTEDocumentoReferencia();
-				//-->jaxbReferencia.setCodCaja(referencia.getCodcaja());
+				// -->jaxbReferencia.setCodCaja(referencia.getCodcaja());
 				jaxbReferencia.setCodRef(new BigInteger(referencia.getCodref()));
-				//-->jaxbReferencia.setCodVndor(referencia.getCodvndor());
+				// -->jaxbReferencia.setCodVndor(referencia.getCodvndor());
 				jaxbReferencia.setNroLinRef(nrolinea);
 				jaxbReferencia.setRazonRef(XMLUtils.replaceSiiEspecialChars(referencia.getRazonref()));
 
-				if( referencia.getFolioRef()!=null ) {
+				if (referencia.getFolioRef() != null) {
 					jaxbReferencia.setFolioRef(String.valueOf(referencia.getFolioRef()));
 				}
-				
-				if( referencia.getIndGlobal() != null) {
+
+				if (referencia.getIndGlobal() != null) {
 					jaxbReferencia.setIndGlobal(BigInteger.valueOf(referencia.getIndGlobal()));
 				}
-				
-				if( referencia.getRutOtro()!= null ) {
-					jaxbReferencia.setRUTOtr(referencia.getRutOtro());					
+
+				if (referencia.getRutOtro() != null) {
+					jaxbReferencia.setRUTOtr(referencia.getRutOtro());
 				}
-				
-				if( referencia.getTipoDocRef()!=null ) {
+
+				if (referencia.getTipoDocRef() != null) {
 					jaxbReferencia.setTpoDocRef(referencia.getTipoDocRef());
 				}
 
-				if( referencia.getFchRef() !=null ) {
+				if (referencia.getFchRef() != null) {
 					// convierte fecha de resolucion indicada en el request
 					Date dateFechaReferencia;
 					try {
@@ -414,7 +431,7 @@ public class GenerarNotaCreditoDTEControllerMapper {
 	public static Date convertToDateUsingInstant(LocalDate date) {
 		return java.util.Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 	}
-	
+
 	/**
 	 * Crea la porcion de descuentos y recargos asociados al documento
 	 * 
@@ -459,24 +476,27 @@ public class GenerarNotaCreditoDTEControllerMapper {
 
 			// TODO: dar soporte a subtotinfo
 			/*
-			int nrolinea = 0;
-			List<BOLETADefType.Documento.SubTotInfo> jaxbSubtotinfos = new ArrayList<BOLETADefType.Documento.SubTotInfo>();
-			for(BoletaSubtotalInformativo subtotinfo:documento.getSubtotalInformativo()) {
-			    nrolinea++;
-				BOLETADefType.Documento.SubTotInfo jaxbSubtotinfo = new BOLETADefType.Documento.SubTotInfo();
-				jaxbSubtotinfo.setGlosaSTI(subtotinfos_glosaSTI);
-				jaxbSubtotinfo.setNroSTI(nrolinea);
-				jaxbSubtotinfo.setOrdenSTI(subtotinfos_ordenSTI);
-				jaxbSubtotinfo.setSubTotAdicSTI(subtotinfos_subtotAdicSTI);
-				jaxbSubtotinfo.setSubTotExeSTI(subtotinfos_subtotExeSTI);
-				jaxbSubtotinfo.setSubTotIVASTI(subtotinfos_subtotIVASTI);
-				jaxbSubtotinfo.setSubTotNetoSTI(subtotinfos_subtotNetoSTI);
-				jaxbSubtotinfo.setValSubtotSTI(subtotinfos_valsubtotSTI);
-				
-				// agrega el subtotinfo a la lista
-				jaxbSubtotinfos.add(jaxbSubtotinfo);
-			}
-			*/
+			 * int nrolinea = 0;
+			 * List<BOLETADefType.Documento.SubTotInfo> jaxbSubtotinfos = new
+			 * ArrayList<BOLETADefType.Documento.SubTotInfo>();
+			 * for(BoletaSubtotalInformativo subtotinfo:documento.getSubtotalInformativo())
+			 * {
+			 * nrolinea++;
+			 * BOLETADefType.Documento.SubTotInfo jaxbSubtotinfo = new
+			 * BOLETADefType.Documento.SubTotInfo();
+			 * jaxbSubtotinfo.setGlosaSTI(subtotinfos_glosaSTI);
+			 * jaxbSubtotinfo.setNroSTI(nrolinea);
+			 * jaxbSubtotinfo.setOrdenSTI(subtotinfos_ordenSTI);
+			 * jaxbSubtotinfo.setSubTotAdicSTI(subtotinfos_subtotAdicSTI);
+			 * jaxbSubtotinfo.setSubTotExeSTI(subtotinfos_subtotExeSTI);
+			 * jaxbSubtotinfo.setSubTotIVASTI(subtotinfos_subtotIVASTI);
+			 * jaxbSubtotinfo.setSubTotNetoSTI(subtotinfos_subtotNetoSTI);
+			 * jaxbSubtotinfo.setValSubtotSTI(subtotinfos_valsubtotSTI);
+			 * 
+			 * // agrega el subtotinfo a la lista
+			 * jaxbSubtotinfos.add(jaxbSubtotinfo);
+			 * }
+			 */
 			return jaxbSubtotinfos;
 
 		} catch (Exception ex) {
@@ -487,7 +507,8 @@ public class GenerarNotaCreditoDTEControllerMapper {
 
 	/**
 	 * 
-	 * @param documento documento al que se le calculan totales. Se utiliza la version jaxb del documento (la que se informara como xml)
+	 * @param documento documento al que se le calculan totales. Se utiliza la
+	 *                  version jaxb del documento (la que se informara como xml)
 	 * @param tasaIva   la tasa que se indique se divide por 100
 	 * @return totales a informar en el encabezado del documento
 	 */
@@ -503,34 +524,45 @@ public class GenerarNotaCreditoDTEControllerMapper {
 			for (DTEDetalle detalle : documento.getDetalle()) {
 				// --------------------------------------------------------------------------------------
 				// precio unitario del item en pesos
-				//-->Double precioItem = detalle.getPrecioItem() == null ? 0 : detalle.getPrecioItem().doubleValue();
+				// -->Double precioItem = detalle.getPrecioItem() == null ? 0 :
+				// detalle.getPrecioItem().doubleValue();
 
 				// cantidad del item
-				//-->Double qtyItem = detalle.getCantidadproducto() == null ? 0 : detalle.getCantidadproducto().doubleValue();
+				// -->Double qtyItem = detalle.getCantidadproducto() == null ? 0 :
+				// detalle.getCantidadproducto().doubleValue();
 
-				// este no es necesario. El calculo ya debiera venir echo y considerado en el monto del detalle
-				//-->Double precioXcantidad = precioItem * qtyItem;
+				// este no es necesario. El calculo ya debiera venir echo y considerado en el
+				// monto del detalle
+				// -->Double precioXcantidad = precioItem * qtyItem;
 
-				// porcentaje de descuento, TODO: NO se esta considerando descuentoPorcentaje en Totales
-				//-->Double descuentoPorcentaje = detalle.getDescuentoPct() == null ? 0 : detalle.getDescuentoPct().doubleValue();
+				// porcentaje de descuento, TODO: NO se esta considerando descuentoPorcentaje en
+				// Totales
+				// -->Double descuentoPorcentaje = detalle.getDescuentoPct() == null ? 0 :
+				// detalle.getDescuentoPct().doubleValue();
 
-				// porcentaje de recargo, TODO: NO se esta considerando recargoPorcentaje en Totales
-				//-->Double recargoPorcentaje = detalle.getRecargoPct() == null ? 0 : detalle.getRecargoPct().doubleValue();
+				// porcentaje de recargo, TODO: NO se esta considerando recargoPorcentaje en
+				// Totales
+				// -->Double recargoPorcentaje = detalle.getRecargoPct() == null ? 0 :
+				// detalle.getRecargoPct().doubleValue();
 
-				// monto por linea de detalle. Corresponde al monto bruto a menos que indMontoNetoEnDetalle indique lo contrario
+				// monto por linea de detalle. Corresponde al monto bruto a menos que
+				// indMontoNetoEnDetalle indique lo contrario
 				Long montoXlineaDeDetalle = detalle.getMontoitem() == null ? 0 : detalle.getMontoitem().longValue();
 
-				// monto de descuento, TODO: se esta considerando descuentoMonto en Totales, pero revisar su uso
-				Double descuentoMonto = detalle.getDescuentoMonto() == null ? 0 : detalle.getDescuentoMonto().doubleValue();
+				// monto de descuento, TODO: se esta considerando descuentoMonto en Totales,
+				// pero revisar su uso
+				Double descuentoMonto = detalle.getDescuentoMonto() == null ? 0
+						: detalle.getDescuentoMonto().doubleValue();
 
-				// monto de recargo, TODO: se esta considerando recargoMonto en Totales, pero revisar su uso
+				// monto de recargo, TODO: se esta considerando recargoMonto en Totales, pero
+				// revisar su uso
 				Long recargoMonto = detalle.getRecargoMonto() == null ? 0 : detalle.getRecargoMonto().longValue();
 
 				// --------------------------------------------------------------------------------------
-				// Indicador de exencion: 
+				// Indicador de exencion:
 				// 1:producto o servicio es exento o no afecto
 				// 2:producto o servicio no es facturable
-                // 6:producto o servicio no es facturable (negativo)
+				// 6:producto o servicio no es facturable (negativo)
 				boolean itemExento = false;
 				if (detalle.getIndicadorExencion() == null) {
 					log.debug("Indicador de exencion es null. Se considera 'afecto'.");
@@ -580,12 +612,16 @@ public class GenerarNotaCreditoDTEControllerMapper {
 			jaxbTotales.setIVA(BigInteger.valueOf(total_IVA.longValue()));
 			jaxbTotales.setMntExe(BigInteger.valueOf(totalMontoExento.longValue()));
 			jaxbTotales.setMntNeto(monto_neto);
-			jaxbTotales.setMntTotal(jaxbTotales.getMntNeto().add(jaxbTotales.getIVA().add(jaxbTotales.getMntExe()))); // neto + iva + exento
+			jaxbTotales.setMntTotal(jaxbTotales.getMntNeto().add(jaxbTotales.getIVA().add(jaxbTotales.getMntExe()))); // neto
+																														// +
+																														// iva
+																														// +
+																														// exento
 
-			// TODO: los que vienen en 0. Hay que dar soporte a ellos 
+			// TODO: los que vienen en 0. Hay que dar soporte a ellos
 			jaxbTotales.setMontoNF(null);
 			jaxbTotales.setSaldoAnterior(null);
-			//-->jaxbTotales.setTotalPeriodo(null);
+			// -->jaxbTotales.setTotalPeriodo(null);
 			jaxbTotales.setVlrPagar(null);
 
 			return jaxbTotales;

@@ -38,14 +38,10 @@ public class ServiceDTELocatorSimple {
 	public ServiceDTELocatorSimpleResponse locatorSimple(ServiceDTELocatorSimpleRequest request) {
 		try {
 			ServiceDTELocatorSimpleResponse response;
-			log.debug(request.getDteRutEmisor());
-			log.debug(request.getDteUUID());
 			if (request.getDteUUID() != null && !request.getDteUUID().isEmpty() && !request.getDteUUID().isBlank()) {
 				// busca por uuid
 				Optional<List<Dte>> dteEntity = repoDTE.findAllByDteUuidAndEmisoreRutemisor(request.getDteUUID(), request.getDteRutEmisor());
 				if (dteEntity.isPresent()) {
-					log.debug(dteEntity.get().get(0).toString());
-					log.debug(dteEntity.get().get(0).getEmisore().toString());
 					if (dteEntity.get().size() != 1) {
 						log.error("Se encontro mas de un DTE que cumple con los criterios de busqueda. Request=" + request);
 						throw new Exception("DTE no es unico");
@@ -61,13 +57,14 @@ public class ServiceDTELocatorSimple {
 					throw new Exception("No se encontro DTE con identificador indicado");
 				}
 			} else {
-				log.debug(request.getDteFolioAsignado().toString());
-				// Modifica esta sección para usar la nueva consulta
-				List<Dte> dteEntity = repoDTE.findByFolioAsignadoAndEmisoreRutemisorAndTipoDocumento(request.getDteFolioAsignado(), request.getDteRutEmisor(), request.getDteTipoDocumento());
+
+				// busca por el resto de los parametros
+				List<Dte> dteEntity = repoDTE.findByFolioAsignadoAndEmisoreRutemisorAndTipoDocumento(request.getDteFolioAsignado(),request.getDteRutEmisor(), request.getDteTipoDocumento() );
 				if (dteEntity != null && !dteEntity.isEmpty()) {
 					if (dteEntity.size() != 1) {
-						log.error("Se encontró más de un DTE que cumple con los criterios de búsqueda. Request=" + request);
-						throw new Exception("No es posible localizar un único DTE");
+						log.error("Se encontro mas de un DTE que cumple con los criterios de busqueda. Request=" + request);
+						throw new Exception("No es posible localizar un unico DTE");
+
 					} else {
 						response = new ServiceDTELocatorSimpleResponse();
 						response.setDte(dteEntity.get(0));
@@ -76,10 +73,11 @@ public class ServiceDTELocatorSimple {
 						return response;
 					}
 				} else {
-					log.warn("No se encontró DTE con propiedades=" + request);
-					throw new Exception("No se encontró DTE con el filtro indicado");
+					log.warn("No se encontro DTE con propiedades=" + request);
+					throw new Exception("No se encontro DTE con el filtro indicado");
 				}
 			}
+
 		} catch (Exception ex) {
 			log.error("Se produjo un error ubicando el DTE. Error=" + ex.getMessage());
 			return null;

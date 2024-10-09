@@ -357,14 +357,19 @@ public class GenerarBoletaControllerMapper {
 				jaxbDetalle.setNmbItem(XMLUtils.replaceSiiEspecialChars(detalle.getNombreproducto()));
 				jaxbDetalle.setInfoTicket(null);
 				jaxbDetalle.setDscItem(XMLUtils.replaceSiiEspecialChars(detalle.getDescripcionItem()));
-				jaxbDetalle.setQtyItem(new BigDecimal(detalle.getCantidadproducto()));
+				log.debug("Cantidad de producto antes: "+detalle.getCantidadproducto().toString());
+				jaxbDetalle.setQtyItem(detalle.getCantidadproducto());
+				log.debug("Cantidad de producto despues: "+jaxbDetalle.getQtyItem().toString());
 				jaxbDetalle.setUnmdItem(detalle.getUmproducto());
 				jaxbDetalle.setPrcItem(detalle.getPrecioItem());
 				jaxbDetalle.setDescuentoPct(detalle.getDescuentoPct());
 				jaxbDetalle.setDescuentoMonto(detalle.getDescuentoMonto());
 				jaxbDetalle.setRecargoPct(detalle.getRecargoPct());
 				jaxbDetalle.setRecargoMonto(detalle.getRecargoMonto());
-				jaxbDetalle.setMontoItem(BigInteger.valueOf(detalle.getMontoitem().longValue()));
+				// jaxbDetalle.setMontoItem(BigInteger.valueOf(detalle.getMontoitem().longValue()));
+				BigDecimal montoItem = detalle.getMontoitem(); // Recibe el valor 448.5
+				BigDecimal montoItemRedondeado = montoItem.setScale(0, RoundingMode.HALF_UP); // Redondeo a 0 decimales
+				jaxbDetalle.setMontoItem(montoItemRedondeado.toBigInteger()); // Convierte a BigInteger después del redondeo
 
 				// TODO: no se establece valor para CdgItems
 				jaxbDetalle.getCdgItems();
@@ -510,57 +515,53 @@ public class GenerarBoletaControllerMapper {
 			Double totalMontoExento = 0d;
 			Double totalMontoNeto = 0d;
 			Double totalMontoBruto = 0d;
-
+	
+			log.debug("Inicio del cálculo de totales");
+	
 			// valor=2 => monto neto en detalle
-			boolean indMontoNetoEnDetalle = documento.getIndMontoNeto() == 2 ? true : false;
-
+			boolean indMontoNetoEnDetalle = documento.getIndMontoNeto() == 2;
+			log.debug("Indicador de monto neto en detalle: " + indMontoNetoEnDetalle);
+	
 			for (BoletaDetalle detalle : documento.getDetalle()) {
-				// --------------------------------------------------------------------------------------
-				// precio unitario del item en pesos
-				//-->Double precioItem = detalle.getPrecioItem() == null ? 0 : detalle.getPrecioItem().doubleValue();
-
-				// cantidad del item
-				//-->Double qtyItem = detalle.getCantidadproducto() == null ? 0 : detalle.getCantidadproducto().doubleValue();
-
-				// este no es necesario. El calculo ya debiera venir echo y considerado en el monto del detalle
-				//-->Double precioXcantidad = precioItem * qtyItem;
-
-				// monto por linea de detalle. Corresponde al monto bruto a menos que indMontoNetoEnDetalle indique lo contrario
-				Long montoXlineaDeDetalle = detalle.getMontoitem() == null ? 0 : detalle.getMontoitem().longValue();
-
-				// porcentaje de descuento. Se esta considerando descuentoPorcentaje en Totales
+				log.debug("Procesando detalle: " + detalle.getNombreproducto());
+	
+				// monto por línea de detalle
+				Long montoXlineaDeDetalle = detalle.getMontoitem() == null ? 0 : detalle.getMontoitem().setScale(0, RoundingMode.HALF_UP).longValue();
+				log.debug("Monto por línea de detalle: " + montoXlineaDeDetalle);
+	
+				// porcentaje de descuento
 				Double descuentoPorcentaje = detalle.getDescuentoPct() == null ? 0 : (detalle.getDescuentoPct().doubleValue() / 100) * montoXlineaDeDetalle;
-
-				// porcentaje de recargo. Se esta considerando recargoPorcentaje en Totales
+				log.debug("Descuento porcentual: " + descuentoPorcentaje);
+	
+				// porcentaje de recargo
 				Double recargoPorcentaje = detalle.getRecargoPct() == null ? 0 : (detalle.getRecargoPct().doubleValue() / 100) * montoXlineaDeDetalle;
-
-				// monto de descuento, Se esta considerando descuentoMonto en Totales, revisar su uso
+				log.debug("Recargo porcentual: " + recargoPorcentaje);
+	
+				// monto de descuento
 				Double descuentoMonto = detalle.getDescuentoMonto() == null ? 0 : detalle.getDescuentoMonto().doubleValue();
-
-				// monto de recargo, Se esta considerando recargoMonto en Totales, revisar su uso
+				log.debug("Monto de descuento: " + descuentoMonto);
+	
+				// monto de recargo
 				Long recargoMonto = detalle.getRecargoMonto() == null ? 0 : detalle.getRecargoMonto().longValue();
-
-				// --------------------------------------------------------------------------------------
-				// Indicador de exencion: 
-				// 1:producto o servicio es exento o no afecto
-				// 2:producto o servicio no es facturable
-				// 6:producto o servicio no es facturable (negativo)
+				log.debug("Monto de recargo: " + recargoMonto);
+	
+				// Verificar si el item es exento
 				boolean itemExento = false;
 				if (detalle.getIndicadorExencion() == null) {
-					log.debug("Indicador de exencion es null. Se considera 'afecto'.");
+					log.debug("Indicador de exención es null. Se considera 'afecto'.");
 				} else {
 					Integer indExencion = detalle.getIndicadorExencion().intValue();
-					if (indExencion.intValue() == 1 || indExencion.intValue() == 2 || indExencion.intValue() == 6) {
+					if (indExencion == 1 || indExencion == 2 || indExencion == 6) {
 						log.debug("El item es exento. Detalle=" + detalle.getDescripcionItem());
 						itemExento = true;
 					} else {
 						log.debug("El item NO es exento. Detalle=" + detalle.getDescripcionItem());
 					}
 				}
-
-				// suma si el item es exento
+	
+				// Sumar montos según si el ítem es exento o no
 				if (itemExento) {
-					totalMontoExento += montoXlineaDeDetalle; // detalle.getMontoitem().doubleValue();
+					totalMontoExento += montoXlineaDeDetalle;
 					totalMontoBruto += montoXlineaDeDetalle - descuentoMonto + recargoMonto - descuentoPorcentaje + recargoPorcentaje;
 				} else {
 					if (indMontoNetoEnDetalle) {
@@ -569,12 +570,15 @@ public class GenerarBoletaControllerMapper {
 						totalMontoBruto += montoXlineaDeDetalle - descuentoMonto + recargoMonto - descuentoPorcentaje + recargoPorcentaje;
 					}
 				}
+	
+				log.debug("Total monto exento acumulado: " + totalMontoExento);
+				log.debug("Total monto neto acumulado: " + totalMontoNeto);
+				log.debug("Total monto bruto acumulado: " + totalMontoBruto);
 			}
-
-			// calcula los totales
-			Double total_IVA = null;
-			Double total_monto = null;
-			log.debug("Indicador monto neto en detalle=" + indMontoNetoEnDetalle);
+	
+			// Calcula los totales
+			Double total_IVA;
+			Double total_monto;
 			if (indMontoNetoEnDetalle) {
 				total_monto = Math.abs((totalMontoNeto - totalMontoExento) / (1 + (tasaIva / 100)));
 				total_IVA = total_monto * (tasaIva / 100);
@@ -582,33 +586,60 @@ public class GenerarBoletaControllerMapper {
 				total_monto = Math.abs((totalMontoBruto - totalMontoExento) / (1 + (tasaIva / 100)));
 				total_IVA = total_monto * (tasaIva / 100);
 			}
-
+	
+			log.debug("Total IVA antes de redondeo: " + total_IVA);
+			log.debug("Total monto antes de redondeo: " + total_monto);
+			log.debug("Total monto exento antes de redondeo: " + totalMontoExento);
+	
+			// Redondeo
 			total_IVA = Math.floor(total_IVA + 0.5);
 			total_monto = Math.floor(total_monto + 0.5);
 			totalMontoExento = Math.floor(totalMontoExento + 0.5);
-
-			BigInteger monto_neto = BigInteger.valueOf(total_monto.longValue());
-
-			// los totales se llenan despues de cargar el detalle de las boletas
-			BOLETADefType.Documento.Encabezado.Totales jaxbTotales = jaxbFactory.createBOLETADefTypeDocumentoEncabezadoTotales(); // new BOLETADefType.Documento.Encabezado.Totales();
-			jaxbTotales.setIVA(BigInteger.valueOf(total_IVA.longValue()));
-			jaxbTotales.setMntExe(BigInteger.valueOf(totalMontoExento.longValue()));
-			jaxbTotales.setMntNeto(monto_neto);
-			jaxbTotales.setMntTotal(jaxbTotales.getMntNeto().add(jaxbTotales.getIVA().add(jaxbTotales.getMntExe()))); // neto + iva + exento
-
+	
+			log.debug("Total IVA redondeado: " + total_IVA);
+			log.debug("Total monto redondeado: " + total_monto);
+			log.debug("Total monto exento redondeado: " + totalMontoExento);
+	
+			// No redondeamos los valores individuales aún
+			BigDecimal totalIVA = BigDecimal.valueOf(total_IVA);
+			BigDecimal totalNeto = BigDecimal.valueOf(total_monto);
+			BigDecimal totalExento = BigDecimal.valueOf(totalMontoExento);
+	
+			// Asignar los valores redondeados al encabezado de totales
+			BOLETADefType.Documento.Encabezado.Totales jaxbTotales = jaxbFactory.createBOLETADefTypeDocumentoEncabezadoTotales();
+			jaxbTotales.setIVA(totalIVA.toBigInteger());
+			jaxbTotales.setMntExe(totalExento.toBigInteger());
+			jaxbTotales.setMntNeto(totalNeto.toBigInteger());
+	
+			log.debug("IVA asignado: " + totalIVA);
+			log.debug("Monto Exento asignado: " + totalExento);
+			log.debug("Monto Neto asignado: " + totalNeto);
+	
+			// Sumar todos los valores primero
+			BigDecimal mntTotal = totalNeto.add(totalIVA).add(totalExento);
+	
+			// Redondear el monto total
+			BigDecimal mntTotalRedondeado = mntTotal.setScale(0, RoundingMode.HALF_UP); // Redondeo a 0 decimales
+			jaxbTotales.setMntTotal(mntTotalRedondeado.toBigInteger());
+	
+			log.debug("Monto total redondeado: " + mntTotalRedondeado);
+	
 			// TODO: los que vienen en 0. Hay que dar soporte a ellos 
 			jaxbTotales.setMontoNF(null); // MontoNF: Monto No Facturable, Corresponde a Bienes o Servicios Facturados Previamente
 			jaxbTotales.setSaldoAnterior(null);
 			jaxbTotales.setTotalPeriodo(null);
 			jaxbTotales.setVlrPagar(null);
-
+	
+			log.debug("Fin del cálculo de totales");
+	
 			return jaxbTotales;
-
+	
 		} catch (Exception ex) {
 			log.error("No fue posible crear Totales. Error: " + ex.getMessage());
 			return null;
 		}
 	}
+	
 
 	/**
 	 * Aplica descuentos/recargos globales a los totales

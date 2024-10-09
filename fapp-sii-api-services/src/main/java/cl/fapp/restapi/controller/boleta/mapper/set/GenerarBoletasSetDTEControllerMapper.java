@@ -51,7 +51,7 @@ public class GenerarBoletasSetDTEControllerMapper {
 	 * @param tiposDocumentoEnSet tipos de documento que se incluiran en el set
 	 * @return el setdte de tipo jaxb {@link EnvioBOLETA.SetDTE}, y la lista de id de los dte que forman parte del set
 	 */
-	public ConvertRequestToEnvioBOLETAResponse toEnvioBOLETASetDTE(Emisores emisor, String rutfirmante, GenerarSetDTERequest request, List<Integer> tiposDocumentoEnSet) {
+	public ConvertRequestToEnvioBOLETAResponse toEnvioBOLETASetDTE(Emisores emisor, String rutfirmante, GenerarSetDTERequest request, Integer tiposDocumentoEnSet) {
 
 		Date ahora = new Date();
 		ConvertRequestToEnvioBOLETAResponse response = new ConvertRequestToEnvioBOLETAResponse();
@@ -63,7 +63,7 @@ public class GenerarBoletasSetDTEControllerMapper {
 			List<BOLETADefType> listaBoletas = new ArrayList<BOLETADefType>();
 			
 			// busca en la base de datos las boletas listas para ser empaquetadas y enviadas (CREADOFIRMADO)
-			List<Dte> listDte = repoDte.findByEmisoreRutemisorAndEstadoAndTipoDocumentoIn(rutemisor, EntityDTEStatuses.CREADOFIRMADO.toString(), tiposDocumentoEnSet);
+			List<Dte> listDte = repoDte.findByEmisoreRutemisorAndEstadoAndTipoDocumento(rutemisor, EntityDTEStatuses.CREADOFIRMADO.toString(), tiposDocumentoEnSet);
 						
 			// contadores por tipo de documento
 			Map<BigInteger, Integer> freq = new HashMap<BigInteger, Integer>();
@@ -124,7 +124,7 @@ public class GenerarBoletasSetDTEControllerMapper {
 						dteList.add(dbDte.getIdDte());
 
 						// concatena cada xml que forma parte del set. reemplaza por el encabezado que espera setdte
-						String xx = new String(dbDte.getDocumentoXml().getBytes("UTF-8")); // modificado 21072023...getBytes("ISO-8859-1"));
+						String xx = new String(dbDte.getDocumentoXml().getBytes("ISO-8859-1")); // modificado 21072023...getBytes("ISO-8859-1"));
 						//String xmlboleta = xx.replace("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?><BOLETADefType version=\"1.0\">", SiiDocumentFactoryConfiguration.CARRIAGE_RETURN + "<DTE version=\"1.0\">");
 
 						// @formatter:off

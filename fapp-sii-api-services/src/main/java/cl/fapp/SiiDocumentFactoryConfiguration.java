@@ -1,9 +1,12 @@
 package cl.fapp;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import cl.fapp.common.os.OsController;
 
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -11,6 +14,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Configuration
 @EnableScheduling
 public class SiiDocumentFactoryConfiguration {
+	@Autowired
+	OsController osController;
 
 	/**
 	 * Encoding por defecto para todos los objetos
@@ -19,11 +24,16 @@ public class SiiDocumentFactoryConfiguration {
 	public static final Double TASA_IVA = 19d;
 	public static final String SII_RUT_RECEPTOR = "60803000-K";
 	
-	// windows
-	// public static final String CARRIAGE_RETURN = "\r\n";
-	
-	// linux
-	public static final String CARRIAGE_RETURN = "\n";
+	public static final String CARRIAGE_RETURN;
+
+    static {
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("windows")) {
+            CARRIAGE_RETURN = "\r\n";
+        } else {
+            CARRIAGE_RETURN = "\n";
+        }
+    }
 
 	/**
 	 * Configuracion de opciones que se aplican a los xml

@@ -13,10 +13,12 @@ import java.util.regex.Pattern;
 
 import javax.validation.Valid;
 
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional; // Import para transacciones
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,16 +27,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.fapp.SIIDocumentFactoryProvider;
-import cl.fapp.SiiDocumentFactoryConfiguration;
 import cl.fapp.common.domain.BuilderXmlID;
 import cl.fapp.common.domain.ConstantesTipoDocumento;
 import cl.fapp.common.domain.statuses.EntityDTEStatuses;
 import cl.fapp.common.jsend.JSend;
 import cl.fapp.docs.DocumentoBOLETADefType;
+import cl.fapp.foliomanager.FolioManager;
 import cl.fapp.foliomanager.exception.FoliosNotAvailableException;
 import cl.fapp.foliomanager.exception.FoliosNotExistException;
+import cl.fapp.repository.model.Bitacora;
+import cl.fapp.repository.model.Caf;
 import cl.fapp.repository.model.Dte;
 import cl.fapp.repository.model.Emisores;
+import cl.fapp.repository.repos.BitacoraRepository;
+import cl.fapp.repository.repos.CAFRepository;
 import cl.fapp.repository.repos.DteRepository;
 import cl.fapp.repository.repos.EmisoresRepository;
 import cl.fapp.restapi.controller.boleta.domain.BoletaDocumento;
@@ -45,7 +51,6 @@ import cl.fapp.restapi.controller.boleta.dto.GenerarBoletaResponse;
 import cl.fapp.restapi.controller.boleta.mapper.GenerarBoletaControllerMapper;
 import cl.fapp.restapi.controller.repos.dto.KeyinfoFindResponse;
 import cl.fapp.restapi.controller.utils.KeystoreFirmanteUtils;
-import cl.fapp.sii.factory.SIIAbstractFactory;
 import cl.fapp.sii.jaxb.BOLETADefType;
 import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,155 +58,154 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value="${fapp.api.controller.base-path}")
+@RequestMapping(value = "${fapp.api.controller.base-path}")
 @Tag(name = "GENERAR", description = "API para generacion de documentos")
 public class GenerarBoletaController {
 
-	@Autowired
-	DteRepository repoDte;
+    @Autowired
+    DteRepository repoDte;
 
-	@Autowired
-	EmisoresRepository repoEmisores;
+    @Autowired
+    EmisoresRepository repoEmisores;
 
-	@Autowired
-	KeystoreFirmanteUtils ksfirmanteUtils;
+    @Autowired
+    KeystoreFirmanteUtils ksfirmanteUtils;
 
-	@Autowired
-	GenerarBoletaControllerMapper mapperToBOLETADefType;
+    @Autowired
+    GenerarBoletaControllerMapper mapperToBOLETADefType;
 
-	/**
-	 * Genera boletas jaxb a partir del request a la api, y las escribe en la base de datos.
-	 * 
-	 * @param payload request para generar boletas. Utiliza objetos de tipo {@link BOLETADefType}
-	 * @return objeto {@link JSend} simple de tipo {@link GenerarBoletaResponse}
-	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/generarboleta", produces = MediaType.APPLICATION_JSON_VALUE)
-	@Timed(value = "generate.boleta.time", description = "Tiempo que toma en responder a un request para generar una boleta")
-	public ResponseEntity<JSend> generarBoleta(@Valid @RequestBody GenerarBoletaRequest payload) {
-		try {
-			// completo la parte emisor del mensaje
-			String rutemisor = payload.getRutEmisor();
-			String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
+    @Autowired
+    BitacoraRepository bitacoraRepository;
 
-			Optional<Emisores> emisor = repoEmisores.findById(rutemisor);
-			if (!emisor.isPresent()) {
-				log.error("El Emisor rut=" + rutemisor + " no existe en la base de datos");
-				throw new Exception("El Emisor no existe");
+    @Autowired
+    FolioManager folioManager;
 
-			} else {
-				log.debug("El emisor rut=" + rutemisor + " existe");
-				Emisores record = emisor.get();
-				BoletaEmisor emisorBoleta = new BoletaEmisor();
-				emisorBoleta.setCiudadEmisor(record.getCiudad());
-				emisorBoleta.setComunaEmisor(record.getComuna());
+    @Autowired
+    CAFRepository cAFRepository;
 
-				emisorBoleta.setCorreoEmisor(record.getEmail());
-				emisorBoleta.setCodigoSucursalEmisor(record.getCodigoSucursal());
-				emisorBoleta.setTelefonoEmisor(record.getTelefono());
-				emisorBoleta.setCodigoResolucion(record.getCodigoResolucion());
-				emisorBoleta.setFechaResolucion(record.getFechaResolucion());
-				emisorBoleta.setCodigoSii(record.getCodigoSii());
-				emisorBoleta.setCorreoEmisor(record.getEmail());
+    /**
+     * Genera boletas jaxb a partir del request a la api, y las escribe en la base de datos.
+     *
+     * @param payload request para generar boletas. Utiliza objetos de tipo {@link BOLETADefType}
+     * @return objeto {@link JSend} simple de tipo {@link GenerarBoletaResponse}
+     */
+    @Transactional(rollbackFor = Exception.class) // Asegura que toda la operación sea atómica
+    @RequestMapping(method = RequestMethod.POST, value = "/generarboleta", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed(value = "generate.boleta.time", description = "Tiempo que toma en responder a un request para generar una boleta")
+    public ResponseEntity<JSend> generarBoleta(@Valid @RequestBody GenerarBoletaRequest payload) {
+        try {
+            // Completo la parte emisor del mensaje
+            String rutemisor = payload.getRutEmisor();
+            String rutfirmante = payload.getRutFirmante() == null ? rutemisor : payload.getRutFirmante();
+            String usuario = payload.getUsuario();
 
-				emisorBoleta.setDireccionEmisor(record.getDireccion());
-				emisorBoleta.setGiroEmisor(record.getGiro());
-				emisorBoleta.setRazonSocialEmisor(record.getRazonSocial());
-				emisorBoleta.setRutEmisor(record.getRutemisor());
-				//-->emisorBoleta.setLogo(record.getLogoboleta());
+            Optional<Emisores> emisor = repoEmisores.findById(rutemisor);
+            if (!emisor.isPresent()) {
+                log.error("El Emisor rut=" + rutemisor + " no existe en la base de datos");
+                throw new Exception("El Emisor no existe");
+            }
 
-				payload.setEmisor(emisorBoleta);
-			}
-			
-			// verifica que todos los tipos de documentos esten soportados
-			// @formatter:off
- 			int idx = 0;
-			List<String> errores = new ArrayList<String>();
-			for(BoletaDocumento item:payload.getDtes()) {
-				Integer tipodoc = item.getTipodocumento().getValue();
-				if( tipodoc != ConstantesTipoDocumento.BOLETA_AFECTA.getValue() 
-				 && tipodoc != ConstantesTipoDocumento.BOLETA_EXENTA.getValue() ) {
-					errores.add("Tipo documento=" + tipodoc + ", no soportado en este endpoint. IdDocumento=" + item.getCodigointerno() + ", idx=" + idx);
-				}
-				idx++;
-			}
-			// @formatter:on
-			
-			if( errores.size()>0 ) {
-				log.error("No fue posible generar documentos. Errores=" + errores);
-				return ResponseEntity.badRequest().body(JSend.error("Errores en atributos de documentos.", errores));
-			}
 
-			// obtiene los documentos jaxb a partir del request a la api
-			List<BOLETADefTypeAndVerbatimCAF> documentos = mapperToBOLETADefType.toBOLETADefTypeDocumento(payload);
-    
-			if (documentos == null) {
-				log.error("No fue posible generar documentos.");
-				return ResponseEntity.badRequest().body(JSend.error("No fue posible generar documentos."));
-			}
+            log.debug("El emisor rut=" + rutemisor + " existe");
 
-			// patron de busqueda que se aplica en el string xml para obtener el ted
-	        Pattern tedPattern = Pattern.compile("<TED version=\"1.0\">(.*?)<\\/TED>", Pattern.DOTALL);
-			
-			// guarda los documentos jaxb en la base de datos
-			List<GenerarBoletaResponse> response = new ArrayList<GenerarBoletaResponse>();
-			for (BOLETADefTypeAndVerbatimCAF jaxbBOLETADefType : documentos) {
-				Dte newdte = signAndStoreJaxbBOLETADefType(emisor.get(), jaxbBOLETADefType, rutemisor, rutfirmante);
+            // Setear datos del emisor en el payload
+            Emisores record = emisor.get();
+            BoletaEmisor emisorBoleta = new BoletaEmisor();
+            emisorBoleta.setCiudadEmisor(record.getCiudad());
+            emisorBoleta.setComunaEmisor(record.getComuna());
+            emisorBoleta.setCorreoEmisor(record.getEmail());
+            emisorBoleta.setCodigoSucursalEmisor(record.getCodigoSucursal());
+            emisorBoleta.setTelefonoEmisor(record.getTelefono());
+            emisorBoleta.setCodigoResolucion(record.getCodigoResolucion());
+            emisorBoleta.setFechaResolucion(record.getFechaResolucion());
+            emisorBoleta.setCodigoSii(record.getCodigoSii());
+            emisorBoleta.setDireccionEmisor(record.getDireccion());
+            emisorBoleta.setGiroEmisor(record.getGiro());
+            emisorBoleta.setRazonSocialEmisor(record.getRazonSocial());
+            emisorBoleta.setRutEmisor(record.getRutemisor());
+
+            payload.setEmisor(emisorBoleta);
+
+            // Verifica que todos los tipos de documentos estén soportados
+            List<String> errores = new ArrayList<>();
+            for (int idx = 0; idx < payload.getDtes().size(); idx++) {
+                BoletaDocumento item = payload.getDtes().get(idx);
+                Integer tipodoc = item.getTipodocumento().getValue();
+                if (tipodoc != ConstantesTipoDocumento.BOLETA_AFECTA.getValue()
+                        && tipodoc != ConstantesTipoDocumento.BOLETA_EXENTA.getValue()) {
+                    errores.add("Tipo documento=" + tipodoc + ", no soportado en este endpoint. IdDocumento=" + item.getCodigointerno() + ", idx=" + idx);
+                }
+            }
+
+            if (!errores.isEmpty()) {
+                log.error("No fue posible generar documentos. Errores=" + errores);
+                return ResponseEntity.badRequest().body(JSend.error("Errores en atributos de documentos.", errores));
+            }
+
+            // Obtener los documentos JAXB a partir del request
+            List<BOLETADefTypeAndVerbatimCAF> documentos = mapperToBOLETADefType.toBOLETADefTypeDocumento(payload);
+
+            if (documentos == null) {
+                log.error("No fue posible generar documentos.");
+                return ResponseEntity.badRequest().body(JSend.error("No fue posible generar documentos."));
+            }
+
+            Pattern tedPattern = Pattern.compile("<TED version=\"1.0\">(.*?)<\\/TED>", Pattern.DOTALL);
+
+            // Guarda los documentos en la base de datos
+            List<GenerarBoletaResponse> response = new ArrayList<>();
+            for (BOLETADefTypeAndVerbatimCAF jaxbBOLETADefType : documentos) {
+                Dte newdte = signAndStoreJaxbBOLETADefType(emisor.get(), jaxbBOLETADefType, rutemisor, rutfirmante, usuario);
+
 				BOLETADefType datosBoleta = jaxbBOLETADefType.getBoleta();
-				BigInteger montoBoleta = datosBoleta.getDocumento().getEncabezado().getTotales().getMntTotal();
-				BigInteger tipoDte = datosBoleta.getDocumento().getEncabezado().getIdDoc().getTipoDTE();
-				
-				log.debug("Se crea el dte en la base de datos con id=" + newdte.getIdDte());
-				
-				GenerarBoletaResponse item = new GenerarBoletaResponse();
-				item.setUuid(newdte.getDteUuid());
-				item.setFolio(newdte.getFolioAsignado());
-				item.setMontoTotal(montoBoleta);
-				item.setTipoDocumento(tipoDte);
-		        
-		        // busca coincidencias del tag <TED></TED>
-				Matcher matcher = tedPattern.matcher(newdte.getDocumentoXml());
-				if (matcher.find()) {
-					log.debug("!! Match <TED> !!");
-					// log.debug( "!! Match TED = [" + matcher.group() + "]" );
-					item.setTed(Base64.getEncoder().encodeToString(matcher.group().getBytes()));
-				}
+                BigInteger montoBoleta = datosBoleta.getDocumento().getEncabezado().getTotales().getMntTotal();
+                BigInteger tipoDte = datosBoleta.getDocumento().getEncabezado().getIdDoc().getTipoDTE();
 
-		        // agrega el documento a la respuesta
-		        response.add(item);
-			}
-			log.debug("Request procesado correctamente. DocumentosGenerados=" + documentos.size() + ", dte en respuesta=" + response.size());
-			
-			return ResponseEntity.ok().body(JSend.success(response));
+                log.debug("Se crea el dte en la base de datos con id=" + newdte.getIdDte());
 
-		} catch (FoliosNotExistException ex) {
-			log.error("No existen rangos de folios disponibles para el tipo de documento solicitado. Error: " + ex.getMessage());
-			// Devuelve una respuesta indicando que no hay folios disponibles
-			return ResponseEntity
-				.status(HttpStatus.NOT_FOUND) // Puedes utilizar el código de estado que consideres más adecuado
-				.body(JSend.error("No existen folios disponibles."));
-		} catch (FoliosNotAvailableException ex) {
-			log.error("No hay folios disponibles. Error: " + ex.getMessage());
-			// Devuelve una respuesta indicando que no hay folios disponibles
-			return ResponseEntity
-				.status(HttpStatus.NOT_FOUND) // Puedes utilizar el código de estado que consideres más adecuado
-				.body(JSend.error("No hay folios disponibles."));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body(JSend.error(e.getMessage()));
-		}
-	}
+                GenerarBoletaResponse item = new GenerarBoletaResponse();
+                item.setUuid(newdte.getDteUuid());
+                item.setFolio(newdte.getFolioAsignado());
+                item.setMontoTotal(montoBoleta);
+                item.setTipoDocumento(tipoDte);
 
-	/**
-	 * Crea una instancia de la entidad {@link Dte}<br>
-	 * Almacena el dte con datos de tipo {@link BOLETADefType}, lo firma y guarda en el repositorio
-	 * 
-	 * @param emisor datos del emisor
-	 * @param jaxbDTEAndVerbatimCAF objeto con los datos de la boleta y el caf <b>tal como</b> lo entrego el sii
-	 * @param rutemisor rut del emisor
-	 * @param rutfirmante rut del firmante
-	 * @return una instancia de la entidad {@link Dte}
-	 */
-	private Dte signAndStoreJaxbBOLETADefType(Emisores emisor, BOLETADefTypeAndVerbatimCAF jaxbDTEAndVerbatimCAF, String rutemisor, String rutfirmante) {
+                // Busca coincidencias del tag <TED></TED>
+                Matcher matcher = tedPattern.matcher(newdte.getDocumentoXml());
+                if (matcher.find()) {
+                    log.debug("!! Match <TED> !!");
+                    item.setTed(Base64.getEncoder().encodeToString(matcher.group().getBytes()));
+                }
+
+                response.add(item);
+            }
+
+            // Al final del proceso exitoso, decrementar los folios disponibles
+            Optional<Caf> cafOpt = cAFRepository.findByEmisoreRutemisorAndTipoDocumentoAndEstado(rutemisor, ConstantesTipoDocumento.BOLETA_AFECTA.getValue(), "DISPONIBLE");
+            if (cafOpt.isPresent()) {
+                Caf caf = cafOpt.get();
+                caf.setDisponibles(caf.getDisponibles() - documentos.size());
+                cAFRepository.save(caf);
+            }
+
+            log.debug("Request procesado correctamente. DocumentosGenerados=" + documentos.size() + ", dte en respuesta=" + response.size());
+            return ResponseEntity.ok().body(JSend.success(response));
+
+        } catch (FoliosNotExistException ex) {
+            log.error("No existen rangos de folios disponibles para el tipo de documento solicitado. Error: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(JSend.error("No existen folios disponibles."));
+        } catch (FoliosNotAvailableException ex) {
+            log.error("No hay folios disponibles. Error: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(JSend.error("No hay folios disponibles."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(JSend.error(e.getMessage()));
+        }
+    }
+    /**
+     * Crea una instancia de la entidad {@link Dte}, almacena el DTE con datos de tipo
+     * {@link BOLETADefType}, lo firma y guarda en el repositorio.
+     */
+    private Dte signAndStoreJaxbBOLETADefType(Emisores emisor, BOLETADefTypeAndVerbatimCAF jaxbDTEAndVerbatimCAF, String rutemisor, String rutfirmante, String usuario) {
 		try {
 			if (rutemisor == null) {
 				// no se indica el rut del emisor => no es posible construir una boleta
@@ -220,6 +224,7 @@ public class GenerarBoletaController {
 			newdte.setUpdatedat(ahora);
 			newdte.setEmisore(emisor);
 			newdte.setRutfirmante(rutfirmante);
+            newdte.setUsuario(usuario);
 			newdte.setIdDocumento(jaxbDTE.getDocumento().getID());
 			newdte.setMonto(jaxbDTE.getDocumento().getEncabezado().getTotales().getMntTotal());
 			newdte.setDteUuid(BuilderXmlID.genDTEUUIDv4());
@@ -296,6 +301,15 @@ public class GenerarBoletaController {
 			// escribe la nueva instancia en la base de datos
 			Dte newrecord = repoDte.save(newdte);
 
+			// Se guarda registro en bitacora
+            Bitacora bitacora = new Bitacora();
+            bitacora.setEstado(newrecord.getEstado());
+            bitacora.setProceso("/signAndStoreJaxbBOLETADefType");
+            bitacora.setFechaActualizacion(ahora);
+            bitacora.setModelo("DTE");
+			bitacora.setIdModelo(newrecord.getIdDte().toString());
+			bitacoraRepository.save(bitacora);
+
 			// recupera y muestra el id
 			if (newrecord == null) {
 				log.info("Dte creado con id=" + newrecord.getIdDte());
@@ -309,23 +323,18 @@ public class GenerarBoletaController {
 			return null;
 		}
 	}
-	@ControllerAdvice
-	public class GlobalExceptionHandler {
 
-		@ExceptionHandler(FoliosNotExistException.class)
-		public ResponseEntity<JSend> handleFoliosNotExistException(FoliosNotExistException ex) {
-			JSend errorResponse = JSend.error("No hay folios disponibles.");
-			return ResponseEntity
-				.status(HttpStatus.NOT_FOUND)
-				.body(errorResponse);
-		}
+    @ControllerAdvice
+    public class GlobalExceptionHandler {
 
-		@ExceptionHandler(FoliosNotAvailableException.class)
-		public ResponseEntity<JSend> handleFoliosNotAvailableException(FoliosNotAvailableException ex) {
-			JSend errorResponse = JSend.error("No hay folios disponibles.");
-			return ResponseEntity
-				.status(HttpStatus.NOT_FOUND)
-				.body(errorResponse);
-		}
-	}
+        @ExceptionHandler(FoliosNotExistException.class)
+        public ResponseEntity<JSend> handleFoliosNotExistException(FoliosNotExistException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(JSend.error("No existen folios disponibles."));
+        }
+
+        @ExceptionHandler(FoliosNotAvailableException.class)
+        public ResponseEntity<JSend> handleFoliosNotAvailableException(FoliosNotAvailableException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(JSend.error("No hay folios disponibles."));
+        }
+    }
 }
